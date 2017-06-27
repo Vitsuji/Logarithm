@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content="Logarithm - the developers' corner"/>
+<meta name="author" content="Vitsuji Aura"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href="https://fonts.googleapis.com/css?family=Josefin+Slab:400,700|Raleway" rel="stylesheet">
+<title>About Logarithm</title>
+<style>
+
+body{
+overflow-x:hidden;
+font-family:'Raleway',sans-serif;
+text-align:center;
+margin:0;
+padding:0;
+}
+h1,h2,h3{font-weight:100;}
+ul.topnav {
+  list-style-type: none;
+  margin: 0;
+  //padding: 0;
+  overflow: hidden;
+  border-bottom:1px #d7d7d7 solid;
+  //height:60px;
+  
+
+}
+
+ul.topnav li {
+float: right;
+vertical-align:middle;
+}
+ul.topnav li:first-child {
+float: left;
+vertical-align:middle;
+}
+
+ul.topnav li a {
+  display: inline-block;
+  //color: #f2f2f2;
+    color:#8B8989;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 22px;
+  font-family:'Josefin Slab',sans-serif;
+}
+
+ul.topnav li a:hover {color: green;border-bottom:1px solid #d7d7d7;}
+
+ul.topnav li.icon {display: none;}
+
+@media screen and (max-width:680px) {
+  .flexk{flex-direction:column;}
+   .end{display:none;}
+  ul.topnav li:not(:first-child){display: none;}
+  ul.topnav li.icon {
+    float: right;
+    display: inline-block;
+  }
+   .mf{width:100%;}
+  #firstx{border-top:1px solid #d3d3d3;}
+}
+@media screen and (min-width:680px){
+ul.topnav li a{border:none;}
+.mainw{font-size:60px;}
+.flexk{flex-direction:row;}
+.mf{width:50%;}
+}
+
+
+  ul.topnav.responsive li:not(:first-child) {
+    float: none;
+    display: inline;
+  }
+  ul.topnav.responsive li a {
+    display: block;
+    text-align: left;
+    font-family:'Josefin Slab',sans-serif;
+  }
+
+  ul.topnav.responsive li:nth-child(2){
+//margin-left:25%;
+}
+/*ul.topnav.responsive.pp{
+display:block;
+}
+ul.topnav.pp{
+display:none;
+}*/
+
+
+
+li{
+  list-style:none;
+  
+}
+a{
+  text-decoration:none;
+   
+}
+/*ul{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}*/
+
+.rotator {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  display:block;
+  background-color:#458B74;
+  color:#fff;
+  text-align:center;
+}
+.transition {
+  -webkit-transition: all 1000s linear;
+  -moz-transition: all 1000s linear;
+  -ms-transition: all 1000s linear;
+  -o-transition: all 1000s linear;
+  transition: all 1000s linear;
+}
+.translateAnimationClass { 
+  -webkit-transform: rotateX(43200deg) rotateY(14400deg);
+  -moz-transform: rotateX(43200deg) rotateY(14400deg);
+  -ms-transform: rotateX(43200deg) rotateY(14400deg);
+  -o-transform: rotateX(43200deg) rotateY(14400deg);
+  transform: rotateX(43200deg) rotateY(14400deg); 
+}
+.animation {
+  -webkit-animation: rotator 25s linear infinite;
+  -moz-animation: rotator 25s linear infinite;
+  -ms-animation: rotator 25s linear infinite;
+  -o-animation: rotator 25s linear infinite;
+  animation: rotator 25s linear infinite;
+}
+
+@-webkit-keyframes rotator {
+  0%   { -webkit-transform: rotateX(0deg)    rotateY(0deg);    }
+  100% { -webkit-transform: rotateX(1080deg) rotateY(360deg);  }
+}
+@-moz-keyframes rotator {
+  0%   { -moz-transform: rotateX(0deg)    rotateY(0deg);    }
+  100% { -moz-transform: rotateX(1080deg) rotateY(360deg);  }
+}
+@-ms-keyframes rotator {
+  0%   { -ms-transform: rotateX(0deg)    rotateY(0deg);    }
+  100% { -ms-transform: rotateX(1080deg) rotateY(360deg);  }
+}
+@-o-keyframes rotator {
+  0%   { -o-transform: rotateX(0deg)    rotateY(0deg);    }
+  100% { -o-transform: rotateX(1080deg) rotateY(360deg);  }
+}
+@keyframes rotator {
+  0%   { transform: rotateX(0deg)    rotateY(0deg);    }
+  100% { transform: rotateX(1080deg) rotateY(360deg);  }
+}
+.flexk{
+display:flex;
+width:100%;
+height:100%;
+flex-grow:1;
+}
+.spiralContainer {
+  border-radius: 50%;
+  width:60px;
+  height:60px;
+  overflow:hidden;
+  margin:0 auto;
+  
+  -webkit-animation: spin 3s linear 0s infinite reverse;
+  -moz-animation: spin 3s linear 0s infinite reverse;  
+  -ms-animation: spin 3s linear 0s infinite reverse;
+  -o-animation: spin 3s linear 0s infinite reverse;
+  animation: spin 3s linear 0s infinite reverse;
+  
+  -webkit-animation-play-state: paused;
+  -moz-animation-play-state: paused;
+  -ms-animation-play-state: paused;
+  -o-animation-play-state: paused;  
+  animation-play-state: paused;
+}
+.spiral {
+  width:60px;
+  height:60px;
+  border-radius: 50%;
+  //background-image: url(https://lh6.googleusercontent.com/-2lJYGtfXKwQ/AAAAAAAAAAI/AAAAAAAB2HQ/QSmIw0nQN_c/s0-c-k-no-ns/photo.jpg);
+  background: #f7ff00; 
+  background: -webkit-linear-gradient(to left, #f7ff00 , #db36a4); 
+  background: linear-gradient(to left, #f7ff00 , #db36a4);
+  background-repeat:no-repeat;
+  background-position:50% 50%;
+  
+  
+  -webkit-animation: spin 6s linear 0s infinite normal;
+  -moz-animation: spin 6s linear 0s infinite normal;
+  -ms-animation: spin 6s linear 0s infinite normal;
+  -o-animation: spin 6s linear 0s infinite normal;
+  animation: spin 6s linear 0s infinite normal;
+}
+.spiralContainer:hover {
+  -webkit-animation-play-state: running;
+  -moz-animation-play-state: running;
+  -ms-animation-play-state: running;
+  -o-animation-play-state: running;
+  animation-play-state: running;
+}
+@keyframes spin {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+@-webkit-keyframes spin {
+  0% {-webkit-transform: rotate(360deg); }
+  100% { -webkit-transform: rotate(0deg); }
+}
+@-ms-keyframes spin {
+  0% {-ms-transform: rotate(360deg); }
+  100% { -ms-transform: rotate(0deg); }
+}
+@-moz-keyframes spin {
+  0% { -moz-transform: rotate(360deg); }
+  100% { -moz-transform: rotate(0deg); }
+}
+@-o-keyframes spin {
+  0% { -o-transform: rotate(360deg); }
+  100% { -o-transform: rotate(0deg); }
+}
+.mainm{
+flex-grow:1;
+width:100;
+height:50%;
+}
+.mf{
+flex-grow:1;
+height:100%;
+}
+.mainm{
+background:#663399;
+height:80%;
+color:#fff;
+width:100%;
+}
+.mainm h1{
+font-family:'Josefin Slab';
+margin:0;
+padding:90px 16px;
+
+}
+.mf p{
+font-size:20px;
+margin-top:2%;
+}
+.ps{
+width:80%;
+margin:0 auto;
+display:block;
+line-height:1.5;
+}
+
+.end{
+margin-top:15%;
+padding-top:2%;
+line-height:1.5;
+font-size:12px;
+color:#767676;
+border:1px solid #d7d7d7;
+border-right:none;
+width:100%;
+height:50px;
+}
+#insend{
+float:left;
+margin-bottom:1.5%;
+margin-left:5%;
+}
+.end a{
+text-decoration:none;
+color:blue;
+}
+end a:hover{
+text-decoration:underline;
+}
+#insendpl{
+margin-left:20px;
+margin-bottom:1.5%;
+float:left;
+color:#4078c0;
+}
+#insendpr{
+margin-right:20px;
+margin-bottom:1.5%;
+float:right;
+color:#4078c0;
+}
+</style>
+</head>
+<body>
+
+<ul class="topnav" id="myTopnav">
+
+  <li><a class="logot" style="color:green;font-size:30px;font-family:'Josefin Slab', sans-serif;border:none;" href="#webpage">Logarithm</a></li>
+
+    <li class="icon">
+    <a class="btntitle" href="javascript:void(0);" style="font-size:30px;" onclick="openNav()"><i style="margin-left:20%;"class="material-icons">menu</i></a>
+  </li>
+  <li><a href="http://beta001.site88.net/signup.html" id="firstx">Sign Up</a></li>
+  <li><a href="http://beta001.site88.net/signin.html">Sign In</a></li>
+  <li><a href="http://beta001.site88.net/contact.html">Contact</a></li>
+    <li><a href="http://beta001.site88.net">Home</a></li>
+
+
+
+</ul>
+
+
+<div class="mainm">
+<h1><strong>Logarithm</strong> is not just a thing, it is a means of progress</h1>
+</div>
+
+<div class="flexk">
+<div class="mf">
+<div class='rotator animation'></div>
+<div class="ps">
+<p>Logarithm is a project developed by <a href="http://beta001.site88.net/contact.html">Vitsuji Aura</a> in attempt to unite developers all around the globe.The Logarithm project began in the late 2016 and development was ongoing in 2017. Logarithm creates an easy and safe environment for developers to assist each other, comment on work and expand their programming knowledge and experience.<a href="http://beta001.site88.net/contact.html"> Vitsuji Aura</a> tried desperately to make Logarithm a success and hopes that it will help the programmers of the world.  </p>
+</div>
+</div>
+
+<div class="mf" style="border-left:1px solid #d3d3d3;">
+<div class='spiralContainer'><div class='spiral'></div></div>
+<div class="ps">
+<p>Logarithm provides an opportunity for delevopers to socialize with others like them. Logarithm provides posting, chats and polls. Logarithm permits freelancing and other exchanges on site. More information on Terms & Services <a href="http://beta001.site88.net/t&s.html">here</a>. Logarithm will not permit fraud, identity theft, cyberbullying or forms of aggression, it will not tolerate any suspicious activity, phishing or forms of illegal use of Logarithm. More on Privacy & Security <a href="http://beta001.site88.net/pr&sec.html">here</a>   </p>
+</div>
+</div>
+
+</div>
+
+
+<div class="end">
+<p id="insend">&copy; Logarithm,Inc.</p>
+<p id="insendpl"><a href="http://beta001.site88.net/t&s.html">Terms & Service </a></p>
+<p id="insendpl"><a href="http://beta001.site88.net/pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="http://beta001.site88.net/faq.html">FAQ</a></p>
+
+<p id="insendpr"><a href="http://beta001.site88.net/signup.html">Sign Up</a></p>
+<p id="insendpr"><a href="http://beta001.site88.net/signin.html">Sign In</a></p>
+<p id="insendpr"><a href="http://beta001.site88.net/contact.html">Contact</a></p>
+<p id="insendpr"><a href="http://beta001.site88.net/bout.html">About</a></p>
+
+
+</div>
+<script>
+
+function openNav() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+        
+    } else {
+        x.className = "topnav";
+    }
+}
+
+</script>
+</body>
+</html>
