@@ -68,7 +68,7 @@ $msg = $comrow['msg'];
 $rand = $commenter.$msg.rand(1,1000000);
 $rand = preg_replace('/\s+/', '', $rand);
 
-$commentprint .= "<div class='comstandin'>
+$commentprint = "<div class='comstandin'>
 <div class='com'>
 <img src='$profpic'/>
 <div class='contcomv'>
@@ -90,7 +90,7 @@ $commentprint .= "<div class='comstandin'>
 
 <div class='comcon'>$msg</div>
 </div></div>
-</div>";
+</div>".$commentprint;
 }
 //end while
 

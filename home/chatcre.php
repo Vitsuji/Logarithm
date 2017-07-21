@@ -39,7 +39,7 @@ $errors= array();
 
 
      $myfile = fopen("newfiles.txt", "w") or die("Unable to open file!");
- $txt = $file_name."/ ".$file_size;
+ $txt = $file_name."/ ".$file_size."/ ".$chat_title;
 fwrite($myfile, $txt);
 
       $file_tmp = $_FILES['chat_back']['tmp_name'];

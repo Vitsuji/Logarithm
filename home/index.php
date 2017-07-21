@@ -73,7 +73,7 @@ $chat_date = date("Y/m/d h:i:sa");
 
 $chat_index = $chat_title.$username.$chat_date;
 $chat_index = md5($chat_index);
-$chat_index = $chat_index.".html";
+
 
 $errors= array();
       $file_name = $_FILES['chat_back']['name'];
@@ -114,7 +114,7 @@ $errors= array();
       if(empty($errors)==true) {
 
     if(move_uploaded_file($file_tmp,"cimages/".$file_name)){
-$chat_img = "cimages".$file_name;
+$chat_img = "cimages/".$file_name;
 $sql_chat = "INSERT INTO  `id1251041_udata`.`chats` (
 `id` ,
 `chat_title` ,
@@ -130,16 +130,26 @@ NULL ,  '$chat_title',  '$chat_desc',  '$chat_img',  'None' , '$chat_date','$use
 )";
 
 $chat_create = mysqli_query($conn,$sql_chat);
-if($chat_create){echo "si"." ".$chat_date;}else{echo "nien".mysqli_error($chat_create);}
+if($chat_create){
+$chat_bool = $chat_index;
+}
 
 }//file upload yes
 
+}else{
+$chat_bool =  "Something went wrong ";
 }
 //end img
 
 
 }
 //end ifset chat
+
+if(isset($_POST['chat_loc']) ? $_POST['chat_loc'] : null){
+echo $_POST['chat_loc'];
+
+}//isset chat_loc
+
 
 }
 ?>
@@ -705,6 +715,7 @@ display:none;
 font-size:34px;
 padding:10%;
 }
+.chatbool i{font-size:34px;padding:3%;}
 .delc h2{
 color:#069E2D;
 font-size:30px;
@@ -780,6 +791,36 @@ text-align:left;
 margib:0;
 margin-left:5%;
 }
+.chatbool{
+position:fixed;
+width:40%;
+height:28%;
+top:40%;
+border:1px solid #d7d7d7;
+background:#fff;
+margin-left:30%;
+text-align:center;
+}
+.iris{width:100%;text-align:right;}
+.iris i:hover{color:#d7d7d7;cursor:pointer;}
+
+#pstchcr{
+width:20%;
+display:inline-block;
+
+}
+
+#pstchcr button {
+     background:none!important;
+     color:inherit;
+     border:none; 
+     padding:0!important;
+     font: inherit;
+     /*border is optional*/
+     border-bottom:1px solid #444; 
+     cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -908,6 +949,32 @@ echo "<div class='notif'></div>";
 
 </div>
 </div>
+
+<?php
+
+if(!isset($chat_bool)){
+echo "1";
+}elseif($chat_bool == "Something went wrong"){
+echo "<div class='chatbool'>";
+echo "<div class='iris'><i class='material-icons'>close</i></div>";
+echo "<p>$errors</p>";
+echo "</div>";
+echo "2";
+}else{
+echo "3";
+echo "<div class='chatbool'>";
+echo "<div class='iris'><i class='material-icons'>close</i></div>";
+echo "<p>Your chat has been created</p>";
+echo "<p>To visit click </p>";
+echo "  <form id='pstchcr' method='post'>
+    <button name='chat_loc' value='$chat_index'>here</button>
+    </form>";
+
+echo "</div>";
+
+}
+?>
+
 
 <div id="snackbar">Welcome <?php echo $username; ?></div>
 
@@ -1070,23 +1137,7 @@ $(function() {
         return false;
     }else{
 
-$.ajax({
-    url: 'chatcre.php',
-    data: $('#dacform').serialize(),
-    cache: false,
-    contentType: 'multipart/form-data',
-    processData: false,
-    type: 'POST',
-    success: function(data){
-        alert("ji");
-    }
-});
-
-
-
-//if($.post('chatcre.php', $('#dacform').serialize())){alert(";;");}
-    
-//$('#dacform').submit();
+$('#dacform').submit();
 
 }
 });
