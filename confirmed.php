@@ -3,11 +3,11 @@ include 'dbconnect.php';
 
 if($_POST['btn']){
 $key = mysqli_real_escape_string($conn,$_POST['key']);
-$sql ="UPDATE  `a7714864_123`.`userd` SET  `evar` =  'Yes' WHERE  `userd`.`evar` = '$key'";
+$sql ="UPDATE  `userd` SET  `evar` =  'Yes' WHERE  `userd`.`evar` = '$key'";
 $result = mysqli_query($conn,$sql);
 
 if($result){
-header("location:http://beta001.site88.net/home/mypage.html");
+header("location:home/mypage.html");
 }
 
 
@@ -311,10 +311,10 @@ color:#4078c0;
     <li class="icon">
     <a class="btntitle" href="javascript:void(0);" style="font-size:30px;" onclick="openNav()"><i style="margin-left:20%;"class="material-icons">menu</i></a>
   </li>
-  <li><a href="http://beta001.site88.net/signup.html" id="firstx">Sign Up</a></li>
-  <li><a href="http://beta001.site88.net/signin.html">Sign In</a></li>
-  <li><a href="http://beta001.site88.net/bout.html">About</a></li>
-    <li><a href="http://beta001.site88.net">Home</a></li>
+  <li><a href="signup.php" id="firstx">Sign Up</a></li>
+  <li><a href="signin.php">Sign In</a></li>
+  <li><a href="bout.html">About</a></li>
+    <li><a href="Logarithm">Home</a></li>
 
 
 
@@ -342,14 +342,14 @@ color:#4078c0;
 
 <!--<div class="end">
 <p id="insend">&copy; Logarithm,Inc.</p>
-<p id="insendpl"><a href="beta001.site88.net/t&s.html">Terms & Service </a></p>
-<p id="insendpl"><a href="beta001.site88.net/pr&sec.html">Privacy & Security</a></p>
-<p id="insendpl"><a href="beta001.site88.net/faq.html">FAQ</a></p>
+<p id="insendpl"><a href="t&s.html">Terms & Service </a></p>
+<p id="insendpl"><a href="pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="faq.html">FAQ</a></p>
 
-<p id="insendpr"><a href="http://beta001.site88.net/signup.html">Sign Up</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/signin.html">Sign In</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/contact.html">Contact</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/bout.html">About</a></p>
+<p id="insendpr"><a href="signup.php">Sign Up</a></p>
+<p id="insendpr"><a href="signin.php">Sign In</a></p>
+<p id="insendpr"><a href="contact.html">Contact</a></p>
+<p id="insendpr"><a href="bout.html">About</a></p>
 
 
 

@@ -19,7 +19,7 @@ $target = $_POST['targ'];
 $target = mysqli_real_escape_string($conn, $target);
 
 
-$comupdate = "DELETE FROM `id1251041_udata`.`comments` WHERE `user` = '$target' AND `commenter` = '$commenter' AND `msg` = '$message'";
+$comupdate = "DELETE FROM `comment` WHERE `user` = '$target' AND `commenter` = '$commenter' AND `msg` = '$message'";
 
 $results = mysqli_query($conn,$comupdate);
 

@@ -20,7 +20,7 @@ $password = hash('ripemd160',sha1(sha1(md5(md5(sha1(md5($password)))))));
 $username = strip_tags($username);
 $cvar = md5($username.rand(1,100));
 
-$sql = "INSERT INTO  `id1251041_udata`.`userd` (
+$sql = "INSERT INTO  `userd` (
 `id` ,
 `username` ,
 `email` ,
@@ -146,20 +146,20 @@ color:#4078c0;
 <p>Thanks for joining us</p>
 <p>Your key for confirming email is $cvar</p>
 <p>Please confirm your email to further use Logarithm</p>
-<div class='confirm'><h3><a href='beta001.site88.net/confirmed.php'>Confirm Email</a></h3></div>
+<div class='confirm'><h3><a href='confirmed.php'>Confirm Email</a></h3></div>
 
 
 <div class='end'>
 <p id='insend'>&copy; Logarithm,Inc.</p>
-<p id='insendpl'><a href='beta001.site88.net/t&s.html'>Terms & Service </a></p>
-<p id='insendpl'><a href='beta001.site88.net/pr&sec.html'>Privacy & Security</a></p>
-<p id='insendpl'><a href='beta001.site88.net/faq.html'>FAQ</a></p>
+<p id='insendpl'><a href='t&s.html'>Terms & Service </a></p>
+<p id='insendpl'><a href='pr&sec.html'>Privacy & Security</a></p>
+<p id='insendpl'><a href='faq.html'>FAQ</a></p>
 
-<p id='insendpr'><a href='http://beta001.site88.net/signup.html'>Sign Up</a></p>
-<p id='insendpr'><a href='http://beta001.site88.net/signin.html'>Sign In</a></p>
-<p id='insendpr'><a href='http://beta001.site88.net/contact.html'>Contact</a></p>
-<p id='insendpr'><a href='http://beta001.site88.net/bout.html'>About</a></p>
-<p id='insendpr'><a href='http://beta001.site88.net'>Home</a></p>
+<p id='insendpr'><a href='signup.php'>Sign Up</a></p>
+<p id='insendpr'><a href='signin.php'>Sign In</a></p>
+<p id='insendpr'><a href='contact.html'>Contact</a></p>
+<p id='insendpr'><a href='bout.html'>About</a></p>
+<p id='insendpr'><a href=''>Home</a></p>
 
 </div>
 
@@ -178,13 +178,17 @@ $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 $headers .= 'From: <logarithm@logarithm.com>' . "\r\n";
 
 if(mail($to,$subject,$message,$headers)){
-session_start();
-   $_SESSION['username']= $username;
-   $_SESSION['email']= $email;
-   header("location:home/pcreate.php");
+
+
+
+
 }else{
 $a .= "fail";
 }
+session_start();
+   $_SESSION['username']= $username;
+   $_SESSION['email']= $email;
+ header("location:home/pcreate.php");
 }else{
 $a .= "Can not use the same email. Username could be already taken";
 }
@@ -247,7 +251,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
+    from {bottom: 0; opacity: 0;}
     to {bottom: 30px; opacity: 1;}
 }
 
@@ -257,7 +261,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;} 
+    from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
 
@@ -273,7 +277,7 @@ ul.topnav {
   overflow: hidden;
   border-bottom:1px #d7d7d7 solid;
   //height:60px;
-  
+
 
 }
 
@@ -349,11 +353,11 @@ display:none;
 
 li{
   list-style:none;
-  
+
 }
 a{
   text-decoration:none;
-   
+
 }
 /*ul{
   display:flex;
@@ -419,7 +423,7 @@ border-bottom:1px solid #d3d3d3;
 	-moz-box-sizing:border-box;
 	box-sizing:border-box;
         display:block;
-    
+
 }
 input{
      transition: border 0.5s;
@@ -429,7 +433,7 @@ input{
 	-o-transition: border 0.5s;
 }
 .maininput:focus{
-	
+
 }
 
 .formgroup{
@@ -523,10 +527,10 @@ color:#4078c0;
     <li class="icon">
     <a class="btntitle" href="javascript:void(0);" style="font-size:30px;border:none;" onclick="openNav()"><i style="margin-left:20%;"class="material-icons">menu</i></a>
   </li>
-  <li><a href="http://beta001.site88.net/signup.html" id="firstx">Sign Up</a></li>
-  <li><a href="http://beta001.site88.net/signin.html">Sign In</a></li>
-  <li><a href="http://beta001.site88.net/bout.html">About</a></li>
-    <li><a href="http://beta001.site88.net">Home</a></li>
+  <li><a href="signup.php" id="firstx">Sign Up</a></li>
+  <li><a href="signin.php">Sign In</a></li>
+  <li><a href="bout.html">About</a></li>
+    <li><a href="Logarithm">Home</a></li>
 
 
 
@@ -557,7 +561,7 @@ color:#4078c0;
 </div>
 
 <div class="enc">
-<h3>Already have an account? Sign in <a href="beta001.site88.net/signin.html">here</a></h3>
+<h3>Already have an account? Sign in <a href="signin.php">here</a></h3>
 </div>
 <div id="z">
 <h3>Experience and enjoy Logarithm to its fullest. Sign up and communicate with dedicated developers, share your projects and form something new. </h3>
@@ -579,14 +583,14 @@ color:#4078c0;
 
 <div class="end">
 <p id="insend">&copy; Logarithm,Inc.</p>
-<p id="insendpl"><a href="beta001.site88.net/t&s.html">Terms & Service </a></p>
-<p id="insendpl"><a href="beta001.site88.net/pr&sec.html">Privacy & Security</a></p>
-<p id="insendpl"><a href="beta001.site88.net/faq.html">FAQ</a></p>
+<p id="insendpl"><a href="t&s.html">Terms & Service </a></p>
+<p id="insendpl"><a href="pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="faq.html">FAQ</a></p>
 
-<p id="insendpr"><a href="http://beta001.site88.net/signup.html">Sign Up</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/signin.html">Sign In</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/contact.html">Contact</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/bout.html">About</a></p>
+<p id="insendpr"><a href="signup.php">Sign Up</a></p>
+<p id="insendpr"><a href="signin.php">Sign In</a></p>
+<p id="insendpr"><a href="contact.html">Contact</a></p>
+<p id="insendpr"><a href="bout.html">About</a></p>
 
 
 </div>
@@ -596,7 +600,7 @@ function openNav() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
         x.className += " responsive";
-        
+
     } else {
         x.className = "topnav";
     }
@@ -606,7 +610,7 @@ function openNav() {
 <script>
 var x = document.getElementById("snackbar")
     x.className = "show";
-    setTimeout(function(){ 
+    setTimeout(function(){
     x.className = x.className.replace("show", "");
     x.style.visibility = "hidden";
     x.style.display = "none";

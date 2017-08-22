@@ -1,4 +1,6 @@
 <?php
+
+
    include 'dbconnect.php';
    session_start();
    if($_SESSION['username'] === Null || $_SESSION['email'] === Null){
@@ -7,7 +9,7 @@ die();
 }else{
 $email = $_SESSION['email'];
 $username = $_SESSION['username'];
-$sss = "SELECT * FROM `id1251041_udata`.`userd` WHERE `username` LIKE '$username' AND `email` LIKE '$email'";
+$sss = "SELECT * FROM `userd` WHERE `username` = '$username' AND `email` = '$email'";
 $res = mysqli_query($conn,$sss);
 if($res){
 $resu = mysqli_fetch_assoc($res);
@@ -40,7 +42,7 @@ $email = $_SESSION['email'];
 $username = $_SESSION['username'];
 $usernameslug = slugify($username);
 $date = date("Y/m/d");
-$sql = "INSERT INTO  `id1251041_udata`.`profiles` (
+$sql = "INSERT INTO  `profiles` (
 `id` ,
 `name` ,
 `email`,
@@ -58,11 +60,11 @@ if($result){
 header("location:index.php");
 }else{
 session_destroy();
-header("location:http://beta002.site88.net");
+header("location:");
 die();
 }
 
-}else{header("location:http://beta002.site88.net/signin.php");}
+}else{header("location:http://localhost/Logarithm/signin.php");}
 
 
 }

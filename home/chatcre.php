@@ -80,7 +80,7 @@ fwrite($myfile, $txt);
 
     if(move_uploaded_file($file_tmp,"cimages/".$file_name)){
 $chat_img = "cimages/".$file_name;
-$sql_chat = "INSERT INTO  `id1251041_udata`.`chats` (
+$sql_chat = "INSERT INTO  `chats` (
 `id` ,
 `chat_title` ,
 `chat_desc` ,

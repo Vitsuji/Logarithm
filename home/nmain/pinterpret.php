@@ -2,13 +2,13 @@
 include 'dbconnect.php';
 session_start();
 if($_SESSION['username'] === Null){
-header("http://beta002.site88.net/signin.php");
+header("signin.php");
 die();
 }else{
 $username = $_SESSION['username'];
 $sql="
 SELECT * 
-FROM  `id1251041_udata`.`profiles` WHERE `name` LIKE '$username' LIMIT 0 , 1";
+FROM  `profiles` WHERE `name` LIKE '$username' LIMIT 0 , 1";
 
 
 

@@ -4,13 +4,13 @@ include 'dbconnect.php';
 
 
 if($_SESSION['username'] === Null || $_SESSION['email'] === Null){
-header("location:http://beta002.site88.net/signup.php");
+header("location:signup.php");
 }else{
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 
 $sql ="SELECT * 
-FROM  `id1251041_udata`.`profiles` 
+FROM  `profiles` 
 WHERE  `name` LIKE '$username'
 AND  `email` LIKE  '$email'";
 
@@ -34,7 +34,7 @@ echo "wrong result";
 
 if(isset($_POST['descup']) ? $_POST['descup'] : null){
 $newdesc = $_POST['ndesc'];
-$changedesc = "UPDATE  `id1251041_udata`.`profiles` SET  `description` =  '$newdesc' WHERE  `id1251041_udata`.`profiles`.`name` = '$username'";
+$changedesc = "UPDATE  `profiles` SET  `description` =  '$newdesc' WHERE  `profiles`.`name` = '$username'";
 
 $result = mysqli_query($conn,$changedesc);
 if($result){

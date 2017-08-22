@@ -8,8 +8,8 @@ $password = $_POST['password'];
 $email = mysqli_real_escape_string($conn, $email);
 $password = mysqli_real_escape_string($conn, $password);
 $password = hash('ripemd160',sha1(sha1(md5(md5(sha1(md5($password)))))));
-$sql = "SELECT * 
-FROM  `id1251041_udata`.`userd` 
+$sql = "SELECT *
+FROM  `userd`
 WHERE  `email` LIKE '$email'
 AND  `password` LIKE '$password'";
 
@@ -21,7 +21,7 @@ if($row){
 session_start();
 $_SESSION['username'] = $row['username'];
 $_SESSION['email'] = $row['email'];
-header("location: /home");
+header("location: http://localhost/Logarithm/home");
 }else{
 $a = "Wrong email or password";
 }
@@ -85,7 +85,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
+    from {bottom: 0; opacity: 0;}
     to {bottom: 30px; opacity: 1;}
 }
 
@@ -95,7 +95,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;} 
+    from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
 
@@ -110,7 +110,7 @@ ul.topnav {
   overflow: hidden;
   border-bottom:1px #d7d7d7 solid;
   //height:60px;
-  
+
 
 }
 
@@ -188,11 +188,11 @@ display:none;
 
 li{
   list-style:none;
-  
+
 }
 a{
   text-decoration:none;
-   
+
 }
 /*ul{
   display:flex;
@@ -255,7 +255,7 @@ border-bottom:1px solid #d7d7d7;
 	-moz-box-sizing:border-box;
 	box-sizing:border-box;
         display:block;
-    
+
 }
 input{
      transition: border 0.5s;
@@ -265,7 +265,7 @@ input{
 	-o-transition: border 0.5s;
 }
 .maininput:focus{
-	
+
 }
 
 .formgroup{
@@ -360,10 +360,10 @@ color:#4078c0;
     <li class="icon">
     <a class="btntitle" href="javascript:void(0);" style="font-size:30px;border:none;" onclick="openNav()"><i style="margin-left:20%;"class="material-icons">menu</i></a>
   </li>
-  <li><a href="http://beta001.site88.net/signup.html" id="firstx">Sign Up</a></li>
-  <li><a href="http://beta001.site88.net/signin.html">Sign In</a></li>
-  <li><a href="http://beta001.site88.net/bout.html">About</a></li>
-    <li><a href="http://beta001.site88.net">Home</a></li>
+  <li><a href="signup.php" id="firstx">Sign Up</a></li>
+  <li><a href="signin.php">Sign In</a></li>
+  <li><a href="bout.html">About</a></li>
+    <li><a href="Logarithm">Home</a></li>
 
 
 
@@ -386,8 +386,8 @@ color:#4078c0;
 <input placeholder="Password" type="password" class="maininput" name="password" required >
 <input style="margin-top:7px;" type="submit" name="btn" class="btn-style" value="Log In" >
 </form>
-<h5><a href="http://beta001.site88.net/forgotpassword.html">Forgot password?</a></h5>
-<?php 
+<h5><a href="forgotpassword.html">Forgot password?</a></h5>
+<?php
 if(isset($a) ? $a : null){
 echo "<h1>$a</h1>";
 }
@@ -397,7 +397,7 @@ echo "<h1>$a</h1>";
 </div>
 
 <div class="enc">
-<h3>Don't have an account? Sign up <a href="beta001.site88.net/signup.html">here</a></h3>
+<h3>Don't have an account? Sign up <a href="signup.php">here</a></h3>
 </div>
 
 
@@ -405,13 +405,13 @@ echo "<h1>$a</h1>";
 <div class="ex">
 <div id="ax">
 <p style="font-size:20px;" >Not sure about something? Check out the</p>
-<h3><a href="beta001.site88.net/faq.html">FAQ</a></h3>
+<h3><a href="faq.html">FAQ</a></h3>
 </div>
 </div>
 <div class="ex">
 <div id="ax">
 <p style="font-size:20px;">Not sure what Logarithm is used for?</p>
-<h3><a href="beta001.site88.net/bout.html">About</a> & <a href="beta001.site88.net/t&s.html">Terms & Service</a></h3>
+<h3><a href="bout.html">About</a> & <a href="t&s.html">Terms & Service</a></h3>
 
 <h3></h3>
 </div>
@@ -419,20 +419,20 @@ echo "<h1>$a</h1>";
 <div class="ex">
 <div id="ax">
 <p style="font-size:20px;" >Worried about Security or Privacy? Check out</p>
-<h3><a href="beta001.site88.net/pr&sec.html">Privacy and Security</a></h3>
+<h3><a href="pr&sec.html">Privacy and Security</a></h3>
 </div>
 </div>
 </div>
 <div class="end">
 <p id="insend">&copy; Logarithm,Inc.</p>
-<p id="insendpl"><a href="beta001.site88.net/t&s.html">Terms & Service </a></p>
-<p id="insendpl"><a href="beta001.site88.net/pr&sec.html">Privacy & Security</a></p>
-<p id="insendpl"><a href="beta001.site88.net/faq.html">FAQ</a></p>
+<p id="insendpl"><a href="t&s.html">Terms & Service </a></p>
+<p id="insendpl"><a href="pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="faq.html">FAQ</a></p>
 
-<p id="insendpr"><a href="http://beta001.site88.net/signup.html">Sign Up</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/signin.html">Sign In</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/contact.html">Contact</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/bout.html">About</a></p>
+<p id="insendpr"><a href="signup.php">Sign Up</a></p>
+<p id="insendpr"><a href="signin.php">Sign In</a></p>
+<p id="insendpr"><a href="contact.html">Contact</a></p>
+<p id="insendpr"><a href="bout.html">About</a></p>
 
 
 </div>
@@ -442,7 +442,7 @@ function openNav() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
         x.className += " responsive";
-        
+
     } else {
         x.className = "topnav";
     }
@@ -452,7 +452,7 @@ function openNav() {
 <script>
 var x = document.getElementById("snackbar")
     x.className = "show";
-    setTimeout(function(){ 
+    setTimeout(function(){
     x.className = x.className.replace("show", "");
     x.style.visibility = "hidden";
     x.style.display = "none";

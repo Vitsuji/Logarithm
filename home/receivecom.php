@@ -5,7 +5,7 @@ $username = $_SESSION['username'];
 $target = $_SESSION['targetcom'];
 
 //Print my comments
-$comp = "SELECT * FROM `id1251041_udata`.`comments` WHERE `user` = '$target'";
+$comp = "SELECT * FROM `comment` WHERE `user` = '$target'";
 $compres = mysqli_query($conn,$comp);
 
 $commentprint = "";
@@ -19,7 +19,7 @@ $comrow = mysqli_fetch_array($compres);
 
 
 $commenter = $comrow['commenter'];
-$coms = "SELECT * FROM `id1251041_udata`.`profiles` WHERE `name` = '$commenter'";
+$coms = "SELECT * FROM `profiles` WHERE `name` = '$commenter'";
 $comsres = mysqli_query($conn,$coms);
 if($comsres){
 $prof = mysqli_fetch_assoc($comsres);
@@ -57,7 +57,7 @@ $commentprint .= "<div class='comstandin'>
 
 while($comrow = mysqli_fetch_array($compres)) {
 $commenter = $comrow['commenter'];
-$coms = "SELECT * FROM `id1251041_udata`.`profiles` WHERE `name` = '$commenter'";
+$coms = "SELECT * FROM `profiles` WHERE `name` = '$commenter'";
 $comsres = mysqli_query($conn,$coms);
 if($comsres){
 $prof = mysqli_fetch_assoc($comsres);
@@ -104,4 +104,5 @@ header("location:mypage.php");
 //end comment and if none results
 
 echo $commentprint;
+
 ?>

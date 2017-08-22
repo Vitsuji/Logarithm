@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 include 'dbconnect.php';
 
@@ -13,8 +13,8 @@ header("location:mypage.php");
 if($target == $username){
 header("location:mypage.php");
 }else{
-$sql ="SELECT * 
-FROM  `id1251041_udata`.`profiles` 
+$sql ="SELECT *
+FROM  `profiles`
 WHERE  `name` LIKE '$target'";
 
 $result = mysqli_query($conn, $sql);
@@ -29,10 +29,10 @@ $description = $row['description'];
 }else{
 header("location:nfound.php");
 }
-//end 
+//end
 
-$sqly ="SELECT * 
-FROM  `id1251041_udata`.`profiles` 
+$sqly ="SELECT *
+FROM  `profiles`
 WHERE  `name` ='$username'";
 
 $sqres = mysqli_query($conn,$sqly);
@@ -44,7 +44,7 @@ $myimg = "pimages/".$myimg;
 
 
 //end
-$sqll = "SELECT * FROM `id1251041_udata`.`relationship` WHERE  (`user1` = '$target' AND `user2` = '$username' ) OR (`user2` = '$target' AND `user1` = '$username')";
+$sqll = "SELECT * FROM `relationship` WHERE  (`user1` = '$target' AND `user2` = '$username' ) OR (`user2` = '$target' AND `user1` = '$username')";
 
 $consqll = mysqli_query($conn,$sqll);
 if($consqll){
@@ -57,7 +57,7 @@ $rowses = mysqli_fetch_assoc($consqll);
 if($rowses['user1'] == $username){
 
 $userrel = $rowses['user1rel'];
-$targrel = $rowses['user2rel']; 
+$targrel = $rowses['user2rel'];
 
 if($userrel == "Following" && $targrel == "Not Following"){
 $felly = "Following";
@@ -72,7 +72,7 @@ $felly = "Follow";
 }else{
 
 $userrel = $rowses['user2rel'];
-$targrel = $rowses['user1rel']; 
+$targrel = $rowses['user1rel'];
 
 if($userrel == "Following" && $targrel == "Not Following"){
 $felly = "Following";
@@ -97,12 +97,12 @@ header("location: target.php");
 }
 if(isset($_POST['logout']) ? $_POST['logout'] : null){
 session_destroy();
-header("location: http://beta002.site88.net");
+header("location: http://localhost/Logarithm/");
 }
 
 if(isset($_POST['follow']) ? $_POST['follow'] : null){
 
-$sqlsearc = "SELECT * FROM `id1251041_udata`.`relationship` WHERE  (`user1` = '$target' AND `user2` = '$username') OR (`user2` = '$target' AND `user1` = '$username')";
+$sqlsearc = "SELECT * FROM `relationship` WHERE  (`user1` = '$target' AND `user2` = '$username') OR (`user2` = '$target' AND `user1` = '$username')";
 
 $searchres = mysqli_query($conn,$sqlsearc);
 
@@ -112,7 +112,7 @@ $num = mysqli_num_rows($searchres);
 if($num == 0){
 $follow = "Following";
 $nfollow = "Not Following";
-$screate = "INSERT INTO  `id1251041_udata`.`relationship` (
+$screate = "INSERT INTO  `relationship` (
 `user1` ,
 `user2` ,
 `user1rel` ,
@@ -124,7 +124,7 @@ VALUES (
 
 $cres = mysqli_query($conn,$screate);
 if($cres){
-$notif = "INSERT INTO  `id1251041_udata`.`notification` (
+$notif = "INSERT INTO  `notification` (
 `user` ,
 `target` ,
 `msg`
@@ -147,11 +147,11 @@ $rowse = mysqli_fetch_assoc($searchres);
 if($rowse['user1'] == $username){
 
 if($rowse['user1rel'] == "Not Following"){
-$update = "UPDATE  `id1251041_udata`.`relationship` SET  `user1rel` =  'Following' WHERE  `relationship`.`user1` = '$username'";
+$update = "UPDATE  `relationship` SET  `user1rel` =  'Following' WHERE  `relationship`.`user1` = '$username'";
 
 $updateq = mysqli_query($conn,$update);
 if($updateq){
-$notif = "INSERT INTO  `id1251041_udata`.`notification` (
+$notif = "INSERT INTO  `notification` (
 `user` ,
 `target` ,
 `msg`
@@ -165,7 +165,7 @@ header("location:target.php");
 
 
 }else{
-$update = "UPDATE  `id1251041_udata`.`relationship` SET  `user1rel` =  'Not Following' WHERE  `relationship`.`user1` = '$username'";
+$update = "UPDATE  `relationship` SET  `user1rel` =  'Not Following' WHERE  `relationship`.`user1` = '$username'";
 
 $updateq = mysqli_query($conn,$update);
 if($updateq){
@@ -179,12 +179,12 @@ header("location:target.php");
 }else{
 //if user is user2
 if($rowse['user2rel'] == "Not Following"){
-$update = "UPDATE  `id1251041_udata`.`relationship` SET  `user2rel` =  'Following' WHERE  `relationship`.`user2` = '$username'";
+$update = "UPDATE  `relationship` SET  `user2rel` =  'Following' WHERE  `relationship`.`user2` = '$username'";
 
 $updateq = mysqli_query($conn,$update);
 if($updateq){
 header("location:target.php");
-$notif = "INSERT INTO  `id1251041_udata`.`notification` (
+$notif = "INSERT INTO  `notification` (
 `user` ,
 `target` ,
 `msg`
@@ -197,11 +197,11 @@ $note  = mysqli_query($conn,$notif);
 
 
 }else{
-$update = "UPDATE  `id1251041_udata`.`relationship` SET  `user2rel` =  'Not Following' WHERE  `relationship`.`user2` = '$username'";
+$update = "UPDATE  `relationship` SET  `user2rel` =  'Not Following' WHERE  `relationship`.`user2` = '$username'";
 
 $updateq = mysqli_query($conn,$update);
 if($updateq){
-$notif = "UPDATE  `id1251041_udata`.`notification` SET  `user2rel` =  'Not Following' WHERE  `relationship`.`user2` = '$username'";
+$notif = "UPDATE  `notification` SET  `user2rel` =  'Not Following' WHERE  `relationship`.`user2` = '$username'";
 
 header("location:target.php");
 }else{header("location:mypage.php");}
@@ -224,7 +224,7 @@ header("location:target.php");
 
 
 //Followers and Following
-$sqll = "SELECT * FROM `id1251041_udata`.`relationship` WHERE  (`user1` = '$target') OR (`user2` = '$target')";
+$sqll = "SELECT * FROM `relationship` WHERE  (`user1` = '$target') OR (`user2` = '$target')";
 $sqllres = mysqli_query($conn,$sqll);
 if($sqllres){
 
@@ -288,19 +288,19 @@ while($collections = mysqli_fetch_array($sqllres)) {
 
 //Display followers and following
 
-$sqlll = "SELECT * FROM `id1251041_udata`.`relationship` WHERE  (`user1` = '$target') OR (`user2` = '$target')";
+$sqlll = "SELECT * FROM `relationship` WHERE  (`user1` = '$target') OR (`user2` = '$target')";
 $sqlllres = mysqli_query($conn,$sqlll);
- 
+
 $rowfoll = mysqli_fetch_array($sqlllres);
 $num_rowss = mysqli_num_rows($sqlllres);
- 
+
 
 $fol_num = 0;
 $fold_num = 0;
- 
+
 $followings = "";
 $followers = "";
- 
+
 $user1 = $rowfoll['user1'];
  $user2 = $rowfoll['user2'];
 if($user1 != $target){
@@ -309,41 +309,41 @@ $myfeel = $rowfoll['user2rel'];
 $user2 = $rowfoll['user2'];
 if($opfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user1'";
- 
+
 $resulty = mysqli_query($conn,$sqly);
 if($resulty){
 $row = mysqli_fetch_assoc($resulty);
- 
+
 if($row){
 $dates = $row['date'];
 $pimgs = $row['pimg'];
 $pimgs = "pimages/".$pimgs;
- 
+
 $followers .= "<div style='background-image: url($pimgs)' class='contr'></div>";
 }else{
 echo "wrong row".mysqli_error($row);
 }
- 
+
 }else{
 echo "wrong result2";
 }
- 
- 
- 
+
+
+
 }
- 
- 
+
+
 if($myfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user1'";
- 
+
 $resulty = mysqli_query($conn,$sqly);
 if($resulty){
 $row = mysqli_fetch_assoc($resulty);
- 
+
 if($row){
 $dates = $row['date'];
 $pimgs = $row['pimg'];
@@ -353,58 +353,58 @@ $followings .= "<div style='background-image: url($pimgs)' class='contr'></div>"
 }else{
 echo "wrong row".mysqli_error($row);
 }
- 
+
 }else{
 echo "wrong result3";
- 
+
 }
 }
- 
- 
- 
- 
+
+
+
+
 }else{
 $opfeel = $rowfoll['user2rel'];
 $myfeel = $rowfoll['user1rel'];
 $user2 = $rowfoll['user2'];
- 
+
 if($opfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user2'";
- 
+
 $resulty = mysqli_query($conn,$sqly);
 if($resulty){
 $row = mysqli_fetch_assoc($resulty);
- 
+
 if($row){
 $dates = $row['date'];
 $pimgs = $row['pimg'];
 $pimgs = "pimages/".$pimgs;
- 
+
 $followers .= "<div style='background-image: url($pimgs)' class='contr'></div>";
 }else{
 echo "wrong row".mysqli_error($row);
 }
- 
+
 }else{
 echo "wrong result4";
- 
+
 }
- 
- 
+
+
 }
- 
- 
+
+
 if($myfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user2'";
- 
+
 $resulty = mysqli_query($conn,$sqly);
 if($resulty){
 $row = mysqli_fetch_assoc($resulty);
- 
+
 if($row){
 $dates = $row['date'];
 $pimgs = $row['pimg'];
@@ -413,70 +413,70 @@ $pimgss = "pimages/".$pimgs;
 
 
 $followings .= "<div style='background-image: url($pimgss)' class='contr'></div>";
- 
- 
+
+
 }else{
 echo "wrong row".mysqli_error($row);
 }
- 
+
 }else{
 echo "wrong result5";
- 
+
 }
 }
- 
- 
+
+
 }
- 
+
 //Continuous
- 
+
 while($collection = mysqli_fetch_array($sqlllres)) {
- 
+
     $user1 = $collection['user1'];
     $user2 = $collection['user2'];
 if($user1 != target){
 $opfeel = $collection['user1rel'];
 $myfeel = $collection['user2rel'];
- 
+
 if($opfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user1'";
- 
+
 $resulty = mysqli_query($conn,$sqly);
 if($resulty){
 $row = mysqli_fetch_assoc($resulty);
- 
+
 if($row){
 $dates = $row['date'];
 $pimgs = $row['pimg'];
 $pimgs = "pimages/".$pimgs;
- 
+
 $followers .= "<div style='background-image: url($pimgs)' class='contr'></div>";
- 
- 
+
+
 }else{
 echo "wrong row".mysqli_error($row);
 }
- 
+
 }else{
 echo "wrong result6";
 }
- 
- 
- 
+
+
+
 }
- 
+
 
 if($myfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user2'";
- 
+
 $resulty = mysqli_query($conn,$sqly);
 if($resulty){
 $row = mysqli_fetch_assoc($resulty);
- 
+
 if($row){
 $dates = $row['date'];
 $pimgs = $row['pimg'];
@@ -487,57 +487,57 @@ echo "op3";
 }
 $followings .= "<div style='background-image: url($pimgs)' class='contr'></div>";
 $fol_num=+1;
- 
+
 }else{
 echo "wrong row";
 }
- 
+
 }else{
 echo "wrong result7";
- 
+
 }
 }
- 
- 
- 
- 
+
+
+
+
 }else{
 $opfeel = $collection['user2rel'];
 $myfeel = $collection['user1rel'];
 $user2 = $collection['user2'];
- 
+
 if($opfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user2'";
- 
+
 $resulty = mysqli_query($conn,$sqly);
 if($resulty){
 $row = mysqli_fetch_assoc($resulty);
- 
+
 if($row){
 $dates = $row['date'];
 $pimgs = $row['pimg'];
 $pimgs = "pimages/".$pimgs;
- 
+
 $followers .= "<div style='background-image: url($pimgs)' class='contr'></div>";
- 
+
 }else{
 echo "wrong row";
 }
- 
+
 }else{
 echo "wrong result8";
- 
+
 }
- 
- 
+
+
 }
- 
- 
+
+
 if($myfeel == "Following"){
 $sqly ="SELECT *
-FROM  `id1251041_udata`.`profiles`
+FROM  `profiles`
 WHERE  `name` = '$user2'";
 
 $resulty = mysqli_query($conn,$sqly);
@@ -551,26 +551,26 @@ $pimgs = "pimages/".$pimgs;
 
 $followings .= "<div style='background-image: url($pimgs)' class='contr'></div>";
 
- 
+
 }else{
 echo "wrong row";
 }
- 
+
 }else{
 echo "wrong result9";
- 
+
 }
 }
  }
 }
- 
+
 
 
 
 
 
 //End continuous
-$notesql = "SELECT * FROM `id1251041_udata`.`notification` WHERE `user` = '$username'";
+$notesql = "SELECT * FROM `notification` WHERE `user` = '$username'";
 
 $nnote = mysqli_query($conn,$notesql);
 if($nnote){
@@ -589,6 +589,7 @@ $notesnum = mysqli_num_rows($nnote);
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:400,700|Raleway" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <title><?php echo $target; ?> - Logarithm</title>
 <style>
 body{margin:0;padding:0;font-family:'Raleway',sans-serif;border:1px solid #d7d7d7;outline:none;overflow-x:hidden;}
@@ -605,6 +606,21 @@ padding:32px;
 }
 
 @media screen and (min-width:680px){
+  #crepull{margin:1px;}
+  .btn-style{margin:0 auto;width:35%;margin-top:5%;}
+  #dacform input[type=text]{width:50%;}
+  #dacform textarea{width:70%;}
+  .iri{width:25%;}
+  .tcent{width:50%;}
+  .crechatform{top:3.5%;margin-left:30%;}
+  .crechat2:not(#jin){margin-left:60%;}
+  .crechat2{width:40%;}
+  .crename:not(#jin){margin-left:60%;}
+  .crename{width:40%;}
+  .chaty{width:31%;height:350px;}
+  .chatback{width:100%;height:60%;background:#fff;}
+  .chatcontainer{flex-direction:row;display:flex;flex-wrap:wrap;}
+  .chatb{width:8%;margin-left:90%;padding:1%;}
 .com{padding:10px;}
 .wcom input[type=text]{width:50%;}
 .picc{width:20%;padding:1%;}
@@ -624,6 +640,8 @@ padding:32px;
 .result{margin-left:2.5%;}
 }
 @media screen and (max-width: 680px){
+  .crechatform{top:0;width:100%;height:100%;overflow-y:auto;}
+.crechat2{width:100%;}
 .wcom input[type=text]){width:70%;}
 .comments:first-child{margin-top:20px;}
 .picc{padding:3%;margin-top:3%;}
@@ -647,6 +665,13 @@ padding:6%;
 .mains img{height:220px;}
 }
 
+@media screen and (min-width:1023px){
+@media screen and (max-width:1600px){
+.crechatform{width:50%;}
+
+}
+}
+
 #snackbar {
     visibility: hidden;
     min-width:  60%;
@@ -667,7 +692,7 @@ padding:6%;
 }
 
 @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
+    from {bottom: 0; opacity: 0;}
     to {bottom: 30px; opacity: 1;}
 }
 
@@ -677,7 +702,7 @@ padding:6%;
 }
 
 @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;} 
+    from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
 
@@ -699,8 +724,9 @@ padding:6%;
  -webkit-transition: 0.5s;
     padding-top: 60px;
     font-family:'Josefin Slab',sans-serif;
-    
+
 }
+.crepost{width:49%;display:inline-block;}
 .mdiv{
 width:100%;
 margin-bottom:5%;
@@ -718,7 +744,7 @@ margin:0 auto;
 .middle:hover{
 cursor:pointer;
 }
-.side a{
+.side a:not(#news){
     padding: 16px 16px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -727,6 +753,7 @@ cursor:pointer;
     transition: 0.3s;
 
 }
+#news{text-decoration: none;}
 .side input{
 border:none;
 margin:0;
@@ -791,7 +818,7 @@ input[type=text] {
 }
 input::-webkit-search-decoration,
 input::-webkit-search-cancel-button {
-	display: none; 
+	display: none;
 }
 
 #two input[type=text] {
@@ -799,11 +826,11 @@ input::-webkit-search-cancel-button {
 	border: solid 1px #ccc;
 	padding: 9px 10px 9px 32px;
 
-	
+
 	-webkit-border-radius: 10em;
 	-moz-border-radius: 10em;
 	border-radius: 10em;
-	
+
 	-webkit-transition: all .5s;
 	-moz-transition: all .5s;
 	transition: all .5s;
@@ -811,7 +838,7 @@ input::-webkit-search-cancel-button {
 #two input[type=text]:focus {
 	background-color: #fff;
 	border-color: #66CC75;
-	
+
 	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
 	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
 	box-shadow: 0 0 5px rgba(109,207,246,.5);
@@ -900,15 +927,15 @@ letter-spacing:10px;
 }
 .modal {
     display: none;
-    position: fixed; 
-    z-index: 1; 
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
     padding-top: 60px;
 }
 
@@ -917,7 +944,7 @@ letter-spacing:10px;
     background-color: #fefefe;
     margin: 5% auto 15% auto;
     border: 1px solid #888;
-    width: 75%; 
+    width: 75%;
 }
 
 .close {
@@ -943,12 +970,12 @@ letter-spacing:10px;
 }
 
 @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
+    from {-webkit-transform: scale(0)}
     to {-webkit-transform: scale(1)}
 }
-    
+
 @keyframes animatezoom {
-    from {transform: scale(0)} 
+    from {transform: scale(0)}
     to {transform: scale(1)}
 }
 
@@ -962,7 +989,7 @@ letter-spacing:10px;
        width: 100%;
     }
 }
-input[type="file"] {
+input#cfile {
     display: none;
 }
 .custom-file-upload {
@@ -988,7 +1015,7 @@ display:block;
 }
 
 .mains h2{font-size:30px;}
-.mains h2,h3,h4,h5{
+.mains h2,h4,h5{
 color:#fff;
 font-family:'Josefin Slab',sans-serif;
 margin:0;
@@ -1161,7 +1188,7 @@ margin-bottom:10px;
 .updesc:hover{cursor:pointer;}
 .dsxc:focus ~ .updesc{
   display:block;
-  
+
 }
 #two input[type=submit]{
 -webkit-appearance: none;
@@ -1208,6 +1235,7 @@ left:25%;
 -webkit-border-radius:6px;
 }
 
+.chatb h3, h2{display:inline-block;margin:0;}
 .wcom{
 z-index:2;
 border:1px solid #d7d7d7;
@@ -1265,7 +1293,7 @@ color:blue;
 text-decoration:underline;
 padding:5px;
 text-align:left;
-     border:none; 
+     border:none;
      padding:0!important;
      font: inherit;
      /*border is optional*/
@@ -1299,25 +1327,180 @@ font-size:20px;
 -webkit-border-radius:6px;
 }
 #delcom{display:none;}
+
+.crechat{text-align:center;width:49%;display:inline-block;}
+.crechat2{
+background:#069E2D;
+color:#fff;
+text-align:center;
+}
+.crechat2 i{padding:15%;font-size:64px;}
+.crechatform{
+position:fixed;
+background:#fff;
+border:1px solid #d7d7d7;
+display:none;
+}
+.crechatform:hover{cursor:pointer;box-shadow:0px 0px 25px #d7d7d7;}
+.chatbool i{font-size:34px;padding:3%;}
+.create{
+overflow-y:hidden;
+display:none;
+background:#fff;
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+}
+.create:hover{cursor:pointer;}
+.crename{
+
+text-align:center;
+}
+.crename:hover{cursor:pointer;}
+.crepost:hover{cursor:pointer;}
+.crename h3{margin:0;font-size:25px;}
+.creone{margin-left:60%;}
+#crepull{margin-top:15%;}
+
+.crechatform{
+position:fixed;
+background:#fff;
+border:1px solid #d7d7d7;
+display:none;
+}
+.crechatform:hover{cursor:pointer;box-shadow:0px 0px 25px #d7d7d7;}
+.delc i{
+font-size:34px;
+padding:10%;
+}
+.chatbool i{font-size:34px;padding:3%;}
+.delc h2{
+color:#069E2D;
+font-size:30px;
+}
+.opos{text-align:right;}
+.delc i:hover{color:#d7d7d7;cursor:pointer;}
+.tcent{text-align:center;margin-left:25%;display:inline-block;}
+.iri{text-align:right;display:inline-block;}
+
+#dacform label{display:block;padding:3%;}
+#dacform input[type=text]{margin:3%;border:none;outline:none;border-bottom:1px solid #d7d7d7;transition:0.5s;-webkit-transition: 0.5s;}
+#dacform textarea:focus{border:1px solid #069E2D;}
+#dacform textarea{height:150px;border:1px solid #d7d7d7;margin:3%; outline: none;resize: none;padding:2%;padding-left:4%;padding-top:4%;transition:0.5s;webkit-transition: 0.5s;font-size:1.3em;}
+#dacform input[type=text]:focus{border-bottom:1px solid #069E2D; }
+.datpad{padding:5%;padding-top:0;}
+.custom-file-input {
+  color: #999;
+  vertical-align: middle;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Browse';
+  color: #666;
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  margin: -3px 0 -3px -3px;
+  padding: 5px 20px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-align: center;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
+.custom-file-input:active {
+  outline: 0;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+.btn-style{
+        border:none;
+	font-size : 20px;
+	padding : 10px 20px;
+        background-color :#069E2D;
+        color:white;
+        transition: border 0.5s;
+        outline:none;
+        font-family:'Raleway', sans-serif;
+display:block;
+text-align:center;
+-webkit-appearance:none;
+	border-radius : 6px;
+}
+.btn-style:hover{
+cursor:pointer;
+}
+#errortxt{
+display:inline-block;
+color:red;
+width:50%;
+text-align:left;
+margib:0;
+margin-left:5%;
+}
+.chatbool{
+position:fixed;
+width:40%;
+height:28%;
+top:40%;
+border:1px solid #d7d7d7;
+background:#fff;
+margin-left:30%;
+text-align:center;
+}
+.iris{width:100%;text-align:right;}
+.iris i:hover{color:#d7d7d7;cursor:pointer;}
+
+#pstchcr{
+width:20%;
+display:inline-block;
+
+}
+
+#pstchcr button {
+     background:none!important;
+     color:inherit;
+     border:none;
+     padding:0!important;
+     font: inherit;
+     /*border is optional*/
+     border-bottom:1px solid #444;
+     cursor: pointer;
+}
 </style>
 
 </head>
 <body>
-<div id="Sidenav" class="side">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="mypage.php"><img src="<?php echo $myimg; ?>">
-  <p><?php echo $username;  ?></p>
-</a>
-  <div class="mdiv">
-  <div class="middle" onclick="news()"><p>News</p></div>
-  <div class="middle" onclick="document.getElementById('create').style.display='block'"><p>Create</p></div>
-  <div class="middle"><p>Chats</p></div>
+  <div id="Sidenav" class="side">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
+    <p><?php echo $username;  ?></p>
+
+  </a>
+    <div class="mdiv">
+    <a id="news" href="index.php"><div class="middle"><p>News</p></div></a>
+    <div class="middle" id="cremcre" onclick="openNav();openCre();"><p>Create</p></div>
+    <div class="middle"><p>Chats</p></div>
+    </div>
+    <a id="naive" href="#">Settings</a>
+
+      <form method="post" action="index.php" style="padding:16px 16px 8px 32px;border:1px solid #d7d7d7;">
+    <input id="lg" name="logout" type= "submit" value="Log Out">
+  </form>
+
   </div>
-  <a id="naive" href="#">Settings</a> 
-  <form method="post" action="mypage.php" style="padding:16px 16px 8px 32px;border:1px solid #d7d7d7;">
-  <input id="lg" name="logout" type= "submit" value="Log Out">
-</form>
-</div>
 
 <div class="mnav">
 <span onclick="openNav()">&#9776;</span>
@@ -1331,26 +1514,7 @@ font-size:20px;
 </div>
 
 
-<div id="create" class="modal">
-  
-  <form class="modal-content animate" action="post.php" method="post">
-    <div class="scontainer">
-      <span onclick="document.getElementById('create').style.display='none'" class="close" title="Close Modal">&times;</span>
-      <h1>Blog</h1>
-    </div>
 
-    <div class="container">
-      <input type="text" placeholder="Enter Title" name="utitle" required>
-
-      <textarea name ="textd" placeholder="Content..."></textarea>
-      <button type="submit" name="create">Create</button>
-    </div>
-
-    <div class="container" style="background-color:#f1f1f1">
-   
-    </div>
-  </form>
-</div>
 
 <div class="mains">
 <h2><?php echo $target ?></h2>
@@ -1438,7 +1602,40 @@ echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'
 </div>
 </div>
 
+<div class="create" id="crecre">
+<div class="crechat"  id="crepull"><div class="crename"> <h3> Public Chat</h3></div> <div class="crechat2" ><i class="material-icons">chat</i></div></div>
 
+<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crechat2" id="jin"><i class="material-icons">view_quilt</i></div></div>
+</div>
+
+<div class="crechatform" id="chatcre">
+<div class="delc"><div class="tcent"><h2>Create Chat</h2></div><div class="iri"><i class="material-icons">close</i></div></div>
+
+<div class="inp">
+<form id="dacform" name="chatf" method="post" enctype="multipart/form-data">
+<div class="datpad">
+
+<label id="txtcht"><h2>Title</h2></label>
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />
+
+
+<label><h2>Description </h2><p  style="display:inline-block;font-style:'Josefin Slab',sans-serif;"> (Max 140 characters)</p></label>
+<!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
+<!--<input type="textarea" name="chat_desc"/>-->
+<textarea name="chat_desc" onfocus="textfoc(this)" onblur="textblur(this)"></textarea>
+
+
+<label><h2>Background Image</h2></label>
+<input type="file" id="upload" class="custom-file-input" name="chat_back">
+
+<!--<input type="submit" name="subm_chat" class="btn-style" value="Create Chat">-->
+<div class="btn-style">Create Chat</div>
+</form>
+</div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script>
 $jjo = "zero";
 $jjj = "orez";
@@ -1463,7 +1660,7 @@ $jjj = "orez";
 }else{
     if ($(".mains img").css("height") > "169px"){
     document.getElementById("Sidenav").style.width= "250px";
-    
+
     }else{
     document.getElementById("Sidenav").style.width = "100%";
     }
@@ -1481,7 +1678,7 @@ function auto_grow(element) {
 
 </script>
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){
     $('#two input[type="text"]').on("keyup input", function(){
@@ -1494,13 +1691,13 @@ $(document).ready(function(){
         } else{
             resultDropdown.empty();
         }
-     $(".result").css("display","block");  
+     $(".result").css("display","block");
     });
-    
+
     $(document).on("click", ".result p", function(){
         $(this).parents("#two").find('input[type="text"]').val($(this).text());
         $(this).parent(".result").empty();
-        
+
     });
 });
 
@@ -1528,7 +1725,7 @@ window.onclick = function(event) {
     }
 }
 </script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 <script>
 $(document).ready(function(){
 
@@ -1543,7 +1740,7 @@ closepicchoose();
 });
 
 function closepicchoose(){
-setTimeout(function(){ 
+setTimeout(function(){
 $(".picc").fadeOut(1000);
 }, 22000);
 }
@@ -1638,18 +1835,65 @@ function receivecom2(){
 $(".comin").keypress(function(event) {
     if (event.which == 13) {
         event.preventDefault();
-       
+
 if($.post('sendcom.php', $('#comform').serialize())){
 document.getElementById("comidin").value = "";
 //sent and cleared
 
     receivecom();
-        
+
 
 }
 }
 });
 
+function openCre(){
+$(".create").fadeIn(400);
+}
+
+    $(".crechat2").on("click",function() {
+        $(".create").fadeOut();
+$(".crechatform").fadeIn(500);
+    });
+
+   $(".delc i").on("click",function() {
+$(".crechatform").fadeOut();
+});
+
+function inputchf(obj){
+  $(obj).css("margin-top","0");
+}
+function inputchb(obj){
+  $(obj).css("margin-top","3%");
+}
+
+function textfoc(obj){
+$(obj).css("padding-right","0");
+$(obj).css("padding-bottom","0");
+}
+
+function textblur(obj){
+$(obj).css("padding-right","2%");
+$(obj).css("padding-bottom","2%");
+}
+
+$(function() {
+    $(".crechatform").draggable();
+});
+
+
+
+    $(".btn-style").on("click",function() {
+    var x = document.forms["chatf"]["chat_title"].value;
+    if (x == "") {
+        $("#txtcht").append("<p id='errortxt'>*Must be filled in</p>");
+        return false;
+    }else{
+
+$('#dacform').submit();
+
+}
+});
 //take
 </script>
 

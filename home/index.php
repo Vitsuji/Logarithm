@@ -3,15 +3,17 @@ date_default_timezone_set('UTC');
 session_start();
 include 'dbconnect.php';
 if($_SESSION['username'] === Null || $_SESSION['email'] === Null ){
-header('Location: http://beta002.site88.net/signin.php');
+header('location: http://localhost/Logarithm/signin.php');
 die();
+
+
 
 
 }else{
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 
-$sql ="SELECT * FROM `id1251041_udata`.`profiles` WHERE `name` LIKE '$username' AND `email` LIKE '$email'";
+$sql ="SELECT * FROM `profiles` WHERE `name` LIKE '$username' AND `email` LIKE '$email'";
 
 $result = mysqli_query($conn,$sql);
 $row = mysqli_fetch_assoc($result);
@@ -22,7 +24,7 @@ $pimg = "pimages/".$pimg;
 
 }else{
 echo "Failed"."</br>";
-echo $username." "; 
+echo $username." ";
 echo $email;
 }
 
@@ -33,10 +35,10 @@ header("location: target.php");
 
 if(isset($_POST['logout']) ? $_POST['logout'] : null){
 session_destroy();
-header("location: http://beta002.site88.net");
+header("location: http://localhost/Logarithm/ ");
 }
 
-$notesql = "SELECT * FROM `id1251041_udata`.`notification` WHERE `user` = '$username'";
+$notesql = "SELECT * FROM `notification` WHERE `user` = '$username'";
 
 $nnote = mysqli_query($conn,$notesql);
 if($nnote){
@@ -49,7 +51,7 @@ $asdff = 0;
 }
 
 
-//start chat
+//start
 function slugify($text)
 {
 $text = str_replace(' ', '_', $text);
@@ -65,7 +67,7 @@ $text = trim($text, '_');
 }
 
 if(isset($_POST['chat_title']) ? $_POST['chat_title'] : null){
-
+$username = $_SESSION['username'];
 $chat_title = $_POST['chat_title'];
 $chat_titleEnc = md5($chat_title);
 $chat_desc = $_POST['chat_desc'];
@@ -84,7 +86,7 @@ $errors= array();
       $file_ext = end($file_ext);
       $file_ext= strtolower($file_ext);
       $expensions= array("jpeg","jpg","png");
-      
+
       if(in_array($file_ext,$expensions)=== false){
          $errors[]="extension not allowed, please choose a JPEG or PNG file.";
       }
@@ -110,20 +112,20 @@ $errors= array();
       if($file_size > 2097152) {
          $errors[]='File size must be less than 2 MB';
       }
-      
+
       if(empty($errors)==true) {
 
     if(move_uploaded_file($file_tmp,"cimages/".$file_name)){
 $chat_img = "cimages/".$file_name;
-$sql_chat = "INSERT INTO  `id1251041_udata`.`chats` (
+$sql_chat = "INSERT INTO  `chats` (
 `id` ,
-`chat_title` ,
-`chat_desc` ,
-`chat_img` ,
-`chat_wall`,
-`chat_date` ,
-`chat_authr`,
-`chat_index`
+`title` ,
+`description` ,
+`img` ,
+`wall`,
+`date` ,
+`authr`,
+`index`
 )
 VALUES (
 NULL ,  '$chat_title',  '$chat_desc',  '$chat_img',  'None' , '$chat_date','$username','$chat_index'
@@ -132,6 +134,25 @@ NULL ,  '$chat_title',  '$chat_desc',  '$chat_img',  'None' , '$chat_date','$use
 $chat_create = mysqli_query($conn,$sql_chat);
 if($chat_create){
 $chat_bool = $chat_index;
+
+
+$joincq = "INSERT INTO  `chat_relationship` (
+`chat` ,
+`user`
+
+)
+VALUES (
+'$chat_index' ,  '$username'
+)";
+
+$joinqs = mysqli_query($conn,$joincq);
+if($joinqs){
+$_SESSION['chat_index'] = $chat_index;
+
+
+}
+
+
 }
 
 }//file upload yes
@@ -145,10 +166,118 @@ $chat_bool =  "Something went wrong ";
 }
 //end ifset chat
 
-if(isset($_POST['chat_loc']) ? $_POST['chat_loc'] : null){
-echo $_POST['chat_loc'];
 
-}//isset chat_loc
+if(isset($_POST['chat_locy']) ? $_POST['chat_locy'] : null){
+$_SESSION['chat_index' ] = $_POST['chat_locy'];
+header("location: chat.php");
+
+}
+
+//start echo chats
+$comp = "SELECT * FROM `chats`";
+$compres = mysqli_query($conn,$comp);
+
+$commentprint = "";
+$commentnum = mysqli_num_rows($compres);
+if($commentnum == 0){
+$commentprint .= "<p id='nocoml'>No chats yet.</p>";
+}else{
+if($compres){
+$comrow = mysqli_fetch_array($compres);
+$chat_title = $comrow['title'];
+$chat_description = $comrow['description'];
+$chat_img = $comrow['img'];
+$chat_date = $comrow['date'];
+$chat_authr = $comrow['authr'];
+$chat_index = $comrow['index'];
+$chat_rand = (rand(1,99999999));
+$chat_rand = $chat_rand +(rand(1,878668)+rand(1,100))-rand(1,10);
+$err = "SELECT * FROM `chat_relationship` WHERE `chat` = '$chat_index'";
+$erre = mysqli_query($conn,$err);
+$num_users = mysqli_num_rows($erre);
+
+$commentprint .= "<div class='chaty' >
+<form method='post' action='index.php' name='chat_lox' class='chat_loc'>
+<input id='disspell' type='text' name = 'chat_locy' value='$chat_index'/>
+</form>
+  <div class='chatDesc' id='$chat_rand'>
+<div class='tit'>Creator: </div>
+  <div class='iriss'><i id='close_chatn' onclick='closeChat($chat_rand)' class='material-icons'>close</i></div>
+
+  <form action='mypage.php' method='post'>
+
+
+  <div class='authr_name'><button value='$chat_authr' name='userlink' class='subm_as_text'>$chat_authr</button></div>
+</form>
+<div class='titd'><h3>Description</h3></div>
+<div class='description_chat'>$chat_description</div>
+</div>
+
+
+<span onclick='openChat($chat_rand)'>&#9776;</span>
+<div class='chatname'><h3>$chat_title</h3></div>
+<div class='chatback'style='background:url($chat_img);  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;'></div>
+<div class='underlie'><p>Users: $num_users</p><p> Created: $chat_date</p></div>
+
+</div>";
+
+
+
+//comsres #1
+
+while($comrow = mysqli_fetch_array($compres)) {
+  $chat_title = $comrow['title'];
+  $chat_description = $comrow['description'];
+  $chat_img = $comrow['img'];
+  $chat_date = $comrow['date'];
+  $chat_authr = $comrow['authr'];
+  $chat_index = $comrow['index'];
+  $chat_rand = (rand(1,99999999));
+  $chat_rand = $chat_rand +(rand(1,878668)+rand(1,100))-rand(1,10);
+  $err = "SELECT * FROM `chat_relationship` WHERE `chat` = '$chat_index'";
+  $erre = mysqli_query($conn,$err);
+  $num_users = mysqli_num_rows($erre);
+
+  $commentprint  =  "<div class='chaty'>
+  <form method='post' action='index.php' name='chat_lox' class='chat_loc'>
+  <input id='disspell' type='text' name = 'chat_locy' value='$chat_index'/>
+  </form>
+    <div class='chatDesc' id='$chat_rand'>
+  <div class='tit'>Creator: </div>
+    <div class='iriss'><i id='close_chatn' onclick='closeChat($chat_rand)' class='material-icons'>close</i></div>
+
+    <form action='mypage.php' method='post'>
+
+
+    <div class='authr_name'><button value='John Brown' name='userlink' class='subm_as_text'>$chat_authr</button></div>
+  </form>
+  <div class='titd'><h3>Description</h3></div>
+  <div class='description_chat'>$chat_description</div>
+  </div>
+
+
+  <span onclick='openChat($chat_rand)'>&#9776;</span>
+  <div class='chatname'><h3>$chat_title</h3></div>
+  <div class='chatback' style='background:url($chat_img);  background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;'></div>
+  <div class='underlie'><p>Users: $num_users</p><p> Created: $chat_date</p></div>
+
+  </div>".$commentprint;
+}
+//end while
+
+
+
+//Add to commetn print
+}else{
+header("location:mypage.php");
+}
+}
+//end echo chat
+
 
 
 }
@@ -167,7 +296,7 @@ echo $_POST['chat_loc'];
 
 <style>
 body{margin:0;padding:0;font-family:'Raleway',sans-serif;}
-body{font-family:'Raleway',sans-serif}
+body{font-family:'Raleway',sans-serif;}
 
 
 
@@ -201,7 +330,7 @@ padding:32px;
 }
 
 @media screen and (min-width:1023px){
-@media screen and (max-width:1500px){
+@media screen and (max-width:1600px){
 .crechatform{width:50%;}
 
 }
@@ -261,7 +390,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
+    from {bottom: 0; opacity: 0;}
     to {bottom: 30px; opacity: 1;}
 }
 
@@ -271,7 +400,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;} 
+    from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
 
@@ -291,7 +420,7 @@ padding:32px;
     padding-top: 60px;
     font-family:'Josefin Slab',sans-serif;
     height:100%;
-    
+
 }
 .mdiv{
 width:100%;
@@ -312,7 +441,7 @@ margin:0 auto;
 .middle:hover{
 cursor:pointer;
 }
-.side a {
+.side a:not(#news) {
     padding: 16px 16px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -321,6 +450,7 @@ cursor:pointer;
     transition: 0.3s;
 
 }
+#disspell{display:none;}
 .side input{
 border:none;
 margin:0;
@@ -380,6 +510,7 @@ p{text-align:center;}
 .mnav{padding:0;margin:0;border:1px solid #d7d7d7;}
 .mnav h1{display:inline-block;margin:0;padding:1.2%;color:#069E2D;font-family:'Josefin Slab',sans-serif;}
 .mnav span{font-size:30px;cursor:pointer;padding:1.2%;float:right;}
+.chaty span{font-size:30px;cursor:pointer;padding:2%;float:right;padding-left: 0;}
 input {
 	outline: none;
 }
@@ -391,7 +522,7 @@ input[type=text] {
 }
 input::-webkit-search-decoration,
 input::-webkit-search-cancel-button {
-	display: none; 
+	display: none;
 }
 
 #two input[type=text] {
@@ -399,11 +530,11 @@ input::-webkit-search-cancel-button {
 	border: solid 1px #ccc;
 	padding: 9px 10px 9px 32px;
 
-	
+
 	-webkit-border-radius: 10em;
 	-moz-border-radius: 10em;
 	border-radius: 10em;
-	
+
 	-webkit-transition: all .5s;
 	-moz-transition: all .5s;
 	transition: all .5s;
@@ -412,11 +543,11 @@ input::-webkit-search-cancel-button {
 	border: solid 1px #ccc;
 	padding: 9px 10px 9px 32px;
 
-	
+
 	-webkit-border-radius: 10em;
 	-moz-border-radius: 10em;
 	border-radius: 10em;
-	
+
 	-webkit-transition: all .5s;
 	-moz-transition: all .5s;
 	transition: all .5s;
@@ -424,7 +555,7 @@ input::-webkit-search-cancel-button {
 #two input[type=text]:focus {
 	background-color: #fff;
 	border-color: #66CC75;
-	
+
 	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
 	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
 	box-shadow: 0 0 5px rgba(109,207,246,.5);
@@ -433,7 +564,7 @@ input::-webkit-search-cancel-button {
 #three input[type=text]:focus {
 //	background-color: #fff;
 	border-color: #66CC75;
-	
+
 	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
 	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
 	box-shadow: 0 0 5px rgba(109,207,246,.5);
@@ -530,15 +661,15 @@ letter-spacing:10px;
 }
 .modal {
     display: none;
-    position: fixed; 
-    z-index: 1; 
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
     padding-top: 60px;
 }
 
@@ -547,7 +678,7 @@ letter-spacing:10px;
     background-color: #fefefe;
     margin: 5% auto 15% auto;
     border: 1px solid #888;
-    width: 75%; 
+    width: 75%;
 }
 
 .close {
@@ -573,12 +704,12 @@ letter-spacing:10px;
 }
 
 @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
+    from {-webkit-transform: scale(0)}
     to {-webkit-transform: scale(1)}
 }
-    
+
 @keyframes animatezoom {
-    from {transform: scale(0)} 
+    from {transform: scale(0)}
     to {transform: scale(1)}
 }
 
@@ -674,13 +805,11 @@ margin:1%;
 border:1px solid #d7d7d7;
 }
 .chatname{
-width:100%;
+width:50%;
 text-align:center;
+margin:0 auto;
 }
-.chatback{
-background:rebeccapurple;
 
-}
 .underlie{
 
 }
@@ -700,7 +829,7 @@ text-align:center;
 }
 .crename:hover{cursor:pointer;}
 .crepost:hover{cursor:pointer;}
-.crename h3{margin:0;font-size:25px;}
+.crename h3{margin:0;font-size:25px;font-family: 'Josefin Slab',sans-serif;}
 .creone{margin-left:60%;}
 #crepull{margin-top:15%;}
 
@@ -719,6 +848,7 @@ padding:10%;
 .delc h2{
 color:#069E2D;
 font-size:30px;
+font-family: 'Josefin Slab',sans-serif;
 }
 .opos{text-align:right;}
 .delc i:hover{color:#d7d7d7;cursor:pointer;}
@@ -813,35 +943,103 @@ display:inline-block;
 #pstchcr button {
      background:none!important;
      color:inherit;
-     border:none; 
+     border:none;
      padding:0!important;
      font: inherit;
      /*border is optional*/
-     border-bottom:1px solid #444; 
+     border-bottom:1px solid #444;
      cursor: pointer;
 }
+.chatDesc{width:0;height:350px;background:#fff;position:absolute;    transition: 0.5s;
+ -webkit-transition: 0.5s;display: none;overflow-x:hidden;;overflow-y: auto;}
 
+ .iriss{
+width:10%;
+text-align:right;
+float:right;
+padding:3%;
+
+
+ }
+
+ .iriss:hover{color:#d3d3d3;cursor:pointer;}
+ /*.authr_img{
+
+     width: 125px;
+     height: 125px;
+     background-image: url("pimages/avatar.png");
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: 50% 50%;
+ border-radius:50%;
+ margin:0 auto;
+ border:1px solid #d7d7d7;
+ margin-top:4%;
+ }*/
+
+ .authr_name {
+ color:black;
+ font-size:20px;
+ text-align:center;
+margin-top:0;
+
+ }
+ .subm_as_text:hover{cursor:pointer;border-bottom:2px solid black;}
+
+ .subm_as_text{
+
+        background:none!important;
+        color:inherit;
+        border:none;
+        padding:0!important;
+        font: inherit;
+        /*border is optional*/
+
+        cursor: pointer;
+
+
+ }
+ .tit{display: inline-block;text-align:right;width:52%;padding:4%;}
+ .titd{width:100%;text-align:center;}
+ .description_chat{text-align: center;width:68%;margin:0 auto;overflow-x: auto;font-size:18px;}
+ .chat_loc{height:290px;width:31%;position:absolute;margin-top:60px;}
+ #news{text-decoration: none;}
+ label{font-family:'Josefin Slab',sans-serif;}
+ .chat_refresh{
+display: inline-block;
+//width:50px;
+//height:50px;
+border:1px solid #d7d7d7;
+position:fixed;
+margin-left:15px;
+
+}
+ .chat_refresh i{
+padding:13px;
+
+ }
+ .chat_refresh i:hover{cursor:pointer;background:#d7d7d7;}
 </style>
 </head>
 <body>
 <div id="Sidenav" class="side">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="http://beta002.site88.net/home/mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
+  <a href="mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
   <p><?php echo $username;  ?></p>
-<?php 
+<?php
 if($asdff == 1){
 echo "<div class='notif'></div>";
 }
 ?>
 </a>
   <div class="mdiv">
-  <div class="middle" onclick="news()"><p>News</p></div>
+  <a id="news" href="index.php"><div class="middle"><p>News</p></div></a>
   <div class="middle" id="cremcre" onclick="openNav();openCre();"><p>Create</p></div>
   <div class="middle"><p>Chats</p></div>
   </div>
   <a id="naive" href="#">Settings</a>
 
-    <form method="post" action="mypage.php" style="padding:16px 16px 8px 32px;border:1px solid #d7d7d7;">
+    <form method="post" action="index.php" style="padding:16px 16px 8px 32px;border:1px solid #d7d7d7;">
   <input id="lg" name="logout" type= "submit" value="Log Out">
 </form>
 
@@ -898,54 +1096,23 @@ echo "<div class='notif'></div>";
 <div class="chathead"><h1>Public Chats</h1></div>
 <div class="chatb"><h3>Posts</h3> <h2>></h2></div>
 <form id="three" method="post" action="index.php">
-<input type="text" name="target" autocomplete="off" onfocus="greener()" onblur="blacker()">
+<input type="text" name="target" autocomplete="off" onfocus="greener()" onblur="blacker()" onkeyup="showHint(this.value)">
+<div class="chat_refresh" onclick="showHints()">
 
+<i class="material-icons">refresh</i>
+</div>
 </form>
 
-<div class="chatcontainer">
+<div class="chatcontainer" id="chatcon">
 
-<div class="chaty">
-<div class="chatname"><h3>Vitsuji Corps</h3></div>
-<div class="chatback"></div>
-<div class="underlie"><p>Users: 5</p><p> Created: 2017/6/20</p></div>
-</div>
+<?php
+echo $commentprint;
+ ?>
+<!--the one-->
 
 
-<div class="chaty">
-<div class="chatname"><h3>Vitsuji Corps</h3></div>
-<div class="chatback"></div>
-<div class="underlie"><p>Users: 5</p><p> Created: 2017/6/20</p></div>
-</div>
 
-<div class="chaty">
-<div class="chatname"><h3>Vitsuji Corps</h3></div>
-<div class="chatback"></div>
-<div class="underlie"><p>Users: 5</p><p> Created: 2017/6/20</p></div>
-</div>
 
-<div class="chaty">
-<div class="chatname"><h3>Vitsuji Corps</h3></div>
-<div class="chatback"></div>
-<div class="underlie"><p>Users: 5</p><p> Created: 2017/6/20</p></div>
-</div>
-
-<div class="chaty">
-<div class="chatname"><h3>Vitsuji Corps</h3></div>
-<div class="chatback"></div>
-<div class="underlie"><p>Users: 5</p><p> Created: 2017/6/20</p></div>
-</div>
-
-<div class="chaty">
-<div class="chatname"><h3>Vitsuji Corps</h3></div>
-<div class="chatback"></div>
-<div class="underlie"><p>Users: 5</p><p> Created: 2017/6/20</p></div>
-</div>
-
-<div class="chaty">
-<div class="chatname"><h3>Vitsuji Corps</h3></div>
-<div class="chatback"></div>
-<div class="underlie"><p>Users: 5</p><p> Created: 2017/6/20</p></div>
-</div>
 
 </div>
 </div>
@@ -953,17 +1120,17 @@ echo "<div class='notif'></div>";
 <?php
 
 if(!isset($chat_bool)){
-echo "1";
+
 }elseif($chat_bool == "Something went wrong"){
 echo "<div class='chatbool'>";
-echo "<div class='iris'><i class='material-icons'>close</i></div>";
+echo "<div class='iris'><i id='close_chatn' class='material-icons'>close</i></div>";
 echo "<p>$errors</p>";
 echo "</div>";
-echo "2";
+
 }else{
-echo "3";
+
 echo "<div class='chatbool'>";
-echo "<div class='iris'><i class='material-icons'>close</i></div>";
+echo "<div class='iris'><i id='close_chatn' class='material-icons'>close</i></div>";
 echo "<p>Your chat has been created</p>";
 echo "<p>To visit click </p>";
 echo "  <form id='pstchcr' method='post'>
@@ -998,7 +1165,7 @@ $jjj = "orez";
 }else{
     if ($(".chatname").css("color") == "#fff"){
        document.getElementById("Sidenav").style.width = "100%";
-    
+
     }else{
 
  document.getElementById("Sidenav").style.width= "250px";
@@ -1007,11 +1174,37 @@ $jjj = "orez";
 }
 }
 
+function openChat(onion) {
+    //   document.getElementById(onion).style.width = "31%";
+    var onion = "#"+onion;
+    $(onion).css("display","block");
+    setTimeout(function(){ $(onion).css("width","31%"); }, 100);
+
+
+}
+function closeChat(onion){
+var onion = "#"+onion;
+$(onion).css("width","0");
+
+setTimeout(function(){$(onion).css("display","none");  }, 400);
+
+
+}
 
 
 function closeNav() {
     document.getElementById("Sidenav").style.width = "0";
 }
+
+  $(document).on("click",".chat_loc",function() {
+    $(this).submit();
+    alert("submitted");
+  });
+  $(".loc").on("click",function() {
+    $(this).submit();
+    alert("submitted");
+
+  });
 </script>
 
 
@@ -1027,13 +1220,13 @@ $(document).ready(function(){
         } else{
             resultDropdown.empty();
         }
-     $(".result").css("display","block");  
+     $(".result").css("display","block");
     });
-    
+
     $(document).on("click", ".result p", function(){
         $(this).parents("#two").find('input[type="text"]').val($(this).text());
         $(this).parent(".result").empty();
-        
+
     });
 });
 
@@ -1048,7 +1241,7 @@ $(document).ready(function(){
 $(document).ready(function() {
     $("body").on("click",function() {
         $(".result").css("display","none");
-       
+
     });
 var wed = 0;
 
@@ -1069,6 +1262,11 @@ wed-=1;
 });
 
 
+$("#close_chatn").on("click",function(){
+
+$(".chatbool").fadeOut(500);
+
+});
 
 
 </script>
@@ -1141,6 +1339,25 @@ $('#dacform').submit();
 
 }
 });
+
+function showHints() {
+var fufu = $("#three input[type=text]").val();
+showHint(fufu);
+alert(fufu);
+}
+
+function showHint(str) {
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("chatcon").innerHTML = this.responseText;
+            }
+        }
+        xmlhttp.open("GET", "chat_hint.php?q=" + str, true);
+        xmlhttp.send();
+
+}
 </script>
 </body>
 </html>

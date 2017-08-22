@@ -11,10 +11,10 @@ $cp = mysqli_real_escape_string($conn, $cp);
 $cp = hash('ripemd160',sha1(sha1(md5(md5(sha1(md5($cp)))))));
 $a = "";
 if($np == $cp){
-$vsql = "SELECT * 
-FROM  `a7714864_123`.`userd` 
+$vsql = "SELECT *
+FROM  `userd` 
 WHERE  `cpassc` LIKE CONVERT( _utf8 '$key'
-USING latin1 ) 
+USING latin1 )
 COLLATE latin1_general_ci
 LIMIT 0 , 10";
 $vres = mysqli_query($conn,$vsql);
@@ -24,9 +24,9 @@ if($vresr['username'] === Null){
 $a .= "Invalid Key";
 }else{
 //key valid
-$changep = "UPDATE  `a7714864_123`.`userd` SET  `password` =  '$np' WHERE  `userd`.`cpassc` = '$key'";
+$changep = "UPDATE  `userd` SET  `password` =  '$np' WHERE  `userd`.`cpassc` = '$key'";
 if($change = mysqli_query($conn,$changep)){
-header("location: http://beta001.site88.net/signin.html");
+header("location: http://localhost/Logarithm/signin.php");
 }else{$a .= "Try again";}
 
 }
@@ -92,7 +92,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;} 
+    from {bottom: 0; opacity: 0;}
     to {bottom: 30px; opacity: 1;}
 }
 
@@ -102,7 +102,7 @@ padding:32px;
 }
 
 @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;} 
+    from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
 
@@ -118,7 +118,7 @@ ul.topnav {
   overflow: hidden;
   border-bottom:1px #d7d7d7 solid;
   //height:60px;
-  
+
 
 }
 
@@ -196,11 +196,11 @@ display:none;
 
 li{
   list-style:none;
-  
+
 }
 a{
   text-decoration:none;
-   
+
 }
 /*ul{
   display:flex;
@@ -263,7 +263,7 @@ border-bottom:1px solid #d7d7d7;
 	-moz-box-sizing:border-box;
 	box-sizing:border-box;
         display:block;
-    
+
 }
 input{
      transition: border 0.5s;
@@ -273,7 +273,7 @@ input{
 	-o-transition: border 0.5s;
 }
 .maininput:focus{
-	
+
 }
 
 .formgroup{
@@ -337,10 +337,10 @@ color:#4078c0;
     <li class="icon">
     <a class="btntitle" href="javascript:void(0);" style="font-size:30px;" onclick="openNav()"><i style="margin-left:20%;"class="material-icons">menu</i></a>
   </li>
-  <li><a href="http://beta001.site88.net/signup.html" id="firstx">Sign Up</a></li>
-  <li><a href="http://beta001.site88.net/signin.html">Sign In</a></li>
-  <li><a href="http://beta001.site88.net/bout.html">About</a></li>
-    <li><a href="http://beta001.site88.net">Home</a></li>
+  <li><a href="signup.php" id="firstx">Sign Up</a></li>
+  <li><a href="signin.php">Sign In</a></li>
+  <li><a href="bout.html">About</a></li>
+    <li><a href="Logarithm">Home</a></li>
 
 
 
@@ -371,14 +371,14 @@ color:#4078c0;
 
 <!--<div class="end">
 <p id="insend">&copy; Logarithm,Inc.</p>
-<p id="insendpl"><a href="beta001.site88.net/t&s.html">Terms & Service </a></p>
-<p id="insendpl"><a href="beta001.site88.net/pr&sec.html">Privacy & Security</a></p>
-<p id="insendpl"><a href="beta001.site88.net/faq.html">FAQ</a></p>
+<p id="insendpl"><a href="t&s.html">Terms & Service </a></p>
+<p id="insendpl"><a href="pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="faq.html">FAQ</a></p>
 
-<p id="insendpr"><a href="http://beta001.site88.net/signup.html">Sign Up</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/signin.html">Sign In</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/contact.html">Contact</a></p>
-<p id="insendpr"><a href="http://beta001.site88.net/bout.html">About</a></p>
+<p id="insendpr"><a href="signup.php">Sign Up</a></p>
+<p id="insendpr"><a href="signin.php">Sign In</a></p>
+<p id="insendpr"><a href="contact.html">Contact</a></p>
+<p id="insendpr"><a href="bout.html">About</a></p>
 
 
 
@@ -389,7 +389,7 @@ function openNav() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
         x.className += " responsive";
-        
+
     } else {
         x.className = "topnav";
     }
@@ -399,7 +399,7 @@ function openNav() {
 <script>
 var x = document.getElementById("snackbar")
     x.className = "show";
-    setTimeout(function(){ 
+    setTimeout(function(){
     x.className = x.className.replace("show", "");
     x.style.visibility = "hidden";
     x.style.display = "none";
@@ -407,4 +407,4 @@ var x = document.getElementById("snackbar")
 
 </script>
 </body>
-</html>	
+</html>

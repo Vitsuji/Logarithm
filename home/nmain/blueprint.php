@@ -17,7 +17,7 @@ body{margin:0;padding:0;font-family:'Raleway',sans-serif;}
 <body>
 <div id="Sidenav" class="side">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="http://beta002.site88.net/home/mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
+  <a href="mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
   <p><?php echo $username;  ?></p>
 </a>
   <div class="mdiv">
