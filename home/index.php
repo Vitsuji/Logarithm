@@ -1,7 +1,11 @@
 <?php
 date_default_timezone_set('UTC');
 session_start();
-include 'dbconnect.php';
+include 'backend/dbconnect.php';
+include 'backend/chatscript.php';
+include 'backend/loadmychat.php';
+include 'backend/postcre.php';
+include 'backend/loadpost.php';
 if($_SESSION['username'] === Null || $_SESSION['email'] === Null ){
 header('location: http://localhost/Logarithm/signin.php');
 die();
@@ -51,130 +55,10 @@ $asdff = 0;
 }
 
 
-//start
-function slugify($text)
-{
-$text = str_replace(' ', '_', $text);
-$text = trim($text, '_');
 
-
-
-  if (empty($text)) {
-    return 'n-a';
-  }
-
-  return $text;
-}
-
-if(isset($_POST['chat_title']) ? $_POST['chat_title'] : null){
-$username = $_SESSION['username'];
-$chat_title = $_POST['chat_title'];
-$chat_titleEnc = md5($chat_title);
-$chat_desc = $_POST['chat_desc'];
-$chat_date = date("Y/m/d h:i:sa");
-
-$chat_index = $chat_title.$username.$chat_date;
-$chat_index = md5($chat_index);
-
-
-$errors= array();
-      $file_name = $_FILES['chat_back']['name'];
-      $file_size = $_FILES['chat_back']['size'];
-      $file_tmp = $_FILES['chat_back']['tmp_name'];
-      $file_type = $_FILES['chat_back']['type'];
-      $file_ext= explode('.',$_FILES['chat_back']['name']);
-      $file_ext = end($file_ext);
-      $file_ext= strtolower($file_ext);
-      $expensions= array("jpeg","jpg","png");
-
-      if(in_array($file_ext,$expensions)=== false){
-         $errors[]="extension not allowed, please choose a JPEG or PNG file.";
-      }
-      if(in_array($file_ext,$expensions) == ".jpg"){
-      $file_name = "1";
-      $file_name .=$username;
-      $file_name .= $chat_titleEnc;
-      $file_name=$file_name.time().".jpg";
-      $file_name = slugify($file_name);
-}else if(in_array($file_ext,$expensions) == "jpeg"){
-      $file_name = "1";
-      $file_name .=$username;
- $file_name .= $chat_titleEnc;
-      $file_name=$file_name.time().".jpeg";
-      $file_name = slugify($file_name);
-}else{
-       $file_name = "1";
-      $file_name .=$username;
- $file_name .= $chat_titleEnc;
-      $file_name=$file_name.time().".png";
-      $file_name = slugify($file_name);
- }
-      if($file_size > 2097152) {
-         $errors[]='File size must be less than 2 MB';
-      }
-
-      if(empty($errors)==true) {
-
-    if(move_uploaded_file($file_tmp,"cimages/".$file_name)){
-$chat_img = "cimages/".$file_name;
-$sql_chat = "INSERT INTO  `chats` (
-`id` ,
-`title` ,
-`description` ,
-`img` ,
-`wall`,
-`date` ,
-`authr`,
-`index`
-)
-VALUES (
-NULL ,  '$chat_title',  '$chat_desc',  '$chat_img',  'None' , '$chat_date','$username','$chat_index'
-)";
-
-$chat_create = mysqli_query($conn,$sql_chat);
-if($chat_create){
-$chat_bool = $chat_index;
-
-
-$joincq = "INSERT INTO  `chat_relationship` (
-`chat` ,
-`user`
-
-)
-VALUES (
-'$chat_index' ,  '$username'
-)";
-
-$joinqs = mysqli_query($conn,$joincq);
-if($joinqs){
-$_SESSION['chat_index'] = $chat_index;
-
-
-}
-
-
-}
-
-}//file upload yes
-
-}else{
-$chat_bool =  "Something went wrong ";
-}
-//end img
-
-
-}
-//end ifset chat
-
-
-if(isset($_POST['chat_locy']) ? $_POST['chat_locy'] : null){
-$_SESSION['chat_index' ] = $_POST['chat_locy'];
-header("location: chat.php");
-
-}
 
 //start echo chats
-$comp = "SELECT * FROM `chats`";
+$comp = "SELECT * FROM `chats` WHERE `privated` = 'No'";
 $compres = mysqli_query($conn,$comp);
 
 $commentprint = "";
@@ -197,7 +81,7 @@ $erre = mysqli_query($conn,$err);
 $num_users = mysqli_num_rows($erre);
 
 $commentprint .= "<div class='chaty' >
-<form method='post' action='index.php' name='chat_lox' class='chat_loc'>
+<form method='post' action='index.php' onclick='chat_generate($chat_index)' class='chat_loc'>
 <input id='disspell' type='text' name = 'chat_locy' value='$chat_index'/>
 </form>
   <div class='chatDesc' id='$chat_rand'>
@@ -241,7 +125,7 @@ while($comrow = mysqli_fetch_array($compres)) {
   $num_users = mysqli_num_rows($erre);
 
   $commentprint  =  "<div class='chaty'>
-  <form method='post' action='index.php' name='chat_lox' class='chat_loc'>
+  <form method='post' action='index.php' onclick='chat_generate($chat_index)' class='chat_loc'>
   <input id='disspell' type='text' name = 'chat_locy' value='$chat_index'/>
   </form>
     <div class='chatDesc' id='$chat_rand'>
@@ -278,7 +162,11 @@ header("location:mypage.php");
 }
 //end echo chat
 
+//start echo post
+$sql_post = "SELECT * FROM `posts` WHERE 1";
 
+
+//end echo post
 
 }
 ?>
@@ -290,6 +178,9 @@ header("location:mypage.php");
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <meta name="description" content="The developers' corner"/>
 <meta name="author" content="Vitsuji Aura"/>
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/chat.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/nav.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/post.css">
 <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:400,700|Raleway" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
  <!--<link rel="stylesheet" href="/home/styles/jquery-ui.css">-->
@@ -303,13 +194,14 @@ body{font-family:'Raleway',sans-serif;}
 
 
 @media screen and (max-width:680px){
+
+.chat_loc{width:100%;}
 #dacform label{margin-top:5%;}
 #dacform input[type=text]{width:70%;}
 .btn-style{margin:0 auto;margin-top:15%;}
 #dacform textarea{width:80%;}
-.crechatform{top:0;width:100%;height:100%;overflow-y:auto;}
+
 .iri{width:20%;}
-.crechat2{width:100%;}
 .crename{width:100%;}
 .chatback{width:100%;height:200px;}
 .chaty{width:100%;}
@@ -318,7 +210,6 @@ body{font-family:'Raleway',sans-serif;}
 margin-left:10%;
 padding:32px;
 }
-#two{width:100%}
 #two input[type=text]{height:20px;width:55%}
 #two input[type=submit]{padding:3%;}
 #two input[type=text]:focus{width:55%;}
@@ -329,26 +220,23 @@ padding:32px;
 .result{margin-left:10%;}
 }
 
-@media screen and (min-width:1023px){
-@media screen and (max-width:1600px){
-.crechatform{width:50%;}
-
-}
-}
 
 
 
 
-@media screen and (min-width:680px){
+
+@media screen and (min-width:681px){
+
+.chat_loc{width:31%;}
 #crepull{margin:1px;}
 .btn-style{margin:0 auto;width:35%;margin-top:5%;}
 #dacform input[type=text]{width:50%;}
 #dacform textarea{width:70%;}
+.iri:not(:nth-child(2)){width:25%;}
 .iri{width:25%;}
 .tcent{width:50%;}
-.crechatform{top:3.5%;margin-left:30%;}
-.crechat2:not(#jin){margin-left:60%;}
-.crechat2{width:40%;}
+.tcent2{width:50%;}
+
 .crename:not(#jin){margin-left:60%;}
 .crename{width:40%;}
 .chaty{width:31%;height:350px;}
@@ -408,224 +296,14 @@ padding:32px;
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
-.side {
-    width: 0;
-    position: absolute;
-    z-index: 1;
-    border:1px solid #d7d7d7;
-    background-color: #fff;
-    overflow-x: hidden;
-    transition: 0.5s;
- -webkit-transition: 0.5s;
-    padding-top: 60px;
-    font-family:'Josefin Slab',sans-serif;
-    height:100%;
-
-}
-.mdiv{
-width:100%;
-margin-bottom:5%;
-}
-.middle{
-
-margin:1%;
-//background:#F26419;
-background:#069E2D;
-text-align:center;
-color:#fff;
-width:90%;
-margin:0 auto;
-}
-.middle p{padding:5%;}
-.middle p:nth-child(2){5%;}
-.middle:hover{
-cursor:pointer;
-}
-.side a:not(#news) {
-    padding: 16px 16px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #d7d7d7;
-    display: block;
-    transition: 0.3s;
-
-}
-#disspell{display:none;}
-.side input{
-border:none;
-margin:0;
-padding:0;
-background:#fff;
-text-decoration:none;
-color:#d7d7d7;
-display:block;
-transition:0.3s;
-text-align:left;
-font-size:25px;
-font-weight:100;
-font-family:'Josefin Slab';
-}
-.side a#naive{    border:1px solid #d7d7d7;}
-.side a:first-child{padding-bottom:0;}
-.side a:nth-child(2){padding:0;margin:0;}
-.side a:nth-child(2) p:not(.re){
-margin:0;
-paddding:0;
-margin-bottom:5%;
-width:60%;
-margin-right:0;
-display:inline-block;
-margin-left:20%;
-
-}
 
 
-.side a:hover, .offcanvas a:focus{
-    color:#069E2D;
-}
-
-.side .closebtn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 36px;
-    margin-left: 50px;
-}
-.side img{width:50%;margin-left:25%;border-radius:50%;}
-
-@media screen and (max-height: 450px) {
-  .side {padding-top: 15px;}
-  .side a {font-size: 18px;}
-}
-
-.side input:hover{
-cursor:pointer;
-color:green;
-}
-
-h1, h2, h3, h4{
-font-weight:100;
-}
-p{text-align:center;}
-.mnav{padding:0;margin:0;border:1px solid #d7d7d7;}
-.mnav h1{display:inline-block;margin:0;padding:1.2%;color:#069E2D;font-family:'Josefin Slab',sans-serif;}
-.mnav span{font-size:30px;cursor:pointer;padding:1.2%;float:right;}
-.chaty span{font-size:30px;cursor:pointer;padding:2%;float:right;padding-left: 0;}
-input {
-	outline: none;
-}
-input[type=text] {
-	-webkit-appearance: textfield;
-	-webkit-box-sizing: content-box;
-	font-family: inherit;
-	font-size: 20px;
-}
-input::-webkit-search-decoration,
-input::-webkit-search-cancel-button {
-	display: none;
-}
-
-#two input[type=text] {
-	background: #ededed url(http://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 9px center;
-	border: solid 1px #ccc;
-	padding: 9px 10px 9px 32px;
 
 
-	-webkit-border-radius: 10em;
-	-moz-border-radius: 10em;
-	border-radius: 10em;
 
-	-webkit-transition: all .5s;
-	-moz-transition: all .5s;
-	transition: all .5s;
-}
-#three input[type=text] {
-	border: solid 1px #ccc;
-	padding: 9px 10px 9px 32px;
-
-
-	-webkit-border-radius: 10em;
-	-moz-border-radius: 10em;
-	border-radius: 10em;
-
-	-webkit-transition: all .5s;
-	-moz-transition: all .5s;
-	transition: all .5s;
-}
-#two input[type=text]:focus {
-	background-color: #fff;
-	border-color: #66CC75;
-
-	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	box-shadow: 0 0 5px rgba(109,207,246,.5);
-}
-
-#three input[type=text]:focus {
-//	background-color: #fff;
-	border-color: #66CC75;
-
-	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	box-shadow: 0 0 5px rgba(109,207,246,.5);
-}
-
-input:-moz-placeholder {
-	color: #999;
-}
-input::-webkit-input-placeholder {
-	color: #999;
-}
-#two{display:inline-block;}
-#three{display:inline-block;border-bottom:1px solid #d7d7d7;}
-/*#two input[type=text] {
-	width: 15px;
-	padding-left: 10px;
+/*#three input::-webkit-input-placeholder {
 	color: transparent;
-	cursor: pointer;
 }*/
-
-#two input[type=text]:hover {
-	background-color: #fff;
-}
-#two input[type=text]{
-	padding-left: 32px;
-	color: #000;
-	background-color: #DFE0E2;
-	cursor: auto;
-        margin:3%;
-        margin-bottom:0;
-}
-#three input[type=text]:hover {
-	background-color: #fff;
-}
-#three input[type=text]{
-	padding-left: 32px;
-	color: #000;
-	background-color: #fff;
-	cursor: auto;
-        margin-bottom:0;
-}
-#two input:-moz-placeholder {
-	color: transparent;
-}
-#two input::-webkit-input-placeholder {
-	color: transparent;
-}
-
-#thre input:-moz-placeholder {
-	color: transparent;
-}
-#three input::-webkit-input-placeholder {
-	color: transparent;
-}
-.result{
-position:fixed;
-width:150px;
-background:#fff;
-}
-.result p:hover{cursor:pointer;background:#d3d3d3;}
-.result p{border:1px solid #d7d7d7;padding:10%;margin:0;}
 
 .container button {
     background-color: #4CAF50;
@@ -739,12 +417,7 @@ letter-spacing:10px;
   transition:0.3s;
 }
 
-#two input[type=text]:focus +#two input[type=submit]{
-background:green;
-}
-#three input[type=text]:focus +#two input[type=submit]{
-background:green;
-}
+
 .notif{
 width:10%;
 height:25px;
@@ -758,23 +431,7 @@ display:inline-block;
 -webkit-appearance:none;
 -webkit-border-radius:6px;
 }
-.chatb{
-background:#069E2D;
-color:#fff;
-right:0;
-text-align:center;
-}
-.chatb  h3, h2{display:inline;}
-.chatb:hover{cursor:pointer;}
-.crechat{text-align:center;width:49%;display:inline-block;}
-.crepost{width:49%; display:inline-block;}
 
-.crechat2{
-background:#069E2D;
-color:#fff;
-text-align:center;
-}
-.crechat2 i{padding:15%;font-size:64px;}
 .chat{
 overflow-x:auto;
 width:100%;
@@ -783,7 +440,17 @@ background:#fff;
 position:fixed;
 top:0;
 display:none;
+z-index:2;
 }
+.chatb{
+background:#069E2D;
+color:#fff;
+right:0;
+text-align:center;
+}
+.chatb  h3, h2{display:inline;}
+.chatb:hover{cursor:pointer;}
+
 .chathead{
 color:green;
 border:1px solid #d7d7d7;
@@ -821,6 +488,7 @@ position:fixed;
 width:100%;
 height:100%;
 top:0;
+z-index:2;
 }
 .create:hover{cursor:pointer;}
 .crename{
@@ -833,17 +501,7 @@ text-align:center;
 .creone{margin-left:60%;}
 #crepull{margin-top:15%;}
 
-.crechatform{
-position:fixed;
-background:#fff;
-border:1px solid #d7d7d7;
-display:none;
-}
-.crechatform:hover{cursor:pointer;box-shadow:0px 0px 25px #d7d7d7;}
-.delc i{
-font-size:34px;
-padding:10%;
-}
+
 .chatbool i{font-size:34px;padding:3%;}
 .delc h2{
 color:#069E2D;
@@ -853,6 +511,7 @@ font-family: 'Josefin Slab',sans-serif;
 .opos{text-align:right;}
 .delc i:hover{color:#d7d7d7;cursor:pointer;}
 .tcent{text-align:center;margin-left:25%;display:inline-block;}
+.tcent2{text-align:center;margin-left:12.5%;display:inline-block;padding:25px;}
 .iri{text-align:right;display:inline-block;}
 
 #dacform label{display:block;padding:3%;}
@@ -1002,7 +661,7 @@ margin-top:0;
  .tit{display: inline-block;text-align:right;width:52%;padding:4%;}
  .titd{width:100%;text-align:center;}
  .description_chat{text-align: center;width:68%;margin:0 auto;overflow-x: auto;font-size:18px;}
- .chat_loc{height:290px;width:31%;position:absolute;margin-top:60px;}
+ .chat_loc{height:290px;position:absolute;margin-top:60px;}
  #news{text-decoration: none;}
  label{font-family:'Josefin Slab',sans-serif;}
  .chat_refresh{
@@ -1010,7 +669,7 @@ display: inline-block;
 //width:50px;
 //height:50px;
 border:1px solid #d7d7d7;
-position:fixed;
+vertical-align: center;
 margin-left:15px;
 
 }
@@ -1019,11 +678,14 @@ padding:13px;
 
  }
  .chat_refresh i:hover{cursor:pointer;background:#d7d7d7;}
+
+
+
 </style>
 </head>
 <body>
 <div id="Sidenav" class="side">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="javascript:void(0)" class="closebtn" onclick="openNav()">&times;</a>
   <a href="mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
   <p><?php echo $username;  ?></p>
 <?php
@@ -1035,13 +697,28 @@ echo "<div class='notif'></div>";
   <div class="mdiv">
   <a id="news" href="index.php"><div class="middle"><p>News</p></div></a>
   <div class="middle" id="cremcre" onclick="openNav();openCre();"><p>Create</p></div>
-  <div class="middle"><p>Chats</p></div>
+  <div class="middle" onclick="open_mychat()"><p>Chats</p></div>
   </div>
   <a id="naive" href="#">Settings</a>
 
     <form method="post" action="index.php" style="padding:16px 16px 8px 32px;border:1px solid #d7d7d7;">
   <input id="lg" name="logout" type= "submit" value="Log Out">
 </form>
+
+<div class="mychat_nav">
+<?php
+if(isset($mychat)){
+echo $mychat;
+
+}else{
+echo "<p>No chats yet.</p>";
+
+}
+
+
+?>
+
+</div>
 
 </div>
 
@@ -1060,8 +737,12 @@ echo "<div class='notif'></div>";
 <div class="create" id="crecre">
 <div class="crechat"  id="crepull"><div class="crename"> <h3> Public Chat</h3></div> <div class="crechat2" ><i class="material-icons">chat</i></div></div>
 
-<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crechat2" id="jin"><i class="material-icons">view_quilt</i></div></div>
+<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crepost2" id="jin"><i class="material-icons">view_quilt</i></div></div>
 </div>
+
+
+
+
 
 <div class="crechatform" id="chatcre">
 <div class="delc"><div class="tcent"><h2>Create Chat</h2></div><div class="iri"><i class="material-icons">close</i></div></div>
@@ -1071,25 +752,74 @@ echo "<div class='notif'></div>";
 <div class="datpad">
 
 <label id="txtcht"><h2>Title</h2></label>
-<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" maxlength="50" />
 
 
 <label><h2>Description </h2><p  style="display:inline-block;">(Max 140 characters)</p></label>
 <!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
 <!--<input type="textarea" name="chat_desc"/>-->
-<textarea name="chat_desc" onfocus="textfoc(this)" onblur="textblur(this)"></textarea>
+<textarea name="chat_desc" onfocus="textfoc(this)" onblur="textblur(this)" maxlength="140"></textarea>
 
 
 <label><h2>Background Image</h2></label>
 <input type="file" id="upload" class="custom-file-input" name="chat_back">
 
 <!--<input type="submit" name="subm_chat" class="btn-style" value="Create Chat">-->
-<div class="btn-style">Create Chat</div>
+<div class="btn-style" onclick="chat_create()">Create Chat</div>
 </form>
 </div>
 </div>
 </div>
 
+
+
+<div class="crepostform" id="chatcre">
+<div class="delc"><div class="tcent"><h2>Create Post</h2></div><div class="iri"><i class="material-icons">close</i></div></div>
+
+<div class="inp">
+<form id="dacform" name="chatf" method="post" enctype="multipart/form-data">
+<div class="datpad">
+
+<label id="txtpst"><h2>Title</h2></label>
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="post_title" maxlength="50" />
+
+
+<label><h2>Content </h2><p  style="display:inline-block;">(Max 240 characters)</p></label>
+<!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
+<!--<input type="textarea" name="chat_desc"/>-->
+<textarea class="post_cont" name="post_cont[]" onfocus="textfoc(this)" onblur="textblur(this)" maxlength="240"></textarea>
+
+<!--<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>-->
+
+<!--  <p><input class="post_file_add" type="button" value="Add File" onclick="addFile();" /></p>-->
+
+<div class="post_file_add" onclick="addFile()"><i id='item1' class="material-icons">&#xE145;</i></div>
+<div class="post_text_add" onclick="addText()"><i id='item1' class="material-icons">&#xE3BF;</i></div>
+
+<input class="hidden_post_values" value="post_text_0" name="content_order"/>
+<input class="hidden_post_values" value="0" name="file_number"/>
+<input class="hidden_post_values" value="1" name="text_number"/>
+
+<label><h2>Add tags</h2></label>
+<div id="posttag_master_div">
+ <div id="categories">
+ </div>
+ <div class="tag_input">
+     <input type="text" name="post_tag" value="" />
+ </div>
+</div>
+
+<label><h2>Cover Image</h2></label>
+<input type="file" id="upload" class="custom-file-input" name="post_back">
+
+<!--<input type="submit" name="subm_chat" class="btn-style" value="Create Chat">-->
+<div class="btn-style" onclick="post_create()">Create Post</div>
+</form>
+</div>
+</div>
+</div>
 
 <div class="chatb"><h3>Chats</h3> <i class="material-icons">chat</i></div>
 <div class="chat">
@@ -1117,20 +847,91 @@ echo $commentprint;
 </div>
 </div>
 
+
+<div class="main_body">
+
+<?php echo $postprint; ?>
+
+<!--<div class="post_body" id="3" onclick="post_active(3)">
+
+        <div class="post_back"></div>
+        <h3>Title</h3>
+        <div class="post_halfcont">This is the greatest blog in the history of mankind</div>
+        <div class="post_tabs">
+                <div class="tab">tech</div>
+                <div class="tab">life</div>
+                <div class="tab">tech</div>
+                <div class="tab">life</div>
+                <div class="tab">life</div>
+        </div>
+
+        <div class="other_controller">
+
+        <div class="post_other"><form action="mypage.php" method="post"><button value="Hitsuji" name="userlink" class="subm_as_text">Hitsuji</button></form></div>
+
+        <div class="post_other"><h5>10/8/2017</h5></div>
+        <div class="post_other"><div class="post_likes">12</div></div>
+        </div>
+
+</div>-->
+
+
+
+<div class="post_body"><div class="post_back"></div></div>
+<div class="post_body"><div class="post_back"></div></div>
+
+
+
+</div>
+
+<div class="override_post">
+<div class="tcent2"><h2>Title</h2></div>
+
+<div class="post_close" onclick="post_close()"><i class="material-icons">close</i></div>
+
+<div class="post_content">
+
+<div class="paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet scelerisque justo, vel tempus nisl. Nulla porta mi sit amet euismod semper. In vitae nibh est. Nam ornare tellus sed neque condimentum, vel maximus leo cursus. Pellentesque tempus dapibus purus, quis facilisis nisi lobortis vel. Suspendisse purus sem, mollis eget ultricies sit amet, finibus non sem. Cras quis euismod dui. Proin laoreet ullamcorper nulla, vel feugiat lorem semper nec. Nunc ac congue erat. In in nunc non justo congue auctor. Cras euismod molestie felis id pretium. Cras eget massa in lorem sodales dapibus sed sed velit. Morbi eget lacus in leo pellentesque maximus eu at est. Ut sed dolor vitae dui aliquam maximus. Proin vel pellentesque metus. Etiam tristique sapien risus, sit amet hendrerit arcu venenatis rhoncus.
+</div>
+
+<img src="postimg/content/0Hitsujic8837b23ff8aaa8a2dde915473ce09911508151025.jpg">
+
+<div class="paragraph">
+Nulla justo leo, aliquet vel interdum eu, rhoncus et diam. Nullam molestie bibendum tristique. Nam aliquet magna est, sed vehicula purus maximus non. Maecenas fermentum gravida est, vitae cursus felis bibendum et. Vestibulum non vestibulum urna, non sodales lectus. Nam tincidunt augue risus, non imperdiet nunc rutrum commodo. Nam ut iaculis tellus. Pellentesque in urna tellus. Aliquam iaculis aliquam sapien ac bibendum.
+
+Sed auctor velit vitae luctus dictum. Nulla iaculis porttitor sapien, sit amet fringilla sem. Proin auctor nisi dui, ut lacinia quam bibendum in. Nulla commodo turpis nec auctor venenatis. Vestibulum at tristique neque, eu elementum nisi. Cras consectetur elit ut vulputate interdum. Nunc cursus fermentum augue, euismod pulvinar metus cursus ac. Aliquam sapien metus, accumsan ut nisi in, elementum congue lorem. Curabitur rhoncus facilisis sem ut maximus. Vivamus finibus ullamcorper arcu, id suscipit lorem interdum quis. Integer vehicula at erat sed laoreet. Donec id orci dictum, convallis tortor ut, semper elit.
+</div>
+
+<img src="postimg/content/1Hitsujic8837b23ff8aaa8a2dde915473ce09911508151025.jpg">
+
+<div class="paragraph">
+Sed volutpat lorem eget elementum bibendum. Vestibulum id dictum urna. Sed finibus rutrum ex, facilisis sagittis purus mattis eu. Aenean euismod, enim a porttitor iaculis, risus neque venenatis libero, vitae finibus felis tellus vel urna. Sed rhoncus tempus risus in elementum. Sed malesuada velit magna, id feugiat nunc fermentum quis. Suspendisse potenti. Vivamus eu luctus velit. Aenean nulla tellus, tempor ut pulvinar et, placerat id magna. Duis euismod urna ac fermentum feugiat. Sed malesuada nulla in finibus tempor. Ut varius ligula eu turpis faucibus laoreet. Pellentesque quis lectus dapibus arcu finibus posuere non vitae urna.
+
+Phasellus ut massa non mauris posuere sodales in sit amet nisi. Sed ut ante a dui lacinia rhoncus. Integer mollis, quam in vestibulum posuere, metus risus maximus mauris, ac ultrices velit diam quis urna. Proin dignissim tellus quis dui pretium hendrerit. Mauris viverra pellentesque eros. Vivamus ac leo sit amet nunc eleifend feugiat. Etiam id blandit mauris. Vestibulum convallis tempor luctus. Nullam tristique metus nisi, vel posuere neque condimentum quis.
+
+Nam eu nunc a lectus lobortis aliquam. Nullam eu ornare lorem. Nullam eu diam augue. Mauris lobortis facilisis elementum. Quisque vitae est at velit varius pretium ut id justo. Cras et ipsum vel leo sodales aliquam sit amet nec dolor. Sed felis sapien, molestie ac nisi eget, dapibus consectetur justo. Duis nisl nulla, porttitor.
+</div>
+
+
+
+</div>
+
+
+</div>
 <?php
 
 if(!isset($chat_bool)){
 
 }elseif($chat_bool == "Something went wrong"){
 echo "<div class='chatbool'>";
-echo "<div class='iris'><i id='close_chatn' class='material-icons'>close</i></div>";
+echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()' class='material-icons'>close</i></div>";
 echo "<p>$errors</p>";
 echo "</div>";
 
 }else{
 
 echo "<div class='chatbool'>";
-echo "<div class='iris'><i id='close_chatn' class='material-icons'>close</i></div>";
+echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()' class='material-icons'>close</i></div>";
 echo "<p>Your chat has been created</p>";
 echo "<p>To visit click </p>";
 echo "  <form id='pstchcr' method='post'>
@@ -1142,37 +943,36 @@ echo "</div>";
 }
 ?>
 
+<div class='open_chat'></div>
+<div class='open_chat'></div>
+<div class='open_chat'></div>
 
 <div id="snackbar">Welcome <?php echo $username; ?></div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="scripts/chat.js"></script>
+<script src="scripts/nav.js"></script>
 <script>
+
+
+
+
+
     var x = document.getElementById("snackbar")
     x.className = "show";
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+
+    $(document).ready(function() {
+        $("body").on("click",function() {
+            $(".result").css("display","none");
+
+        });
+});
 </script>
 <script>
 
-$jjo = "zero";
-$jjj = "orez";
 
-
-function openNav() {
-    if($jjj == "acd"){
-document.getElementById("Sidenav").style.width= "0";
-$jjj = "orez";
-}else{
-    if ($(".chatname").css("color") == "#fff"){
-       document.getElementById("Sidenav").style.width = "100%";
-
-    }else{
-
- document.getElementById("Sidenav").style.width= "250px";
-    }
-    $jjj = "acd";
-}
-}
 
 function openChat(onion) {
     //   document.getElementById(onion).style.width = "31%";
@@ -1196,7 +996,7 @@ function closeNav() {
     document.getElementById("Sidenav").style.width = "0";
 }
 
-  $(document).on("click",".chat_loc",function() {
+ /* $(document).on("click",".chat_loc",function() {
     $(this).submit();
     alert("submitted");
   });
@@ -1204,7 +1004,9 @@ function closeNav() {
     $(this).submit();
     alert("submitted");
 
-  });
+  });*/
+
+
 </script>
 
 
@@ -1214,7 +1016,7 @@ $(document).ready(function(){
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".result");
         if(inputVal.length){
-            $.get("backend-search.php", {term: inputVal}).done(function(data){
+            $.get("backend/backend-search.php", {term: inputVal}).done(function(data){
                 resultDropdown.html(data);
             });
         } else{
@@ -1238,11 +1040,7 @@ $(document).ready(function(){
 
 </script>
 <script>
-$(document).ready(function() {
-    $("body").on("click",function() {
-        $(".result").css("display","none");
 
-    });
 var wed = 0;
 
  $(".chatb").click(function(){
@@ -1259,7 +1057,6 @@ wed-=1;
     });
 
 
-});
 
 
 $("#close_chatn").on("click",function(){
@@ -1292,18 +1089,6 @@ $("#two input[type=submit]").css("background","#fff");
 $("#two input[type=submit]").css("color","black");
 }
 
-function openCre(){
-$(".create").fadeIn(400);
-}
-
-    $(".crechat2").on("click",function() {
-        $(".create").fadeOut();
-$(".crechatform").fadeIn(500);
-    });
-
-   $(".delc i").on("click",function() {
-$(".crechatform").fadeOut();
-});
 
 function inputchf(obj){
   $(obj).css("margin-top","0");
@@ -1328,22 +1113,24 @@ $(function() {
 
 
 
-    $(".btn-style").on("click",function() {
+    function chat_create(){
     var x = document.forms["chatf"]["chat_title"].value;
     if (x == "") {
         $("#txtcht").append("<p id='errortxt'>*Must be filled in</p>");
         return false;
     }else{
 
-$('#dacform').submit();
+$('.crechatform #dacform').submit();
 
 }
-});
+}
+
+
 
 function showHints() {
 var fufu = $("#three input[type=text]").val();
 showHint(fufu);
-alert(fufu);
+
 }
 
 function showHint(str) {
@@ -1354,10 +1141,15 @@ function showHint(str) {
                 document.getElementById("chatcon").innerHTML = this.responseText;
             }
         }
-        xmlhttp.open("GET", "chat_hint.php?q=" + str, true);
+        xmlhttp.open("GET", "backend/chat_hint.php?q=" + str, true);
         xmlhttp.send();
 
 }
+
+
+
+
+
 </script>
 </body>
 </html>

@@ -1,10 +1,13 @@
 <?php
 session_start();
-include 'dbconnect.php';
+include 'backend/dbconnect.php';
+include 'backend/chatscript.php';
+include 'backend/loadmychat.php';
+
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 if($username === Null || $email=== Null){
-header("location:signup.php");
+header("location:http://localhost/Logarithm/signup.php");
 }else{
 $_SESSION['targetcom'] = $_SESSION['username'];
 $username = $_SESSION['username'];
@@ -455,119 +458,7 @@ $notesnum = mysqli_num_rows($nnote);
 
 }
 
-function slugify($text)
-{
-$text = str_replace(' ', '_', $text);
-$text = trim($text, '_');
 
-
-
-  if (empty($text)) {
-    return 'n-a';
-  }
-
-  return $text;
-}
-
-if(isset($_POST['chat_title']) ? $_POST['chat_title'] : null){
-$username = $_SESSION['username'];
-$chat_title = $_POST['chat_title'];
-$chat_titleEnc = md5($chat_title);
-$chat_desc = $_POST['chat_desc'];
-$chat_date = date("Y/m/d h:i:sa");
-
-$chat_index = $chat_title.$username.$chat_date;
-$chat_index = md5($chat_index);
-
-
-$errors= array();
-      $file_name = $_FILES['chat_back']['name'];
-      $file_size = $_FILES['chat_back']['size'];
-      $file_tmp = $_FILES['chat_back']['tmp_name'];
-      $file_type = $_FILES['chat_back']['type'];
-      $file_ext= explode('.',$_FILES['chat_back']['name']);
-      $file_ext = end($file_ext);
-      $file_ext= strtolower($file_ext);
-      $expensions= array("jpeg","jpg","png");
-
-      if(in_array($file_ext,$expensions)=== false){
-         $errors[]="extension not allowed, please choose a JPEG or PNG file.";
-      }
-      if(in_array($file_ext,$expensions) == ".jpg"){
-      $file_name = "1";
-      $file_name .=$username;
-      $file_name .= $chat_titleEnc;
-      $file_name=$file_name.time().".jpg";
-      $file_name = slugify($file_name);
-}else if(in_array($file_ext,$expensions) == "jpeg"){
-      $file_name = "1";
-      $file_name .=$username;
- $file_name .= $chat_titleEnc;
-      $file_name=$file_name.time().".jpeg";
-      $file_name = slugify($file_name);
-}else{
-       $file_name = "1";
-      $file_name .=$username;
- $file_name .= $chat_titleEnc;
-      $file_name=$file_name.time().".png";
-      $file_name = slugify($file_name);
- }
-      if($file_size > 2097152) {
-         $errors[]='File size must be less than 2 MB';
-      }
-
-      if(empty($errors)==true) {
-
-    if(move_uploaded_file($file_tmp,"cimages/".$file_name)){
-$chat_img = "cimages/".$file_name;
-$sql_chat = "INSERT INTO  `chats` (
-`id` ,
-`title` ,
-`description` ,
-`img` ,
-`wall`,
-`date` ,
-`authr`,
-`index`
-)
-VALUES (
-NULL ,  '$chat_title',  '$chat_desc',  '$chat_img',  'None' , '$chat_date','$username','$chat_index'
-)";
-
-$chat_create = mysqli_query($conn,$sql_chat);
-if($chat_create){
-$chat_bool = $chat_index;
-
-
-$joincq = "INSERT INTO  `chat_relationship` (
-`chat` ,
-`user`
-
-)
-VALUES (
-'$chat_index' ,  '$username'
-)";
-
-$joinqs = mysqli_query($conn,$joincq);
-if($joinqs){
-$_SESSION['chat_index'] = $chat_index;
-
-
-}
-
-
-}
-
-}//file upload yes
-
-}else{
-$chat_bool =  "Something went wrong ";
-}
-//end img
-
-
-}
-//end ifset chat
 if(isset($_POST['chat_loc']) ? $_POST['chat_loc'] : null){
 //session_start();
 
@@ -582,6 +473,9 @@ header("location: chat.php");
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/chat.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/nav.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/post.css">
 <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:400,700|Raleway" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -600,7 +494,7 @@ padding:32px;
 .comments{width:80%;padding:3%;margin:0 auto;padding-left:0;padding-right:0;display:block;}
 }
 
-@media screen and (min-width:680px){
+@media screen and (min-width:681px){
 
   #crepull{margin:1px;}
   .btn-style{margin:0 auto;width:35%;margin-top:5%;}
@@ -609,8 +503,6 @@ padding:32px;
   .iri{width:25%;}
   .tcent{width:50%;}
   .crechatform{top:3.5%;margin-left:30%;}
-  .crechat2:not(#jin){margin-left:60%;}
-  .crechat2{width:40%;}
   .crename:not(#jin){margin-left:60%;}
   .crename{width:40%;}
   .chaty{width:31%;height:350px;}
@@ -642,7 +534,6 @@ padding:32px;
 @media screen and (max-width: 680px){
     .chatback{width:100%;height:200px;}
   .crechatform{top:0;width:100%;height:100%;overflow-y:auto;}
-.crechat2{width:100%;}
 .com{padding:10px;padding-bottom:10%;}
 .wcom input[type=text]){width:70%;}
 .notif{display:none;}
@@ -657,11 +548,9 @@ padding:6%;
 }
 #pad5{padding:5%;}
 .mains h2{padding:8%;}
-.mnav span{padding:6%;padding-top:3%;}
 #two input[type=text]{height:20px;width:55%}
 #two input[type=submit]{padding:3%;}
 #two input[type=text]:focus{width:55%;}
-#two{width:100%;}
 .result{margin-left:10%;}
 }
 @media screen and (min-width:1250px){
@@ -713,7 +602,7 @@ padding:6%;
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
-.side {
+/*.side {
     height: 100%;
     width: 0;
     position: fixed;
@@ -883,7 +772,7 @@ width:150px;
 background:#fff;
 }
 .result p:hover{cursor:pointer;background:#d3d3d3;}
-.result p{border:1px solid #d7d7d7;padding:10%;margin:0;}
+.result p{border:1px solid #d7d7d7;padding:10%;margin:0;}*/
 
 #create input[type=text] {
     width: 50%;
@@ -1022,6 +911,7 @@ display:block;
 color:#fff;
 font-family:'Josefin Slab',sans-serif;
 margin:0;
+display: block;
 }
 .mainp{
 text-align:center;
@@ -1361,13 +1251,7 @@ font-size:20px;
 -webkit-border-radius:6px;
 }
 .chatb  h3, h2{display:inline;}
-.crechat{text-align:center;width:49%;display:inline-block;}
-.crechat2{
-background:#069E2D;
-color:#fff;
-text-align:center;
-}
-.crechat2 i{padding:15%;font-size:64px;}
+
 .crechatform{
 position:fixed;
 background:#fff;
@@ -1518,7 +1402,7 @@ display:inline-block;
 </head>
 <body>
   <div id="Sidenav" class="side">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="javascript:void(0)" class="closebtn" onclick="openNav()">&times;</a>
     <a href="mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
     <p><?php echo $username;  ?></p>
 
@@ -1526,7 +1410,7 @@ display:inline-block;
     <div class="mdiv">
     <a id="news" href="index.php"><div class="middle"><p>News</p></div></a>
     <div class="middle" id="cremcre" onclick="openNav();openCre();"><p>Create</p></div>
-    <div class="middle"><p>Chats</p></div>
+    <div class="middle" onclick="open_mychat()"><p>Chats</p></div>
     </div>
     <a id="naive" href="#">Settings</a>
 
@@ -1534,11 +1418,17 @@ display:inline-block;
     <input id="lg" name="logout" type= "submit" value="Log Out">
   </form>
 
+<div class="mychat_nav">
+<?php
+echo $mychat;
+ ?>
+</div>
+
   </div>
 
 <div class="mnav">
 <span onclick="openNav()">&#9776;</span>
-<h1 id="padxs">Logarithm</h1>
+<h1>Logarithm</h1>
 <form id="two" method="post" action="mypage.php">
 	<input type="text" placeholder="Search" name="target" autocomplete="off" onfocus="greener()" onblur="blacker()">
         <input name="tidsubm" id="nau" value="Search" type="submit" />
@@ -1586,52 +1476,21 @@ display:inline-block;
 </div>
 <div class="mainp">
 <div class="am">
-<div class="amfol" onmouseover="followers()" onmouseout="followersx()"><p id="monster"><a href="notification.php">Followers: <?php echo $followed; ?></a>
-<?php
-if($notesnum > 0){
-echo "<div class='notif'></div>";
-}
+<div class="amfol" ><p id="monster"><a href="notification.php">Followers: <?php echo $followed; ?></a>
 
-?>
-
-<div class="followersshow"><?php echo $followers; ?>
-<?php
-if($followed == 0){
-echo "<p>Followed by no one.</p>";
-}else{
-if($notesnum > 0){
-echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'>More($followed)</p></a>";
-}else{
-echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'>More</p></a>";
-}
-
-}
- ?>
-</div></div>
-
-<div class="amfol" onmouseover="followed()" onmouseout="followedx()" style="margin-left:5%;"><p><a href="notification.php"> Following: <?php echo $following; ?></a>
-<div class="followedshow"><?php echo $followings; ?>
-<?php
-if($following == 0){
-echo "<p>Following no one.</p>";
-}else{
-
-if($notesnum == 0){
-echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'>More</p></a>";
-}else{
-echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'>More($notesnum)</p></a>";
-}
-}
-?>
 
 </div>
+
+<div class="amfol"  style="margin-left:5%;"><p><a href="notification.php"> Following: <?php echo $following; ?></a>
+
+
 </div>
 
 </div>
 
 <form id="secf">
 <!--<input type="submit" value="My chats">-->
-<div class="comments"><p>My chats</p></div>
+<div class="comments" onclick="open_mychaty()"><p>My chats</p></div>
 <div class="comments" id="ccom" onclick="comment();receivecom();" ><p>My comments</p></div>
 </form>
 
@@ -1655,7 +1514,7 @@ echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'
 </div>
 
 
-<form method="post" style="border-bottom:1px solid #d7d7d7;">
+<form method="post" style="border-bottom:1px solid #d7d7d7;margin:2%;">
 <h2>Description</h2>
 <div class="dsxc">
 <textarea name="ndesc" onkeyup="auto_grow(this)" onblur="ndescchdel()" id="descy"><?php echo $description; ?></textarea>
@@ -1671,7 +1530,7 @@ echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'
 <div class="create" id="crecre">
 <div class="crechat"  id="crepull"><div class="crename"> <h3> Public Chat</h3></div> <div class="crechat2" ><i class="material-icons">chat</i></div></div>
 
-<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crechat2" id="jin"><i class="material-icons">view_quilt</i></div></div>
+<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crepost2" id="jin"><i class="material-icons">view_quilt</i></div></div>
 </div>
 
 <div class="crechatform" id="chatcre">
@@ -1682,13 +1541,13 @@ echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'
 <div class="datpad">
 
 <label id="txtcht"><h2>Title</h2></label>
-<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" maxlength="50" />
 
 
 <label><h2>Description </h2><p  style="display:inline-block;">(Max 140 characters)</p></label>
 <!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
 <!--<input type="textarea" name="chat_desc"/>-->
-<textarea name="chat_desc" onfocus="textfoc(this)" onblur="textblur(this)"></textarea>
+<textarea name="chat_desc" onfocus="textfoc(this)" onblur="textblur(this)" maxlength="140"></textarea>
 
 
 <label><h2>Background Image</h2></label>
@@ -1702,6 +1561,57 @@ echo "<a href='notification.php' style='text-decoration:none;'><p id='hmanymore'
 </div>
 
 
+<div class="crepostform" id="chatcre">
+<div class="delc"><div class="tcent"><h2>Create Post</h2></div><div class="iri"><i class="material-icons">close</i></div></div>
+
+<div class="inp">
+<form id="dacform" name="chatf" method="post" enctype="multipart/form-data">
+<div class="datpad">
+
+<label id="txtpst"><h2>Title</h2></label>
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="post_title" maxlength="50" />
+
+
+<label><h2>Content </h2><p  style="display:inline-block;">(Max 240 characters)</p></label>
+<!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
+<!--<input type="textarea" name="chat_desc"/>-->
+<textarea class="post_cont" name="post_cont[]" onfocus="textfoc(this)" onblur="textblur(this)" maxlength="240"></textarea>
+
+<!--<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>-->
+
+<!--  <p><input class="post_file_add" type="button" value="Add File" onclick="addFile();" /></p>-->
+
+<div class="post_file_add" onclick="addFile()"><i id='item1' class="material-icons">&#xE145;</i></div>
+<div class="post_text_add" onclick="addText()"><i id='item1' class="material-icons">&#xE3BF;</i></div>
+
+<input class="hidden_post_values" value="post_text_0" name="content_order"/>
+<input class="hidden_post_values" value="0" name="file_number"/>
+<input class="hidden_post_values" value="1" name="text_number"/>
+
+<label><h2>Add tags</h2></label>
+<div id="posttag_master_div">
+ <div id="categories">
+ </div>
+ <div class="tag_input">
+     <input type="text" name="post_tag" value="" />
+ </div>
+</div>
+
+<label><h2>Cover Image</h2></label>
+<input type="file" id="upload" class="custom-file-input" name="post_back">
+
+<!--<input type="submit" name="subm_chat" class="btn-style" value="Create Chat">-->
+<div class="btn-style" onclick="post_create()">Create Post</div>
+</form>
+</div>
+</div>
+</div>
+
+<div class='open_chat'></div>
+<div class='open_chat'></div>
+<div class='open_chat'></div>
 
 <?php
 
@@ -1709,14 +1619,14 @@ if(!isset($chat_bool)){
 
 }elseif($chat_bool == "Something went wrong"){
 echo "<div class='chatbool'>";
-echo "<div class='iris'><i id='close_chatn' class='material-icons'>close</i></div>";
+echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()'  class='material-icons'>close</i></div>";
 echo "<p>$errors</p>";
 echo "</div>";
 
 }else{
 
 echo "<div class='chatbool'>";
-echo "<div class='iris'><i id='close_chatn' class='material-icons'>close</i></div>";
+echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()'  class='material-icons'>close</i></div>";
 echo "<p>Your chat has been created</p>";
 echo "<p>To visit click </p>";
 echo "  <form id='pstchcr' method='post'>
@@ -1730,40 +1640,13 @@ echo "</div>";
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="scripts/chat.js"></script>
+<script src="scripts/nav.js"></script>
 <script>
 
-$jjo = "zero";
-$jjj = "orez";
-function comment(){
-if($jjo == "abc"){
-$(".commentview").slideUp();
-$(".cominpar").slideUp();
-$jjo =" ";
-}else{
-$(".commentview").slideDown();
-$(".cominpar").slideDown();
-$jjo = "abc";
-}
-}
 
-function openNav() {
-    if($jjj == "acd"){
-document.getElementById("Sidenav").style.width= "0";
-$jjj = "orez";
-}else{
-    if ($(".mains img").css("height") > "169px"){
-    document.getElementById("Sidenav").style.width= "250px";
 
-    }else{
-    document.getElementById("Sidenav").style.width = "100%";
-    }
-    $jjj = "acd";
-}
-}
 
-function closeNav() {
-    document.getElementById("Sidenav").style.width = "0";
-}
 function auto_grow(element) {
     element.style.height = "5px";
     element.style.height = (element.scrollHeight)+"px";
@@ -1778,7 +1661,7 @@ $(document).ready(function(){
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".result");
         if(inputVal.length){
-            $.get("backend-search.php", {term: inputVal}).done(function(data){
+            $.get("backend/backend-search.php", {term: inputVal}).done(function(data){
                 resultDropdown.html(data);
             });
         } else{
@@ -1795,6 +1678,10 @@ $(document).ready(function(){
 });
 
 </script>
+
+<!--Chat-->
+
+
 <script>
  function news(){
   document.getElementById("Sidenav").style.width = "0px";
@@ -1819,8 +1706,8 @@ if (window.XMLHttpRequest) {
                 document.getElementById("comprint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("POST","receivecom.php",true);
-        xmlhttp.open("POST","receivecom.php",true);
+        xmlhttp.open("POST","backend/receivecom.php",true);
+        xmlhttp.open("POST","backend/receivecom.php",true);
         xmlhttp.send();
 
 
@@ -1885,7 +1772,7 @@ $("#two input[type=submit]").css("background","#fff");
 $("#two input[type=submit]").css("color","black");
 }
 
-function followers(){
+/*function followers(){
 if ($(".followersshow").css("position") == "fixed"){
 $(".followersshow").css("display","block");
 }
@@ -1895,20 +1782,20 @@ function followersx(){
 
 $(".followersshow").css("display","none");
 
-}
+}*/
 
 
 
-function followed(){
+/*function followed(){
 if ($(".followedshow").css("position") == "fixed"){
 $(".followedshow").css("display","block");
 }
 
-}
+}*/
 
-function followedx(){
+/*function followedx(){
 $(".followedshow").css("display","none");
-}
+}*/
 
 //receive func
 
@@ -1925,9 +1812,9 @@ function receivecom(){
                 document.getElementById("comprint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("POST","receivecom.php",true);
- xmlhttp.open("POST","receivecom.php",true);
- xmlhttp.open("POST","receivecom.php",true);
+        xmlhttp.open("POST","backend/receivecom.php",true);
+ xmlhttp.open("POST","backend/receivecom.php",true);
+ xmlhttp.open("POST","backend/receivecom.php",true);
         xmlhttp.send();
 receivecom2();
 
@@ -1946,9 +1833,9 @@ function receivecom2(){
                 document.getElementById("comprint").innerHTML = this.responseText;
             }
         };
-        xmlhttp.open("POST","receivecom.php",true);
- xmlhttp.open("POST","receivecom.php",true);
- xmlhttp.open("POST","receivecom.php",true);
+        xmlhttp.open("POST","backend/receivecom.php",true);
+ xmlhttp.open("POST","backend/receivecom.php",true);
+ xmlhttp.open("POST","backend/receivecom.php",true);
         xmlhttp.send();
 
 
@@ -1958,7 +1845,7 @@ $(".comin").keypress(function(event) {
     if (event.which == 13) {
         event.preventDefault();
 
-if($.post('sendcom.php', $('#comform').serialize())){
+if($.post('backend/sendcom.php', $('#comform').serialize())){
 document.getElementById("comidin").value = "";
 //sent and cleared
 
@@ -1979,7 +1866,7 @@ $(obj).fadeOut();
 var id = $(obj).attr('id');
 var id= "."+id;
 
-if($.post('delcom.php', $(id).serialize())){
+if($.post('backend/delcom.php', $(id).serialize())){
 
  receivecom();
 }
@@ -1997,10 +1884,6 @@ function openCre(){
 $(".create").fadeIn(400);
 }
 
-    $(".crechat2").on("click",function() {
-        $(".create").fadeOut();
-$(".crechatform").fadeIn(500);
-    });
 
    $(".delc i").on("click",function() {
 $(".crechatform").fadeOut();
@@ -2045,6 +1928,22 @@ $("#chat_loc").on("click",function() {
   $(this).submit();
 
 });
+
+function comment() {
+
+         $(".cominpar").fadeToggle(150);
+        $( ".commentview" ).slideToggle( 300, function() {
+
+
+        });
+
+
+
+}
+
+function close_chatn() {
+        $(".chatbool").hide();
+}
 </script>
 
 </body>

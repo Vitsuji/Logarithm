@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'dbconnect.php';
+include 'backend/dbconnect.php';
 
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
@@ -544,8 +544,6 @@ padding:32px;
   .iri{width:25%;}
   .tcent{width:50%;}
   .crechatform{top:3.5%;margin-left:30%;}
-  .crechat2:not(#jin){margin-left:60%;}
-  .crechat2{width:40%;}
   .crename:not(#jin){margin-left:60%;}
   .crename{width:40%;}
   .chaty{width:31%;height:350px;}
@@ -572,7 +570,7 @@ padding:32px;
 }
 @media screen and (max-width: 680px){
   .crechatform{top:0;width:100%;height:100%;overflow-y:auto;}
-.crechat2{width:100%;}
+/*.crechat2{width:100%;}*/
 .mitem{ width: 100%;}
 .mitems{width:0;display:none;}
 #padxs{
@@ -993,20 +991,8 @@ margin-top:10px;
 margin-left:25px;
 }
 
-.crechat{text-align:center;width:49%;display:inline-block;}
-.crechat2{
-background:#069E2D;
-color:#fff;
-text-align:center;
-}
-.crechat2 i{padding:15%;font-size:64px;}
-.crechatform{
-position:fixed;
-background:#fff;
-border:1px solid #d7d7d7;
-display:none;
-}
-.crechatform:hover{cursor:pointer;box-shadow:0px 0px 25px #d7d7d7;}
+
+
 .chatbool i{font-size:34px;padding:3%;}
 .create{
 overflow-y:hidden;
@@ -1207,7 +1193,7 @@ echo $followers;
 <div class="create" id="crecre">
 <div class="crechat"  id="crepull"><div class="crename"> <h3> Public Chat</h3></div> <div class="crechat2" ><i class="material-icons">chat</i></div></div>
 
-<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crechat2" id="jin"><i class="material-icons">view_quilt</i></div></div>
+<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crepost2" id="jin"><i class="material-icons">view_quilt</i></div></div>
 </div>
 
 <div class="crechatform" id="chatcre">
@@ -1237,7 +1223,53 @@ echo $followers;
 </div>
 </div>
 
+<div class="crepostform" id="chatcre">
+<div class="delc"><div class="tcent"><h2>Create Post</h2></div><div class="iri"><i class="material-icons">close</i></div></div>
 
+<div class="inp">
+<form id="dacform" name="chatf" method="post" enctype="multipart/form-data">
+<div class="datpad">
+
+<label id="txtpst"><h2>Title</h2></label>
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="post_title" maxlength="50" />
+
+
+<label><h2>Content </h2><p  style="display:inline-block;">(Max 240 characters)</p></label>
+<!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
+<!--<input type="textarea" name="chat_desc"/>-->
+<textarea class="post_cont" name="post_cont[]" onfocus="textfoc(this)" onblur="textblur(this)" maxlength="240"></textarea>
+
+<!--<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>-->
+
+<!--  <p><input class="post_file_add" type="button" value="Add File" onclick="addFile();" /></p>-->
+
+<div class="post_file_add" onclick="addFile()"><i id='item1' class="material-icons">&#xE145;</i></div>
+<div class="post_text_add" onclick="addText()"><i id='item1' class="material-icons">&#xE3BF;</i></div>
+
+<input class="hidden_post_values" value="post_text_0" name="content_order"/>
+<input class="hidden_post_values" value="0" name="file_number"/>
+<input class="hidden_post_values" value="1" name="text_number"/>
+
+<label><h2>Add tags</h2></label>
+<div id="posttag_master_div">
+ <div id="categories">
+ </div>
+ <div class="tag_input">
+     <input type="text" name="post_tag" value="" />
+ </div>
+</div>
+
+<label><h2>Cover Image</h2></label>
+<input type="file" id="upload" class="custom-file-input" name="post_back">
+
+<!--<input type="submit" name="subm_chat" class="btn-style" value="Create Chat">-->
+<div class="btn-style" onclick="post_create()">Create Post</div>
+</form>
+</div>
+</div>
+</div>
 <?php
 
 if(!isset($chat_bool)){

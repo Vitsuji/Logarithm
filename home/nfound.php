@@ -1,6 +1,8 @@
 <?php
 session_start();
-include 'dbconnect.php';
+include 'backend/dbconnect.php';
+include 'backend/chatscript.php';
+include 'backend/loadmychat.php';
 
 $target = $_SESSION['target'];
 $requester = $_SESSION['username'];
@@ -18,6 +20,7 @@ if($result){
 $row = mysqli_fetch_assoc($result);
 
 if($row){
+$username = $row['name'];
 $date = $row['date'];
 $pimg = $row['pimg'];
 $pimg = "pimages/".$pimg;
@@ -42,9 +45,12 @@ header("location: http://localhost/Logarithm/");
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/chat.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/nav.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/post.css">
 <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:400,700|Raleway" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<title>My profile - Logarithm</title>
+<title>Not Found - Logarithm</title>
 <style>
 body{margin:0;padding:0;font-family:'Raleway',sans-serif;border:1px solid #d7d7d7;outline:none;overflow-x:hidden;}
 h1,h2,h3,h4{
@@ -67,8 +73,6 @@ padding:32px;
   .iri{width:25%;}
   .tcent{width:50%;}
   .crechatform{top:3.5%;margin-left:30%;}
-  .crechat2:not(#jin){margin-left:60%;}
-  .crechat2{width:40%;}
   .crename:not(#jin){margin-left:60%;}
   .crename{width:40%;}
   .chaty{width:31%;height:350px;}
@@ -92,7 +96,6 @@ padding:32px;
 }
 @media screen and (max-width: 680px){
   .crechatform{top:0;width:100%;height:100%;overflow-y:auto;}
-.crechat2{width:100%;}
 #two input[type=text]{width:55%;}
 .comments:first-child{margin-top:20px;}
 .picc{padding:3%;margin-top:3%;}
@@ -105,10 +108,8 @@ padding:6%;
 }
 #pad5{padding:5%;}
 .mains h2{padding:8%;}
-.mnav span{padding:6%;padding-top:3%;}
 #two input[type=text]{width:55%;height:20px;}
 #two input[type=submit]{padding:3%;}
-#two{width:100%;}
 }
 @media screen and (min-width:1250px){
 .mains img{height:220px;}
@@ -158,176 +159,6 @@ padding:6%;
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
-.side {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    border:1px solid #d7d7d7;
-    background-color: #fff;
-    overflow-x: hidden;
-    transition: 0.5s;
- -webkit-transition: 0.5s;
-    padding-top: 60px;
-    font-family:'Josefin Slab',sans-serif;
-
-}
-.mdiv{
-width:100%;
-margin-bottom:5%;
-}
-.middle{
-//background:#F26419;
-background:#069E2D;
-text-align:center;
-color:#fff;
-width:90%;
-margin:0 auto;
-}
-.middle p{padding:5%;}
-.middle p:nth-child(2){5%;}
-.middle:hover{
-cursor:pointer;
-}
-.side a:not(#news) {
-    padding: 16px 16px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #d7d7d7;
-    display: block;
-    transition: 0.3s;
-
-}
-#news{text-decoration: none;}
-.side input{
-border:none;
-margin:0;
-padding:0;
-background:#fff;
-text-decoration:none;
-color:#d7d7d7;
-display:block;
-transition:0.3s;
-text-align:left;
-font-size:25px;
-font-weight:100;
-font-family:'Josefin Slab';
-}
-.side a#naive{    border:1px solid #d7d7d7;}
-.side a:first-child{padding-bottom:0;}
-.side a:nth-child(2){padding:0;margin:0;}
-.side a:nth-child(2) p{
-margin:0;
-paddding:0;
-margin-bottom:5%;
-}
-
-.side input:hover{
-color:green;
-cursor:pointer;
-}
-
-.side a:hover, .offcanvas a:focus{
-    color:#069E2D;
-}
-
-.side .closebtn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 36px;
-    margin-left: 50px;
-}
-.side img{width:50%;margin-left:25%;border-radius:50%;height:115px; border:1px solid #d7d7d7;}
-
-@media screen and (max-height: 450px) {
-  .side {padding-top: 15px;}
-  .side a {font-size: 18px;}
-}
-
-
-p{text-align:center;}
-.mnav{padding:0;margin:0;border:1px solid #d7d7d7;}
-.mnav h1{display:inline-block;margin:0;padding:1.2%;color:#069E2D;}
-.mnav span{font-size:30px;cursor:pointer;float:right;}
-input {
-	outline: none;
-}
-input[type=text] {
-	-webkit-appearance: textfield;
-	-webkit-box-sizing: content-box;
-	font-family: inherit;
-	font-size: 100%;
-}
-input::-webkit-search-decoration,
-input::-webkit-search-cancel-button {
-	display: none;
-}
-
-#two input[type=text] {
-	background: #ededed url(http://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 9px center;
-	border: solid 1px #ccc;
-	padding: 9px 10px 9px 32px;
-
-
-	-webkit-border-radius: 10em;
-	-moz-border-radius: 10em;
-	border-radius: 10em;
-
-	-webkit-transition: all .5s;
-	-moz-transition: all .5s;
-	transition: all .5s;
-}
-#two input[type=text]:focus {
-	background-color: #fff;
-	border-color: #66CC75;
-
-	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	box-shadow: 0 0 5px rgba(109,207,246,.5);
-}
-
-
-input:-moz-placeholder {
-	color: #999;
-}
-input::-webkit-input-placeholder {
-	color: #999;
-}
-#two{display:inline-block;}
-
-/*#two input[type=text] {
-	width: 15px;
-	padding-left: 10px;
-	color: transparent;
-	cursor: pointer;
-}*/
-
-#two input[type=text]{
-	padding-left: 32px;
-	color: #000;
-	background-color: #DFE0E2;
-	cursor: auto;
-        margin:3%;
-        margin-bottom:0;
-}
-#two input:-moz-placeholder {
-	color: transparent;
-}
-#two input::-webkit-input-placeholder {
-	color: transparent;
-}
-.result{
-text-align:center;
-position:fixed;
-width:150px;
-margin-left:2.5%;
-background:#fff;
-}
-.result p:hover{cursor:pointer;background:#d3d3d3;}
-.result p{border:1px solid #d7d7d7;padding:10%;margin:0;}
 
 #create input[type=text] {
     width: 50%;
@@ -460,13 +291,7 @@ height:100%;
 -webkit-border-radius:6px;
 }
 
-.crechat{text-align:center;width:49%;display:inline-block;}
-.crechat2{
-background:#069E2D;
-color:#fff;
-text-align:center;
-}
-.crechat2 i{padding:15%;font-size:64px;}
+
 .crechatform{
 position:fixed;
 background:#fff;
@@ -616,7 +441,7 @@ display:inline-block;
 </head>
 <body>
   <div id="Sidenav" class="side">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="javascript:void(0)" class="closebtn" onclick="openNav()">&times;</a>
     <a href="mypage.php"><img src="<?php echo $pimg; ?>" height="115px">
     <p><?php echo $username;  ?></p>
 
@@ -624,7 +449,7 @@ display:inline-block;
     <div class="mdiv">
     <a id="news" href="index.php"><div class="middle"><p>News</p></div></a>
     <div class="middle" id="cremcre" onclick="openNav();openCre();"><p>Create</p></div>
-    <div class="middle"><p>Chats</p></div>
+    <div class="middle" onclick="open_mychat()"><p>Chats</p></div>
     </div>
     <a id="naive" href="#">Settings</a>
 
@@ -632,11 +457,15 @@ display:inline-block;
     <input id="lg" name="logout" type= "submit" value="Log Out">
   </form>
 
+<div class="mychat_nav">
+<?php echo $mychat; ?>
+</div>
+
   </div>
 
 <div class="mnav">
 <span onclick="openNav()">&#9776;</span>
-<h1 id="padxs">Logarithm</h1>
+<h1>Logarithm</h1>
 <form id="two" method="post" action="mypage.php">
 	<input type="text" placeholder="Search" name="target" autocomplete="off" onfocus="greener()" onblur="blacker()">
         <input name="tidsubm" id="nau" value="Search" type="submit" />
@@ -664,7 +493,7 @@ display:inline-block;
 <div class="create" id="crecre">
 <div class="crechat"  id="crepull"><div class="crename"> <h3> Public Chat</h3></div> <div class="crechat2" ><i class="material-icons">chat</i></div></div>
 
-<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crechat2" id="jin"><i class="material-icons">view_quilt</i></div></div>
+<div class="crepost"  id="crepull"><div class="crename" id="jin"> <h3> Post</h3></div> <div class="crepost2" id="jin"><i class="material-icons">view_quilt</i></div></div>
 </div>
 
 <div class="crechatform" id="chatcre">
@@ -675,13 +504,13 @@ display:inline-block;
 <div class="datpad">
 
 <label id="txtcht"><h2>Title</h2></label>
-<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" maxlength="50" />
 
 
 <label><h2>Description </h2><p  style="display:inline-block;">(Max 140 characters)</p></label>
 <!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
 <!--<input type="textarea" name="chat_desc"/>-->
-<textarea name="chat_desc" onfocus="textfoc(this)" onblur="textblur(this)"></textarea>
+<textarea name="chat_desc" onfocus="textfoc(this)" onblur="textblur(this)" maxlength="140"></textarea>
 
 
 <label><h2>Background Image</h2></label>
@@ -693,39 +522,91 @@ display:inline-block;
 </div>
 </div>
 </div>
+
+<div class="crepostform" id="chatcre">
+<div class="delc"><div class="tcent"><h2>Create Post</h2></div><div class="iri"><i class="material-icons">close</i></div></div>
+
+<div class="inp">
+<form id="dacform" name="chatf" method="post" enctype="multipart/form-data">
+<div class="datpad">
+
+<label id="txtpst"><h2>Title</h2></label>
+<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="post_title" maxlength="50" />
+
+
+<label><h2>Content </h2><p  style="display:inline-block;">(Max 240 characters)</p></label>
+<!--<input onfocus="inputchf(this)" onblur="inputchb(this)" type="text" name="chat_title" />-->
+<!--<input type="textarea" name="chat_desc"/>-->
+<textarea class="post_cont" name="post_cont[]" onfocus="textfoc(this)" onblur="textblur(this)" maxlength="240"></textarea>
+
+<!--<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>
+<div class='craze'><input type='file' id='upload' class='custom-file-input' name='post_img[]'><i class='material-icons' onclick='delFile(this)'>&#xE872;</i></div>-->
+
+<!--  <p><input class="post_file_add" type="button" value="Add File" onclick="addFile();" /></p>-->
+
+<div class="post_file_add" onclick="addFile()"><i id='item1' class="material-icons">&#xE145;</i></div>
+<div class="post_text_add" onclick="addText()"><i id='item1' class="material-icons">&#xE3BF;</i></div>
+
+<input class="hidden_post_values" value="post_text_0" name="content_order"/>
+<input class="hidden_post_values" value="0" name="file_number"/>
+<input class="hidden_post_values" value="1" name="text_number"/>
+
+<label><h2>Add tags</h2></label>
+<div id="posttag_master_div">
+ <div id="categories">
+ </div>
+ <div class="tag_input">
+     <input type="text" name="post_tag" value="" />
+ </div>
+</div>
+
+<label><h2>Cover Image</h2></label>
+<input type="file" id="upload" class="custom-file-input" name="post_back">
+
+<!--<input type="submit" name="subm_chat" class="btn-style" value="Create Chat">-->
+<div class="btn-style" onclick="post_create()">Create Post</div>
+</form>
+</div>
+</div>
+</div>
+
+<div class="open_chat"></div>
+<div class="open_chat"></div>
+<div class="open_chat"></div>
+
+<?php
+
+if(!isset($chat_bool)){
+
+}elseif($chat_bool == "Something went wrong"){
+echo "<div class='chatbool'>";
+echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()'  class='material-icons'>close</i></div>";
+echo "<p>$errors</p>";
+echo "</div>";
+
+}else{
+
+echo "<div class='chatbool'>";
+echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()'  class='material-icons'>close</i></div>";
+echo "<p>Your chat has been created</p>";
+echo "<p>To visit click </p>";
+echo "  <form id='pstchcr' method='post'>
+    <button name='chat_loc' value='$chat_index'>here</button>
+    </form>";
+
+echo "</div>";
+
+}
+?>
+
 <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="scripts/chat.js"></script>
+<script src="scripts/nav.js"></script>
+
 <script>
-$jjo = "zero";
-$jjj = "orez";
-function comment(){
-if($jjo == "abc"){
-$(".commentview").slideUp();
-$jjo =" ";
-}else{
-$(".commentview").slideDown();
-$jjo = "abc";
-}
-}
 
-function openNav() {
-    if($jjj == "acd"){
-document.getElementById("Sidenav").style.width= "0";
-$jjj = "orez";
-}else{
-    if ($("#two input[type=text]").css("width") == "130px"){
-    document.getElementById("Sidenav").style.width= "250px";
-
-    }else{
-    document.getElementById("Sidenav").style.width = "100%";
-    }
-    $jjj = "acd";
-}
-}
-
-function closeNav() {
-    document.getElementById("Sidenav").style.width = "0";
-}
 function auto_grow(element) {
     element.style.height = "5px";
     element.style.height = (element.scrollHeight)+"px";
@@ -740,7 +621,7 @@ $(document).ready(function(){
         var inputVal = $(this).val();
         var resultDropdown = $(this).siblings(".result");
         if(inputVal.length){
-            $.get("backend-search.php", {term: inputVal}).done(function(data){
+            $.get("backend/backend-search.php", {term: inputVal}).done(function(data){
                 resultDropdown.html(data);
             });
         } else{
@@ -804,10 +685,6 @@ function openCre(){
 $(".create").fadeIn(400);
 }
 
-    $(".crechat2").on("click",function() {
-        $(".create").fadeOut();
-$(".crechatform").fadeIn(500);
-    });
 
    $(".delc i").on("click",function() {
 $(".crechatform").fadeOut();
@@ -847,6 +724,10 @@ $('#dacform').submit();
 
 }
 });
+
+function close_chatn() {
+        $(".chatbool").hide();
+}
 </script>
 
 </body>

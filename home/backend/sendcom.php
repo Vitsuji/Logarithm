@@ -32,8 +32,8 @@ echo "fail";
 }
 
 
-if(isset($_REQUEST['q']) ? $_REQUEST['q'] : null){
-$chat_index = $_REQUEST["q"];
+if(isset($_POST['sendmsg']) ? $_POST['sendmsg'] : null){
+$chat_index = $_POST['chat_index'];
 $comment = $_POST['sendmsg'];
 $comment = mysqli_real_escape_string($conn, $comment);
 

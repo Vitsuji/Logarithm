@@ -3,8 +3,7 @@ session_start();
 include 'dbconnect.php';
 $username = $_SESSION['username'];
 
-$chat_index = $_REQUEST["q"];
-
+$chat_index = $_GET['q'];
 
 
 
@@ -36,12 +35,12 @@ $msg = $comrow['msg'];
 
 
 if($sender == $username){
-  $commentprint .="<div class='comstandin' id='comstandin_p'>
+  $commentprint .="<div class='chat_comstandin' id='comstandin_p'>
   <div class='com_p'>
   <img src='$profpic'/>
   <div class='contcomv'>
   <form method ='post' action='mypage.php' id='getcom'>
-  <input class='comname' type='submit' name='userlink' value='$sender' />
+  <input class='comname' id='underline' type='submit' name='userlink' value='$sender' />
   </form>
 
 
@@ -56,12 +55,12 @@ if($sender == $username){
 
 
 }else{
-$commentprint .= "<div class='comstandin'>
+$commentprint .= "<div class='chat_comstandin'>
 <div class='com'>
 <img src='$profpic'/>
 <div class='contcomv'>
 <form method ='post' action='mypage.php' id='getcom'>
-<input class='comname' type='submit' name='userlink' value='$sender' />
+<input class='comname' id='underline' type='submit' name='userlink' value='$sender' />
 </form>
 
 
@@ -88,12 +87,12 @@ while($comrow = mysqli_fetch_array($compres)) {
   $msg = $comrow['msg'];
 
   if($sender == $username){
-    $commentprint .="<div class='comstandin' id='comstandin_p'>
+    $commentprint .="<div class='chat_comstandin' id='comstandin_p'>
     <div class='com_p'>
     <img src='$profpic'/>
     <div class='contcomv'>
     <form method ='post' action='mypage.php' id='getcom'>
-    <input class='comname' type='submit' name='userlink' value='$sender' />
+    <input class='comname' id='underline' type='submit' name='userlink' value='$sender' />
     </form>
 
 
@@ -108,12 +107,12 @@ while($comrow = mysqli_fetch_array($compres)) {
 
 
   }else{
-  $commentprint .= "<div class='comstandin'>
+  $commentprint .= "<div class='chat_comstandin'>
   <div class='com'>
   <img src='$profpic'/>
   <div class='contcomv'>
   <form method ='post' action='mypage.php' id='getcom'>
-  <input class='comname' type='submit' name='userlink' value='$sender' />
+  <input class='comname' id='underline' type='submit' name='userlink' value='$sender' />
   </form>
 
 

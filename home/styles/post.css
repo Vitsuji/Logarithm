@@ -1,0 +1,122 @@
+.main_body{
+width:100%;
+height:100%;
+display: flex;
+flex-direction: row;
+flex-wrap:wrap;
+margin-top:2.5%;
+text-align:center;
+z-index:-2;
+}
+
+.other_controller{
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+}
+
+.post_body{
+border:1px solid #d7d7d7;
+height:400px;
+margin:5px;
+flex-grow:1;
+position:relative;
+}
+
+.post_back{
+
+        width: 100%;
+        height: 37%;
+        -webkit-background-size: contain;
+            -moz-background-size: contain;
+            -o-background-size: contain;
+        background-size: contain;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-position: center;
+}
+
+.post_other{
+        padding: 5%;
+        flex-grow: 1;
+
+}
+.post_other h5{display: inline;padding:20px;vertical-align: sub;}
+
+
+.post_likes{
+        background: #069E2D;
+        color:#fff;
+        padding: 5px;
+}
+
+.post_other .subm_as_text{text-shadow: none;}
+
+.tab{
+        margin:3%;
+        padding:1%;
+        display: inline-block;
+        color:#fff;
+        width:10%;
+        background: #069E2D;
+}
+
+.tab_input{
+        margin:2%;
+        padding:1%;
+        display: inline-block;
+        color:#fff;
+        background: #069E2D;
+}
+
+.post_halfcont{
+width: 88%;
+margin: 0 auto;
+text-align: center;
+}
+
+.override_post{
+        display: none;
+
+
+        background: #fff;
+        border:1px solid #d7d7d7;
+        position: absolute;
+        z-index:1;
+
+
+
+        top: 0;
+        text-align: center;
+        overflow-x:auto;
+
+}
+
+.override_post h2{padding:2%;color:#069E2D;}
+.post_close{float:right;padding:25px;}
+.post_close:hover{color:#d7d7d7;}
+.post_content{width:80%;margin:0 auto;line-height:2;}
+
+
+.post_cont i{
+        vertical-align: top;
+        margin-top:5%;
+}
+
+.hidden_post_values{
+        display: none;
+}
+
+
+.paragraph{
+        text-indent:35px;
+        padding: 10px;
+        text-align: left;
+}
+
+.paragraph::first-letter{font-size:160%;}
+
+.post_content img{
+        width:89%;

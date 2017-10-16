@@ -5,8 +5,11 @@ include 'dbconnect.php';
 if($_SESSION['chat_index'] === Null){
 
 //
-}else{
-  $username = $_SESSION['username'];
+}else {
+
+/*
+
+$username = $_SESSION['username'];
 $chat_index = $_SESSION['chat_index'];
 $chatq = "SELECT * FROM   `chats` WHERE `index` = '$chat_index'";
 $chatqsuc = mysqli_query($conn,$chatq);
@@ -63,6 +66,10 @@ echo "no such chat exists";
 
 }//if chat rows
 
+
+*/
+
+
 if(isset($_POST['chat_join']) ? $_POST['chat_join'] : null){
 $user_join_c = "INSERT INTO `chat_relationship`  (
 `chat` ,
@@ -116,28 +123,63 @@ header("location: http://localhost/Logarithm/home/");
 <style>
 body{margin:0;padding:0;font-family:'Raleway',sans-serif;overflow-x:hidden;}
 
-@media screen and (min-width:680px){
-.wcom input[type=text]{width:50%;height:50%;}
-.comstandin{margin:0 auto;margin:2%;}
+@media screen and (min-width:980px){
+/*.wcom input[type=text]{width:50%;height:50%;}*/
 
 }
 
-@media screen and (max-width:680px){
-.wcom input[type=text]){width:70%;height:60%;}
-.comstandin{margin:0 auto;margin:2%;margin-top:22%;}
-.chat_leave{width:75%;margin_left:12.5%;}
+@media screen and (max-width:980px){
+/*.wcom input[type=text]){width:70%;height:60%;}
+.chat_leave{width:75%;margin-left:12.5%;}*/
+
+
+
 }
+
+/*Tablet to Min-Desktop*/
+@media screen and (max-width: 780px) and (min-width: 320px) {
+.comstandin{ margin-top:6%;padding-top:0;}
+.wcom input[type=text]{width:50%;padding:15px;font-size:20px;}
+
+
+}
+
+/* Mobile to Tablet */
+@media screen and (max-width: 980px) and (min-width: 720px) {
+.comstandin{ margin-top:3%;padding-top:0;}
+.wcom input[type=text]{width:50%;padding:15px;font-size:20px;}
+}
+
+/*Small Desktop*/
+@media screen and (max-width: 1024px) and (min-width: 981px) {
+.full_wrap{width:37%;}
+.msgs{width:37%;}
+.wcom{width:37%;}
+.mnav{width:100%;}
+.wcom input[type=text]{width:50%;padding:3%;}
+.comstandin{margin-top:13%;}
+}
+/* Big Desktop*/
+@media screen and (max-width: 1640px) and (min-width: 1025px) {
+.full_wrap{width:25%;}
+.msgs{width:25%;}
+.wcom{width:25%;}
+.mnav{width:100%;}
+.wcom input[type=text]{padding:3.5%;}
+.comstandin{margin-top:13%;}
+}
+
 
 .mnav{padding:0;margin:0;border:1px solid #d7d7d7;text-align:center;height:10%;}
 
-.mnav h1{display:inline-block;margin:0;font-family:'Josefin Slab',sans-serif;padding:5.5% 0px 5.5% 5.5%;color:#069E2D;}
+.mnav h1{display:inline-block;margin:0;font-family:'Josefin Slab',sans-serif;color:#069E2D;}
 .mnav span{font-size:30px;cursor:pointer;float:right;padding:5%;padding-left:0;margin-right: 1.2%;width: auto;}
 #chat_un_small{font-size:30px;cursor:pointer;float:right;padding:5%;padding-left:0;margin-right: 1.2%;display: none;}
 
 .side {
-    height: 75%;
-    width: 0;
-    position: fixed;
+    height: 100%;
+    width: 100%;
+  /*  position: fixed;*/
     z-index: 1;
     top: 0;
     left: 0;
@@ -222,7 +264,6 @@ p{text-align:center;}
 .authr{
   width:78%;
   margin:0 auto;
-  background-image: url(<?php $g = '"'; echo $g.$chat_img.$g; ?>);
   -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;
@@ -245,7 +286,6 @@ z-index:2;
 border:1px solid #d7d7d7;
 //position:absolute;
 //bottom:0;
-width:25%;
 height:10.5%;
   display: flex;
 display: -webkit-flex;
@@ -273,22 +313,13 @@ border-color: #66CC75;
 }
 
 .msgs{
+  background:#fff;
 position:fixed;
-width:25%;
 height:84%;
 overflow-y: auto;
 overflow-x:hidden;
-height: 60.8%;
-<?php
-if(isset($chat_wall) ? $chat_wall : null){
+height: 58%;
 
-  echo "background-image: url($chat_wall);";
-}else{
-
-  echo "background:#fff;";
-}
-
- ?>
 
  background-size: cover;
  background-repeat: no-repeat;
@@ -373,7 +404,6 @@ font-size:20px;
 
     width: 125px;
     height: 125px;
-    background-image: url(<?php $g = '"'; echo $g.$a_img.$g; ?>);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -480,11 +510,12 @@ text-shadow:0px 0px 4px black;
 .user_join{
 
   position:fixed;
-  width:31%;
+  width:20%;
 border:1px solid #d7d7d7;
-margin-left:34.5%;
+margin-left:2.5%;
 margin-top:15%;
 }
+
 .user_join_img{
 margin:0 auto;
 width:81%;
@@ -535,15 +566,11 @@ margin:20px;
 #daform{display: inline-block;width:48%;text-align:center;}
 
 .conceal_wrapper{
-  <?php
-  if(isset($user_conceal)){
-echo "opacity:0.05;";
-}
-?>
+
 }
 .full_wrap{
+  background: #fff;
 position:fixed;
-width:25%;
 height:100%;
 border:1px solid #d7d7d7;
 resize:both;
@@ -570,7 +597,7 @@ flex-grow: 1;
   background: #fff;
 border: 1px solid;
 margin:1%;
-background: url("styles/full.png");
+background: url("styles/images-icons/full.png");
 -webkit-background-size: contain;
     -moz-background-size: contain;
     -o-background-size: contain;
@@ -590,7 +617,7 @@ flex-grow: 1;
 background: #fff;
 border: 1px solid;
 margin:1%;
-background: url("styles/standard.png");
+background: url("styles/images-icons/standard.png");
 -webkit-background-size: contain;
     -moz-background-size: contain;
     -o-background-size: contain;
@@ -608,7 +635,7 @@ flex-grow: 1;
   height: 5%;
   background: #fff;
 border: 1px solid;
-background: url("styles/small.png");
+background: url("styles/images-icons/small.png");
 -webkit-background-size: contain;
     -moz-background-size: contain;
     -o-background-size: contain;
@@ -618,12 +645,33 @@ background-size: contain;
     background-position: center;
 }
 
+.chat_enlarge_close{
+display: none;
+margin:1%;
+transition: all 0.5s;
+flex-grow: 1;
+width:0;
+height: 5%;
+background: #fff;
+border: 1px solid;
+background: url("styles/images-icons/close.png");
+-webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-position: center;
+
+}
+
 .chat_enlarge_small:hover{cursor:pointer;}
 .chat_enlarge_standard:hover{cursor:pointer;}
 .chat_enlarge_full:hover{cursor:pointer;}
+.chat_enlarge_close:hover{cursor:pointer;}
 
 .comstandin{
-  margin-top:15%;
+
 width:90%;
 padding:1%;
 height:5%;
@@ -632,108 +680,57 @@ float:left;
 
 
 #comstandin_p{float: right;margin-right: 5%;}
-</style>
-</head>
-<body>
+ .hidden_index{display: none;}
 
-<div class="full_wrap">
-   <div class="force-overflow"></div>
-<div id="Sidenav" class="side">
-
-  <h2>Chat Settings & Info</h2>
-
-    <a id="closebtn" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-
-	<div class="authr">
-
-	<a>
-<div class="authr_img"></div>​
-   </a>
-<form action="mypage.php" method="post">
+.chat_close{
+position: fixed;
+display: inline-block;
+border:1px solid #d7d7d7;
+border-left:none;
+margin-left: 4%;
 
 
-<div class="authr_name"><button value="<?php echo $chat_authr ?>" name="userlink" class="subm_as_text"><?php echo $chat_authr;  ?></button></div>
-</form>
+}
 
-	</div>
+.chat_close:hover{
+color:#d7d7d7;
+cursor: pointer;
 
-<div class="chat_info">
-
-<div class="chat_descy">
-
-<h2>Chat Description</h2>
-<div class="descc">
-<h3><?php echo $chat_description; ?></h3>
-</div>
-
-</div>
-
-<div class="chat_fol"><h2>Chat users: <?php echo $num_users; ?></h2></div>
-
-<div class="chat_back">
-<h2> Change Chat Wallpaper</h2>
-
-<form method="post" action="picture.php" enctype="multipart/form-data">
-<input type="file" id="upload" class="custom-file-input" name="chat_wall">
-<input type="submit" class="chat_wall_subm" value="Change"/>
-</form>
-
-</div>
-
-</div>
-
-<form method="post" action="chat.php" >
-<!--<input type="submit" class="chat_leave" name="" value="Leave Chat">-->
-
-<button class="chat_leave" name="chat_leave" value="<?php echo $chat_index; ?>" >Leave Chat</button>
-</form>
-</div>
-
-
-<div class="mnav">
-<span onclick="openNav()">&#9776;</span>
-<i class="material-icons" id="chat_un_small" onclick="chat_un_small()">arrow_upward</i>
-<h1><?php echo $chat_title ?></h1>
-
-</div>
-
-
-<!--one ting-->
-<div class="conceal_wrapper">
-<div class="msgs" id="5e2dbe2be3b5927c588509edb1c46f7d">
-
-
-</div>
-
-
-
-<form method="post" id="comform">
-<div class="wcom" >
-<input maxlength="140" type = "text" id="5e2dbe2be3b5927c588509edb1c46f7d" class="comin" placeholder="My message..." name="sendmsg" autocapitalize="off" autocorrect="off"/>
-</div>
-</form>
-</div>
-
-<div class="chat_enlarge">
-<div class="chat_enlarge_full" onmouseover="chat_action(this)" onmouseout="chat_action_negative(this)" onclick="chat_enlarge_full()"></div>
-<div class="chat_enlarge_standard"  onmouseover="chat_action(this)" onmouseout="chat_action_negative(this)" onclick="chat_enlarge_standard()"></div>
-<div class="chat_enlarge_small"  onmouseover="chat_action(this)" onmouseout="chat_action_negative(this)" onclick="chat_enlarge_small()"></div>
-</div>
-
-</div>
-
-
-
-
-
-
-<?php
-if(isset($user_conceal) ? $user_conceal : null){
-echo $user_join;
+}
+.chat_close i{
+padding: 20px;
+font-size: 30px
 }
 
 
- ?>
+.chat_test_start_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+
+
+</style>
+</head>
+<body >
+<button class="chat_test_start_button" onclick="chat_generate(1)">Button</button>
+<button class="chat_test_start_button" onclick="chat_generate(2)">Button</button>
+
+
+
+
+<div class='open_chat'></div>
+<div class='open_chat'></div>
+<div class='open_chat'></div>
+
 
 
 
@@ -742,33 +739,187 @@ echo $user_join;
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script>
 $( document ).ready(function() {
-//  receivecom();
-  chat_enlarge_standard();
-  chat_receivemsgs();
+startf();
+
+
+
 });
 
-function openNav() {
-  //  document.getElementById("Sidenav").style.width = "25%";
-  $( "#Sidenav" ).slideToggle( "slow", function() {
-    // Animation complete.
-  });
-    $(".wcom").css("display","none");
+
+function startf(){
+  //chat_enlarge_standard_general();
+  //setInterval(function(){ chat_receivemsgs(); }, 250);
+  chat_receivemsgs_general();
 
 }
 
-function closeNav() {
+
+
+/*function chat_generate(chat_id){
+
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+               document.getElementById("chat_cont").innerHTML = this.responseText;
+
+
+
+              }
+          }
+          xmlhttp.open("GET", "chat_generator.php?q=" + chat_id, true);
+          xmlhttp.send();
+
+}/*/
+
+function chat_generate(chat_id) {
+
+var id = chat_id.toString();
+var check_user_in = "#chat_"+id;
+if($(check_user_in).length == 0) {
+        var open ="";
+                var xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var myObj = JSON.parse(this.responseText);
+                        /*var text = "Welcome to chat: "+myObj[1];*/
+                        open = [
+                          "<div class='full_wrap' id='chat_"+chat_id+"'>   <div class='force-overflow'></div>    <div id='nav_"+chat_id+"' class='side'>      <h2>Chat Settings & Info</h2>  <a id='closebtn' href='javascript:void(0)'",
+                          "class='closebtn' onclick='closeNav("+chat_id+")'>&times;</a>    	<div class='authr' style='background-image:url("+myObj[3]+");'>    	<a>    <div class='authr_img' style='background-image:url(pimages/"+myObj[8]+");'></div>​       </a>    <form action='mypage.php' method='post'>    <div ",
+                          "class='authr_name'><button value='"+myObj[6]+"' name='userlink' class='subm_as_text'> "+myObj[6]+"</button></div>    </form>    	</div>    <div class='chat_info'>    <div ",
+                          "class='chat_descy'>    <h2>Chat Description</h2>    <div class='descc'>    <h3>"+myObj[2]+"</h3>    </div>    </div>    <div class='chat_fol'><h2>Chat users: 2</h2></div>    <div class='chat_back'>    <h2> ",
+                          "Change Chat Wallpaper</h2>    <form method='post' action='picture.php' enctype='multipart/form-data'>    <input type='file' id='upload' class='custom-file-input' name='chat_wall'>    <input type='submit' ",
+                        "class='chat_wall_subm' value='Change'/>    </form>    </div>    </div>    <form method='post' action='chat.php' >    <button class='chat_leave' name='chat_leave' value='$chat_index' >Leave Chat</button>    </form>    </div>    <div class='mnav'>    ",
+                        "<span onclick='openNav("+chat_id+")'>&#9776;</span>    <i class='material-icons' id='chat_un_small' onclick='chat_un_small("+chat_id+")'>arrow_upward</i>    <h1>"+myObj[1]+"</h1>    <div class='chat_close' onclick='chat_close("+chat_id+")'><i ",
+                        "class='material-icons' style='alert(1)'>&#xE5CD;</i></div>    </div>    <div class='conceal_wrapper'>    <div class='msgs' style='background-image:url("+myObj[4]+")' id='"+chat_id+"'>    </div>    <form method='post' id='form_"+chat_id+"' class='comform'>    <div class='wcom' >    <input maxlength='140' type = 'text' id='input_"+chat_id+"'  class='comin' placeholder='My message...' name='sendmsg' onkeypress='g(event,"+chat_id+")' ",
+                        "autocapitalize='off' autocorrect='off'  />    <input class='hidden_index' type='text' value='"+chat_id+"' name='chat_index'/>    </div>    </form>    </div>    <div class='chat_enlarge'>    <div class='chat_enlarge_full' onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' ",
+                        "onclick='chat_enlarge_full("+chat_id+")'></div>    <div class='chat_enlarge_standard'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_enlarge_standard("+chat_id+")'></div>    <div ",
+                        "class='chat_enlarge_small'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_enlarge_small("+chat_id+")'></div><div class='chat_enlarge_close'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_close("+chat_id+")'></div>    </div></div>"
+                        ].join("\n");
+
+                        var cusid_ele = document.getElementsByClassName('open_chat');
+                        if(cusid_ele.length == 0){
+                          alert("No more chat space");
+
+                        }else{
+
+                                $(cusid_ele[0]).replaceWith(open);
+                                draggables();
+                                chat_enlarge_standard_general();
+                                startf();
+                    }
+            }
+
+
+
+
+                };
+
+                xmlhttp.open("GET", "receivechatinfo.php?id="+id, true);
+                xmlhttp.send();
+
+
+
+}else{
+
+        alert("The chat is already open");
+}
+
+
+
+
+
+}
+
+
+
+  function chat_close(chat_id){
+          chat_id = chat_id.toString();
+        $("#chat_"+chat_id).replaceWith("<div class='open_chat'></div>");
+        //$('#mydiv').replaceWith('Aloha World');
+
+    }
+
+function g(e, chat_id){
+        if (e.keyCode == 13) {
+               e.preventDefault();
+
+              var item_id = chat_id;
+               alert(item_id);
+        if($.post('sendcom.php', $('#form_'+item_id).serialize())){
+         var a = $(".comin").val();
+         alert(a);
+        // var up = '"'+item_id+'"';
+         document.getElementById("input_"+item_id).value = "";
+        //this.value = " ";
+//        chat_receivemsgs_specific(item_id);
+        //sent and cleared
+}
+}
+}
+
+function sendmsg(e){
+alert(e);
+        //send
+         /*   if (e.keyCode == 13) {
+                e.preventDefault();
+                var item_id = this.id;
+                alert(item_id);
+        if($.post('sendcom.php', $('#form_'+item_id).serialize())){
+          var a = $(".comin").val();
+          alert(a);
+          var up = '"'+item_id+'"';
+          alert(up);
+        this.value = " ";
+        chat_receivemsgs_specific(item_id);
+        //sent and cleared
+
+
+
+
+        }
+
+}*/
+
+}
+
+
+
+function openNav(id) {
+  //  document.getElementById("Sidenav").style.width = "25%";
+  //var left = $(".full_wrap").css("left");
+  var side_id = "nav_"+id.toString();;
+  var form_id = "form_"+id.toString();;
+
+  $( "#"+side_id ).slideToggle( "slow", function() {
+    // Animation complete.
+    //$(this).css("left",'"'+left+'"');
+  });
+
+  if($("#"+form_id+" .wcom" ).css('display') == "flex"){
+    $("#"+form_id+" .wcom" ).css("display","none");
+}else{
+  $("#"+form_id+" .wcom" ).css("display","flex");
+
+}
+}
+
+function closeNav(id) {
 //    document.getElementById("Sidenav").style.width = "0";
-$( "#Sidenav" ).slideToggle( "slow", function() {
+  var side_id = "nav_"+id;
+    var form_id = "form_"+id;
+
+$( "#"+side_id ).slideToggle( "slow", function() {
   // Animation complete.
 });
-$(".wcom").css("display","-webkit-flex");
-$(".wcom").css("display","flex");
+
+
+$("#"+form_id+" .wcom").css("display","-webkit-flex");
+$("#"+form_id+" .wcom").css("display","flex");
 }
 </script>
 <script>
- function news(){
-  document.getElementById("Sidenav").style.width = "0px";
- }
+
 
 $(".custom-file-input").focus(function(){
 $(".chat_wall_subm").css("display","inline-block");
@@ -805,7 +956,7 @@ for (var i = 0; i < cusid_ele.length; ++i) {
 }
 */
 
-function chat_receivemsgs(){
+function chat_receivemsgs_general(){
 
 var cusid_ele = document.getElementsByClassName('msgs');
 if(cusid_ele.length == 0){
@@ -813,23 +964,56 @@ if(cusid_ele.length == 0){
 
 }else{
   for (var i = 0; i < cusid_ele.length; ++i) {
-      var item = cusid_ele[i];
-      var item_id = item.id;
+    var item = cusid_ele[i];
+    var item_id = item.id;
 
-      var xmlhttp = new XMLHttpRequest();
-       xmlhttp.onreadystatechange = function() {
-         if (this.readyState == 4 && this.status == 200) {
-           document.getElementById(item_id).innerHTML = this.responseText;
-         }
-       }
+
+
+
+  var xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function(this_item_id) {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log("yes");
+          console.log(this_item_id);
+          //  document.getElementById(this_item_id).innerHTML = this.responseText;
+          $("#"+this_item_id).html(this.responseText);
+        }else{
+          console.log("no");
+          console.log(this_item_id);
+        }
+      }.bind(xmlhttp, item_id);
+
       xmlhttp.open("GET","receivemsg.php?q="+item_id,true);
       xmlhttp.send();
 
-
-    }
   }
+
+
+  }
+
 }
 
+function chat_receivemsgs_specific(chat_id){
+
+  var xmlhttp = new XMLHttpRequest();
+
+      xmlhttp.onreadystatechange = function(this_item_id) {
+        if (this.readyState == 4 && this.status == 200) {
+          console.log("yes");
+          console.log(this_item_id);
+          //  document.getElementById(this_item_id).innerHTML = this.responseText;
+          $("#"+this_item_id).html(this.responseText);
+        }else{
+          console.log("no");
+          console.log(this_item_id);
+        }
+      }.bind(xmlhttp, chat_id);
+
+      xmlhttp.open("GET","receivemsg.php?q="+chat_id,true);
+      xmlhttp.send();
+
+}
 
 
 
@@ -884,119 +1068,217 @@ function receivecom2(){
 
 }*/
 
-//send
-$(".comin").keypress(function(event) {
-    if (event.which == 13) {
-        event.preventDefault();
-    var item_id = this.id;
-    alert(item_id);
-if($.get('sendcom.php?q='+item_id, $('#comform').serialize())){
-  var a = $(".comin").val();
-  alert(a);
-document.getElementById(item_id).value = "";
-//sent and cleared
 
 
-
-
-}
-
-}
-});
 
 //take
 //setInterval(function(){ receivecom(); }, 250);
 
-
-$(function() {
+function draggables(){
+alert("drag");
     $(".full_wrap").draggable({
   axis: "x",
    containment: "window"
 });
+}
 
-});
+/*$(".side").draggable({
+axis: "x",
+containment: "window"
+});*/
 
 
-function chat_enlarge_full(){
-$(".full_wrap").css({"width":"100%","height":"100%","left":"0"});
-$(".msgs").css("width","100%");
-$(".msgs").css("height","82.3%");
-$(".comstandin").css("margin-top","0.8%");
-$(".wcom").css("width","100%");
-$("#Sidenav").css("width","100%");
-$(".chat_leave").css("width","30%");
-$(".chat_leave").css("margin-left","35%");
-$(".mnav span").css("padding","1.2%");
-$(".side a:nth-child(2)").css("padding","0.83em");
-$(".mnav").css("height","8%");
-$(".mnav h1").css("padding","1%");
-$(".mnav span").css({"padding":"0.8%","margin-right":"1.5%","width":"auto"});
-$(".comstandin").css({"margin-top":"2%","padding":"0"});
-$(".side").css({"width":"100%","height":"100%","top":"0"});
-$(".mnav h1").css("width","90%");
 
+
+function chat_enlarge_full(chat_id){
+  var item_id = "chat_"+chat_id.toString();
+
+$("#"+item_id+" .chat_close").css("display","none");
+$("#"+item_id+" .msgs").css("width","100%");
+$("#"+item_id).css({"width":"100%","height":"100%","left":"0"});
+$("#"+item_id+" .msgs").css("width","100%");
+$("#"+item_id+" .msgs").css("height","82.3%");
+$("#"+item_id+" .comstandin").css("margin-top","0.8%");
+$("#"+item_id+" .wcom").css("width","100%");
+//$("#"+item_id+" .side").css("width","100%");
+$("#"+item_id+" .chat_leave").css("width","30%");
+$("#"+item_id+" .chat_leave").css("margin-left","35%");
+$("#"+item_id+" .mnav span").css("padding","1.2%");
+$("#"+item_id+" .side a:nth-child(2)").css("padding","0.83em");
+$("#"+item_id+" .mnav").css("height","8%");
+$("#"+item_id+" .mnav h1").css("padding","1%");
+$("#"+item_id+" .mnav span").css({"padding":"0.8%","margin-right":"1.5%","width":"auto"});
+$("#"+item_id+" .comstandin").css({"margin-top":"3.5%","padding":"0"});
+$("#"+item_id+" .side").css({"width":"100%","height":"100%","top":"0"});
+$("#"+item_id+" .mnav h1").css("width","90%");
+$("#"+item_id+" .chat_enlarge_close").css("display","block");
+$("#"+item_id+" .chat_enlarge_small").css("display","none");
+$("#"+item_id+" .wcom input[type=text]").css({"padding":"15px","width":"24%"});
   }
 
-function chat_enlarge_standard(){
-$(".full_wrap").css({"width":"25%","height":"75.6%","right":"auto"});
-$(".msgs").css("width","25%");
-$(".comstandin").css("margin-top","13%");
-$(".wcom").css("width","25%");
-$("#Sidenav").css("width",".25%");
-$(".chat_leave").css("width","70%");
-$(".chat_leave").css("margin-left","15%");
-$(".mnav span").css("padding","0");
-$(".side a:nth-child(2)").css({"padding":"15px"});
-$(".mnav").css("height","10%");
-$(".mnav h1").css("padding","5% 0px 5% 5%");
 
-    $(".mnav span").css({
-          "padding": "5%",
-              "padding-left": "0",
-              "padding-top":"3%",
-              "width":"5%"
-        });
-$(".side").css({"width":"25%","height":"75.7%"});
 
-$(".mnav h1").css("width","75%");
-  }
 
-function chat_enlarge_small(){
-  $(".full_wrap").css({"width":"25%","height":"75.6%","right":"auto"});
-  $(".msgs").css("width","25%");
-  $(".comstandin").css("margin-top","13%");
-  $(".wcom").css("width","25%");
-  $("#Sidenav").css("width",".25%");
-  $(".chat_leave").css("width","70%");
-  $(".chat_leave").css("margin-left","15%");
-  $(".mnav span").css("padding","0");
-  $(".side a:nth-child(2)").css({"padding":"15px"});
-  $(".mnav").css("height","10%");
-  $(".mnav h1").css("padding","5% 0px 5% 5%");
 
-      $(".mnav span").css({
+  function chat_enlarge_standard_general(){
+const mq = window.matchMedia( "(min-width: 981px)" );
+
+if (mq.matches) {
+  // window width is at least
+
+
+ //   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+     // some code..
+     alert("greater than 981px");
+     $(".full_wrap").css({"height":"75.6%","right":"auto"});
+     $(".comstandin").css("margin-top","13%");
+     $(".side").css("width","100%");
+     $(".chat_leave").css("width","70%");
+     $(".chat_leave").css("margin-left","15%");
+     $(".mnav span").css("padding","0");
+     $(".side a:nth-child(2)").css({"padding":"15px"});
+     $(".mnav").css("height","10%");
+     $(".mnav h1").css("padding","5% 0px 5% 5%");
+
+         $(".mnav span").css({
+               "padding": "5%",
+                   "padding-left": "0",
+                   "padding-top":"3%",
+                   "width":"5%"
+             });
+     $(".side").css({"width":"100%","height":"90%"});
+
+     $(".mnav h1").css("width","75%");
+
+    }else{
+
+   alert("smaller than 981px");
+    $(".full_wrap").css({"width":"100%","height":"100%","left":"0"});
+    $(".msgs").css("width","100%");
+    $(".msgs").css("height","82.3%");
+    $(".wcom").css("width","100%");
+     // $(".wcom input[type=text]").css({"padding":"3.2%","width":"40%","font-size":"20px","padding":"10px"});
+    //$("#"+item_id+" .side").css("width","100%");
+    $(".chat_leave").css("width","40%");
+    $(".chat_leave").css("margin-left","30%");
+    $(".mnav span").css("padding","1.2%");
+    $(" .mnav").css("height","8%");
+      $(" .chat_close").css("display","none");
+    $(".mnav span").css({"margin-right":"1.5%","width":"auto","padding":"3%","padding-left":"0"});
+    // $(".comstandin").css({"margin-top":"3%","padding":"0"});
+    $(".side").css({"width":"100%","height":"100%","top":"0"});
+            $(".mnav h1").css({"padding-top":"3%", "margin-left":"3%"});
+
+              $(".chat_enlarge").css({"height":"6%","width":"6%"});
+              $(".chat_enlarge_standard").css({"display":"none"});
+              $(".chat_enlarge_small").css({"display":"none"});
+              $(".chat_enlarge_full").css({"display":"none"});
+              $(".chat_enlarge_close").css({"display":"block","width":"100%"});
+
+
+
+    }
+    }
+
+
+
+
+  function chat_enlarge_standard(chat_id){
+var item_id = "chat_"+chat_id.toString();
+    $("#"+item_id+" .chat_close").css("display","inline-block");
+  $("#"+item_id+" .comstandin").css("margin-top","20%");
+  $("#"+item_id+" .side").css("width","100%");
+  $("#"+item_id+" .chat_leave").css("width","70%");
+  $("#"+item_id+" .chat_leave").css("margin-left","15%");
+  $("#"+item_id+" .mnav span").css("padding","0");
+  $("#"+item_id+" .side a:nth-child(2)").css({"padding":"15px"});
+  $("#"+item_id+" .mnav").css("height","10%");
+  $("#"+item_id+" .mnav h1").css("padding","5% 0px 5% 5%");
+
+      $("#"+item_id+" .mnav span").css({
             "padding": "5%",
                 "padding-left": "0",
                 "padding-top":"3%",
                 "width":"5%"
           });
-  $(".side").css({"width":"25%","height":"75.7%"});
-$(".mnav h1").css("width","75%");
+  $("#"+item_id+" .side").css({"width":"100%","height":"90%"});
 
-$(".msgs").css("display","none");
-$(".wcom").css("display","none");
-$(".chat_enlarge").css("display","none");
-$(".full_wrap").css("top","92%");
-$(".mnav span").css("display","none");
-$("#chat_un_small").css("display","inline-block");
+  $("#"+item_id+" .mnav h1").css("width","75%");
+  $("#"+item_id+" .chat_enlarge_close").css("display","none");
+  $("#"+item_id+" .chat_enlarge_small").css("display","block");
+  $("#"+item_id+" .comin").css("width","auto");
+
+  const mq = window.matchMedia( "(min-width: 1025px)" );
+
+  if (mq.matches) {
+          alert("1");
+   $("#"+item_id).css({"width":"25%","height":"75.6%","right":"auto"});
+     $("#"+item_id+" .msgs").css({"width":"25%","height":"58%"});
+      $("#"+item_id+" .wcom").css("width","25%");
+    }else {
+              alert("2");
+   $("#"+item_id).css({"width":"37%","height":"75.6%","right":"auto"});
+  $("#"+item_id+" .msgs").css({"width":"37%","height":"58%"});
+  $("#"+item_id+" .wcom").css("width","37%");
+    }
 }
-function chat_un_small(){
-  $(".msgs").css("display","block");
-  $(".wcom").css({"display":"flex","display":"-webkit-flex"});
-  $(".chat_enlarge").css({"display":"flex","display":"-webkit-flex"});
-  $(".full_wrap").css({"top": "auto"," bottom":"0"});
-$("#chat_un_small").css("display","none");
-$(".mnav span").css("display","inline-block");
+
+function chat_enlarge_small(id){
+  var item_id = "chat_"+id.toString();
+
+chat_enlarge_standard(id);
+
+
+$("#"+item_id+" .chat_close").css("display","inline-block");
+  $("#"+item_id).css({"width":"25%","height":"75.6%","right":"auto"});
+ /* $("#"+item_id+" .msgs").css("width","25%");*/
+  $("#"+item_id+" .comstandin").css("margin-top","13%");
+  $("#"+item_id+" .wcom").css("width","25%");
+  $("#"+item_id+" .side").css("width","100%");
+  $("#"+item_id+" .chat_leave").css("width","70%");
+  $("#"+item_id+" .chat_leave").css("margin-left","15%");
+  $("#"+item_id+" .mnav span").css("padding","0");
+  $("#"+item_id+" .side a:nth-child(2)").css({"padding":"15px"});
+  $("#"+item_id+" .mnav").css("height","10%");
+  $("#"+item_id+" .mnav h1").css("padding","5% 0px 5% 5%");
+
+      $("#"+item_id+" .mnav span").css({
+            "padding": "5%",
+                "padding-left": "0",
+                "padding-top":"3%",
+                "width":"5%"
+          });
+  $("#"+item_id+" .side").css({"width":"100%%","height":"90%"});
+$("#"+item_id+" mnav h1").css("width","75%");
+
+$("#"+item_id+" .msgs").css("display","none");
+$("#"+item_id+" .wcom").css("display","none");
+$("#"+item_id+" .chat_enlarge").css("display","none");
+$("#"+item_id).css("top","92%");
+$("#"+item_id+" .mnav span").css("display","none");
+$("#"+item_id+" #chat_un_small").css("display","inline-block");
+$("#"+item_id+" .chat_enlarge_close").css("display","none");
+$("#"+item_id+" .chat_enlarge_small").css("display","block");
+
+const mq = window.matchMedia( "(min-width: 1025px)" );
+
+if (mq.matches) {
+ $("#"+item_id).css({"width":"25%","height":"75.6%","right":"auto"});
+  }else {
+ $("#"+item_id).css({"width":"37%","height":"75.6%","right":"auto"});
+
+  }
+
+}
+function chat_un_small(chat_id){
+    var item_id = "chat_"+chat_id.toString();
+      $("#"+item_id+" .chat_close").css("display","inline-block");
+  $("#"+item_id+" .msgs").css("display","block");
+  $("#"+item_id+" .wcom").css({"display":"flex","display":"-webkit-flex"});
+  $("#"+item_id+" .chat_enlarge").css({"display":"flex","display":"-webkit-flex"});
+  $("#"+item_id).css({"top": "auto"," bottom":"0"});
+$("#"+item_id+" #chat_un_small").css("display","none");
+$("#"+item_id+" .mnav span").css("display","inline-block");
 }
 
 function chat_action(obj){
