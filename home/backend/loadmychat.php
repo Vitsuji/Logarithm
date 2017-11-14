@@ -6,8 +6,8 @@ $retrieve_mychat_names = "SELECT * FROM `chat_relationship` WHERE `user` = '$use
 $sql_result_name = mysqli_query($conn,$retrieve_mychat_names);
 $number_mychat = mysqli_num_rows($sql_result_name);
 $chat = "";
-if($number_mychat == 0){
-$chat = "<p>No chats yet</p>";
+if($number_mychat == 0){ 
+$mychat = "<p>No chats yet</p>";
 
 }else{
 

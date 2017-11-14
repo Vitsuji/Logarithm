@@ -27,6 +27,15 @@ function image_processor($image_name,$chat_title,$username,$chat_titleEnc,$addit
 {
 
         if($image_name == 'post_back'){
+
+                if ($_FILES['post_back']['size'] == 0 && $_FILES['post_back']['error'] > 0)
+                {
+
+                 $names = "None";
+
+                }else{
+
+
         # if image is cover
         $errors= array();
               $file_size = $_FILES[$image_name]['size'];
@@ -75,7 +84,7 @@ function image_processor($image_name,$chat_title,$username,$chat_titleEnc,$addit
             }
 
 
-
+}
 
 }else{
 
@@ -183,15 +192,23 @@ return $names;
 //start chat
 
 if(isset($_POST['post_title']) ? $_POST['post_title'] : null){
+
+        //$myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+
+
+
 $username = $_SESSION['username'];
 
 $post_title = $_POST['post_title'];
 $chat_titleEnc = md5($chat_title);
 $post_date = date("Y/m/d h:i:sa");
 $tags = $_POST['post_tag'];
-$chat_index = $post_title.$username.$post_date;
-$chat_index = md5($chat_index);
-$chat_index = rand(1,100);
+$index = trim("1".$post_title.$post_date.$username);
+$chat_index = base_convert($index, 26, 10);
+$chat_index = substr($chat_index, 0, 10);
+//$chat_index = rand(1,100);
+
+
 $post_order = $_POST['content_order'];
 
 
@@ -220,6 +237,14 @@ NULL ,  '$post_title',  '$text_value',  '$back_name',  '$img_names','$tags','$po
 )";
 
 $chat_create = mysqli_query($conn,$sql_chat);
+
+if($chat_create){
+        $sql_rel = "INSERT INTO `post_relationship`(`post`,`user`) VALUES ('$chat_index','$username')";
+        $rel = mysqli_query($conn,$sql_rel);
+
+}
+
+
 
 
 

@@ -1,4 +1,4 @@
-
+setInterval(function(){ chat_receivemsgs_general(); }, 3000);
 
 function startf(){
   //chat_enlarge_standard_general();
@@ -18,21 +18,35 @@ if($(check_user_in).length == 0) {
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var myObj = JSON.parse(this.responseText);
+                        var ob_len = myObj.length;
+
+
+
                         /*var text = "Welcome to chat: "+myObj[1];*/
-                        open = [
+                        open += [
                           "<div class='full_wrap' id='chat_"+chat_id+"'>   <div class='force-overflow'></div>    <div id='nav_"+chat_id+"' class='chat_side'>      <h2>Chat Settings & Info</h2>  <a id='closebtn' href='javascript:void(0)'",
                           "class='closebtn' onclick='chat_closeNav("+chat_id+")'>&times;</a>    	<div class='authr' style='background-image:url("+myObj[3]+");'>    	<a>    <div class='authr_img' style='background-image:url(pimages/"+myObj[9]+");'></div>​       </a>    <form action='mypage.php' method='post'>    <div ",
                           "class='authr_name'><button value='"+myObj[6]+"' name='userlink' class='subm_as_text'> "+myObj[6]+"</button></div>    </form>    	</div>    <div class='chat_info'>    <div ",
-                          "class='chat_descy'>    <h2>Chat Description</h2>    <div class='descc'>    <h3>"+myObj[2]+"</h3>    </div>    </div>    <div class='chat_fol'><h2>Chat users: 2</h2></div>    <div class='chat_back'>    <h2> ",
-                          "Change Chat Wallpaper</h2>    <form method='post' action='picture.php' enctype='multipart/form-data'>    <input type='file' id='upload' class='custom-file-input' name='chat_wall'>    <input type='submit' ",
-                        "class='chat_wall_subm' value='Change'/>    </form>    </div>    </div>    <form method='post' action='chat.php' >    <button class='chat_leave' name='chat_leave' value='$chat_index' >Leave Chat</button>    </form>    </div>    <div class='chat_mnav'>    ",
-                        "<span onclick='chat_openNav("+chat_id+")'>&#9776;</span>    <i class='material-icons' id='chat_un_small' onclick='chat_un_small("+chat_id+")'>arrow_upward</i>    <h1>"+myObj[1]+"</h1>    <div class='chat_close' onclick='chat_close("+chat_id+")'><i ",
-                        "class='material-icons' >&#xE5CD;</i></div>    </div>    <div class='conceal_wrapper'>    <div class='msgs' style='background-image:url("+myObj[4]+")' id='"+chat_id+"'>    </div>    <form method='post' id='form_"+chat_id+"' class='comform'>    <div class='chat_wcom' >    <input maxlength='140' type = 'text' id='input_"+chat_id+"'  class='comin' placeholder='My message...' name='sendmsg' onkeypress='g(event,"+chat_id+")' ",
-                        "autocapitalize='off' autocorrect='off'  />    <input class='hidden_index' type='text' value='"+chat_id+"' name='chat_index'/>    </div>    </form>    </div>    <div class='chat_enlarge'>    <div class='chat_enlarge_full' onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' ",
-                        "onclick='chat_enlarge_full("+chat_id+")'></div>    <div class='chat_enlarge_standard'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_enlarge_standard("+chat_id+")'></div>    <div ",
-                        "class='chat_enlarge_small'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_enlarge_small("+chat_id+")'></div><div class='chat_enlarge_close'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_close("+chat_id+")'></div>    </div></div>"
+                          "class='chat_descy'>    <h2>Chat Description</h2>    <div class='descc'>    <h3>"+myObj[2]+"</h3>    </div>    </div>    <div class='chat_fol'><h2>Chat users: 2</h2></div>    <div class='chat_back'>   "
                         ].join("\n");
 
+                        if(myObj[10] == 'not joined'){
+                                open += " </div>    </div>  <div class='chat_leave' name='chat_leave' value='$chat_index' >Leave Chat</div>      </div>    <div class='chat_mnav'><span onclick='chat_openNav("+chat_id+")'>&#9776;</span>    <i class='material-icons' id='chat_un_small' onclick='chat_un_small("+chat_id+")'>arrow_upward</i>    <h1>"+myObj[1]+"</h1>    <div class='chat_close' onclick='chat_close("+chat_id+")'><i class='material-icons' >&#xE5CD;</i></div>    </div>    <div class='conceal_wrapper'>";
+
+                                open += "<div class='chat_join'><h3>Would you like to join this chat?</h3><div class='join_answer' onmouseout='noline(this)' onmouseover='underline(this,1)' onclick='chat_join("+chat_id+",1)'>Yes</div><div class='join_answer' onmouseout='noline(this)' onmouseover='underline(this,0)' onclick='chat_join("+chat_id+",0)'>No</div></div>";
+                                open += "<div class='msgs' style='opacity:0.1' style='background-image:url("+myObj[4]+")' id='"+chat_id+"'>";
+                                open += "</div>    <form method='post' id='form_"+chat_id+"' class='comform'>    <div class='chat_wcom' >    <input maxlength='140' type = 'text' id='input_"+chat_id+"'  class='comin' placeholder='My message...' name='sendmsg' onkeypress='g(event,"+chat_id+")' autocapitalize='off' autocorrect='off'  disabled /> ";
+                        }else{
+                                open += "<h2> Change Chat Wallpaper</h2>    <form method='post' action='picture.php' enctype='multipart/form-data'>    <input type='file' id='upload' class='custom-file-input' name='chat_wall'>    <input type='submit' class='chat_wall_subm' value='Change'/>    </form>    </div>    </div>    <form method='post' action='chat.php' >    <div class='chat_leave' onclick='leave_chat("+chat_id+")' name='chat_leave' value='$chat_index' >Leave Chat</div>    </form>    </div>    <div class='chat_mnav'><span onclick='chat_openNav("+chat_id+")'>&#9776;</span>    <i class='material-icons' id='chat_un_small' onclick='chat_un_small("+chat_id+")'>arrow_upward</i>    <h1>"+myObj[1]+"</h1>    <div class='chat_close' onclick='chat_close("+chat_id+")'><i class='material-icons' >&#xE5CD;</i></div>    </div>    <div class='conceal_wrapper'>";
+                                open += "<div class='msgs' style='background-image:url("+myObj[4]+")' id='"+chat_id+"'>";
+                                open += "</div>    <form method='post' id='form_"+chat_id+"' class='comform'>    <div class='chat_wcom' >    <input maxlength='140' type = 'text' id='input_"+chat_id+"'  class='comin' placeholder='My message...' name='sendmsg' onkeypress='g(event,"+chat_id+")' autocapitalize='off' autocorrect='off' /> ";
+                        }
+
+
+open += ["       <input class='hidden_index' type='text' value='"+chat_id+"' name='chat_index'/>    </div>    </form>    </div>    <div class='chat_enlarge'>    <div class='chat_enlarge_full' onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' ",
+"onclick='chat_enlarge_full("+chat_id+")'></div>    <div class='chat_enlarge_standard'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_enlarge_standard("+chat_id+")'></div>    <div ",
+"class='chat_enlarge_small'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_enlarge_small("+chat_id+")'></div><div class='chat_enlarge_close'  onmouseover='chat_action(this)' onmouseout='chat_action_negative(this)' onclick='chat_close("+chat_id+")'></div>    </div></div"
+].join("\n");
                         var cusid_ele = document.getElementsByClassName('open_chat');
                         if(cusid_ele.length == 0){
                           alert("No more chat space");
@@ -40,7 +54,7 @@ if($(check_user_in).length == 0) {
                         }else{
 
                                 if($(cusid_ele[0]).replaceWith(open)){
-
+                                        auto_scroll(chat_id,"full");
                                         draggables();
                                         startf();
 
@@ -54,7 +68,6 @@ if($(check_user_in).length == 0) {
         chat_enlarge_standard(chat_id);
 
                 };
-
                 xmlhttp.open("GET", "backend/receivechatinfo.php?id="+id, true);
                 xmlhttp.send();
 
@@ -63,7 +76,8 @@ if($(check_user_in).length == 0) {
 
 }else{
 
-        alert("The chat is already open");
+        $(check_user_in).remove();
+        chat_generate(chat_id);
 }
 
 
@@ -71,7 +85,6 @@ if($(check_user_in).length == 0) {
 
 
 }
-
 
 function scrollOpen(id) {
                 var elem = document.getElementById(id);
@@ -96,11 +109,17 @@ function g(e, chat_id){
 
         // var up = '"'+item_id+'"';
          document.getElementById("input_"+item_id).value = "";
+         chat_receivemsgs_specific(chat_id);
         //this.value = " ";
 //        chat_receivemsgs_specific(item_id);
         //sent and cleared
 }
 }
+}
+
+function transferComplete(evt,chat_id) {
+  chat_receivemsgs_general();
+  auto_scroll(chat_id,"one_time");
 }
 
 function sendmsg(e){
@@ -173,7 +192,7 @@ function chat_receivemsgs_general(){
 
 var cusid_ele = document.getElementsByClassName('msgs');
 if(cusid_ele.length == 0){
-console.log("open");
+
 
 }else{
   for (var i = 0; i < cusid_ele.length; ++i) {
@@ -201,7 +220,7 @@ console.log("open");
 
 
   }
-
+console.log("general");
 }
 
 function chat_receivemsgs_specific(chat_id){
@@ -218,8 +237,15 @@ function chat_receivemsgs_specific(chat_id){
         }
       }.bind(xmlhttp, chat_id);
 
+      //xmlhttp.addEventListener("load", transferComplete);
+      xmlhttp.addEventListener("load", function(){
+          transferComplete(event,chat_id);
+      }, false);
       xmlhttp.open("GET","backend/receivemsg.php?q="+chat_id,true);
       xmlhttp.send();
+
+
+
 
 }
 
@@ -355,7 +381,7 @@ if (mq.matches) {
       if (mq.matches) {
 
        $("#"+item_id).css({"width":"25%","height":"75.6%","right":"auto"});
-         $("#"+item_id+" .msgs").css({"width":"25%","height":"58%"});
+         $("#"+item_id+" .msgs").css({"width":"25%","height":"58%"})
           $("#"+item_id+" .chat_wcom").css("width","25%");
           $("#"+item_id+" .chat_comstandin").css("margin-top","13%");
         }else {
@@ -475,5 +501,92 @@ $(obj).css("width","100%");
 
 function chat_action_negative(obj){
 $(obj).css("width","0");
+}
 
+function chat_create(){
+var x = document.forms["chatf"]["chat_title"].value;
+if (x == "") {
+    $("#txtcht").append("<p id='errortxt'>*Must be filled in</p>");
+    return false;
+}else{
+
+/*var exodus = document.forms["chatf"]["chat_back"].value;
+if(exodus == ""){
+        $(".chatf input[name=chat_back]").val("Default");
+}*/
+
+$('.crechatform #dacform').submit();
+
+}
+}
+
+
+$(".btn-style").on("click",function() {
+var x = document.forms["chatf"]["chat_title"].value;
+if (x == "") {
+    $("#txtcht").append("<p id='errortxt'>*Must be filled in</p>");
+    return false;
+}else{
+
+$('#dacform').submit();
+
+}
+});
+
+
+
+function underline(obj, val) {
+        if(val == 0){
+                $(obj).css("border-bottom","1px solid #d7d7d7");
+        }else{
+                $(obj).css("border-bottom","1px solid #069E2D");
+        }
+
+}
+
+function noline(obj) {
+        $(obj).css("border-bottom","1px solid #fff");
+}
+
+
+function chat_join(chat_id, option) {
+
+        if(option == 0){
+                var cnam = "#chat_"+chat_id;
+                $(cnam).replaceWith("<div class='open_chat'></div>");
+        }else {
+
+                $.post("backend/chat_action.php",
+                        {
+                          id: chat_id
+                        },
+                        function(data){
+                            chat_generate(chat_id);
+                    });
+
+
+
+        }
+}
+
+function leave_chat(chat_id){
+        $.post("backend/chat.php",
+                {
+                  chat_leave: chat_id
+                },
+                function(data){
+                    $("#chat_"+chat_id).replaceWith("<div class='open_chat'></div>");
+                    chat_generate(chat_id);
+            });
+}
+
+function auto_scroll(chat_id,option) {
+        if(option == "one_time"){
+                $('.msgs').animate({
+                      scrollTop: $('.msgs')[0].scrollHeight}, 1000);
+        }else{
+
+        $('.msgs').animate({
+              scrollTop: $('.msgs')[0].scrollHeight*$('.msgs')[0].scrollHeight}, 2000);
+      }
 }

@@ -3,7 +3,6 @@ include 'dbconnect.php';
 session_start();
 
 $username = $_SESSION['username'];
-$target = $_SESSION['targetcom'];
 $chat_date = substr(date("l"), 0,3);
 $chat_date .=", ".date("h:i");
 
@@ -12,15 +11,16 @@ $chat_date .=", ".date("h:i");
 if(isset($_POST['sendcom']) ? $_POST['sendcom'] : null){
 $comment = $_POST['sendcom'];
 $comment = mysqli_real_escape_string($conn, $comment);
+$post_index = $_POST['post_index'];
 
-$comupdate = "INSERT INTO  `comment` (
+$comupdate = "INSERT INTO  `pcomment` (
 `id` ,
-`user` ,
+`post` ,
 `commenter` ,
 `msg`
 )
 VALUES (
-NULL ,  '$target',  '$username',  '$comment'
+NULL ,  '$post_index',  '$username',  '$comment'
 )";
 
 $cmupdateres = mysqli_query($conn, $comupdate);
@@ -41,11 +41,10 @@ $comupdate = "INSERT INTO  `messages` (
 `chat` ,
 `sender` ,
 `msg` ,
-`date`,
-`type`
+`date`
 )
 VALUES (
-'$chat_index' ,  '$username',  '$comment',  '$chat_date','message'
+'$chat_index' ,  '$username',  '$comment',  '$chat_date'
 )";
 
 $cmupdateres = mysqli_query($conn, $comupdate);

@@ -42,7 +42,7 @@ $q = $_REQUEST["q"];
 if($q === Null){
   //start echo chats
   $hint = "";
-  $comp = "SELECT * FROM `chats`";
+  $comp = "SELECT * FROM `chats` AND `privated` != 'Yes'";
   $compres = mysqli_query($conn,$comp);
 
   $commentprint = "";
@@ -150,7 +150,7 @@ if($q === Null){
 
 
 }else{
-$getnames = "SELECT * FROM `chats` WHERE `title` LIKE '$q%' ";
+$getnames = "SELECT * FROM `chats` WHERE `title` LIKE '$q%' AND `privated` != 'Yes' ";
 
 $sql = mysqli_query($conn,$getnames);
 $number_names = mysqli_num_rows($sql);

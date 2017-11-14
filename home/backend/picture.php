@@ -1,6 +1,6 @@
 <?php
    session_start();
-   include 'backend/dbconnect.php';
+   include 'dbconnect.php';
 
 function slugify($text)
 {

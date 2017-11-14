@@ -20,7 +20,7 @@
 }
 
 @media screen and (min-width:681px){
-        .override_post{width:67%;height:600px;margin-left:16.5%;margin-top:5%;}
+        .override_post{width:67%;margin-left:16.5%;margin-top:5%;position:absolute;}
         .post_body{width:32%;}
         .crechat2:not(#jin){margin-left:60%;}
         .crechat2{width:40%;}
@@ -28,16 +28,19 @@
         .crepost2{width:40%;}
         .crepostform{height:calc(90%);}
         .mnav{padding:0;}
+        .com{padding:15px;}
+        .tcent2{width:50%;}
 }
 
 @media screen and (max-width:680px){
-        .override_post{width:100%;}
+        .override_post{width:100%;position:fixed;}
         .post_body{width:100%;}
         .crechat2{width:100%;}
         .crepost2{width:100%;}
         .crepostform{width:100%;}
-        .middle p{font-size:34px;}
+        .middle p{font-size:20px;}
         .mnav{padding:10px;}
+        .com{padding:10px;padding-bottom:10%;}
 }
 
 
@@ -152,6 +155,7 @@ p{text-align:center;}
 .chaty span{font-size:30px;cursor:pointer;padding:2%;float:right;padding-left: 0;}
 input {
 	outline: none;
+        border:none;
 }
 input[type=text] {
 	-webkit-appearance: textfield;

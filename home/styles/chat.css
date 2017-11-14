@@ -144,6 +144,7 @@ outline:none;
 border:none;
 border:1px solid #d7d7d7;
 padding-left:15px;
+background: #fff;
 }
 .chat_wcom input[type=text]:focus{
 border-color: #66CC75;
@@ -155,7 +156,6 @@ position:fixed;
 height:84%;
 overflow-y: auto;
 overflow-x:hidden;
-height: 58%;
 
 
  background-size: cover;
@@ -176,7 +176,21 @@ height: 58%;
   outline: 1px solid slategrey;
   background-color: #d3d3d3;
 }
-/
+
+.chat_side::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.chat_side::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.chat_side::-webkit-scrollbar-thumb {
+/*  background-color: darkgrey;*/
+  outline: 1px solid slategrey;
+  background-color: #d3d3d3;
+}
+
 
 .com{
 height:40px;
@@ -209,7 +223,7 @@ text-align:left;
 display:inline-block;
 height:40px;
 }
-.comcon{padding:8px;border-radius:25px;border:1px solid #d7d7d7;background: #fff;}
+.comcon{margin: 3px;padding:6px;border-radius:11px;border:1px solid #d7d7d7;background: #fff;}
 .comcon p{margin:0;}
 
 .comcon_p{padding:8px;border-radius:25px;border:1px solid #fff;color:#fff;background:#069E2D;}
@@ -228,8 +242,8 @@ cursor:pointer;
 #getcom{display:inline-block;}
 #nocoml{
 font-weight:100;
-margin-top:10%;
 font-size:20px;
+width:100%;
 }
 
 #lg{
@@ -314,6 +328,8 @@ margin-bottom:2%;
 .chat_leave:hover{
 background:#d3d3d3;
 }
+
+.x{background: #d3d3d3;}
 
 .com_p{text-align:right;float:right;}
 
@@ -510,7 +526,6 @@ background-size: contain;
 
 width:90%;
 padding:1%;
-height:5%;
 float:left;
 }
 
@@ -550,4 +565,41 @@ font-size: 30px
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+.chat_join{
+        width:20%;
+        position: fixed;
+        margin-left:2.5%;
+        border:1px solid #d7d7d7;
+        z-index:5;
+        background: #fff;
+        text-align:center;
+        margin-top: 8%;
+}
+.join_answer{
+        display: inline-block;
+        margin: 5%;
+        border-bottom:1px solid #fff;
+
+}
+
+.join_answer:nth-child(0){
+        color:#069E2D;
+}
+
+.join_answer:hover{cursor: pointer;}
+.dnon{display: none;}
+
+.announcement_msgs{
+        display: block;
+        padding:5%;
+        text-align:center;
+}
+
+
+.chat_locb{
+        border-bottom: black;
+        display: inline-block;
+
 }

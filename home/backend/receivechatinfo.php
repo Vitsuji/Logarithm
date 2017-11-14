@@ -1,7 +1,10 @@
 <?php
 include 'dbconnect.php';
-$chat_index = $_GET['id'];
+session_start();
 
+
+$chat_index = $_GET['id'];
+$username = $_SESSION['username'];
 
 $sql = "SELECT * FROM `chats` WHERE `index` = '$chat_index'";
 $query = mysqli_query($conn,$sql);
@@ -15,11 +18,22 @@ $authr_img = $authr_info['pimg'];
 
 
 
+
 array_push($json_array,$authr_img);
-//$myArr = array("John", "Mary", $chat_index, "Sally");
+
+
+$check_join = "SELECT * FROM `chat_relationship` WHERE `chat` = '$chat_index' AND `user` = '$username'";
+$cj = mysqli_query($conn, $check_join);
+$num_true = mysqli_num_rows($cj);
+if($num_true < 1){
+        $herro = "not joined";
+        array_push($json_array,$herro);
+}else {
+        array_push($json_array, "joined");
+}
 
 $json = json_encode($json_array);
 
-
+echo $json;
 
 ?>

@@ -5,7 +5,7 @@ include 'backend/dbconnect.php';
 include 'backend/chatscript.php';
 include 'backend/loadmychat.php';
 include 'backend/postcre.php';
-include 'backend/loadpost.php';
+
 if($_SESSION['username'] === Null || $_SESSION['email'] === Null ){
 header('location: http://localhost/Logarithm/signin.php');
 die();
@@ -67,6 +67,7 @@ if($commentnum == 0){
 $commentprint .= "<p id='nocoml'>No chats yet.</p>";
 }else{
 if($compres){
+/*
 $comrow = mysqli_fetch_array($compres);
 $chat_title = $comrow['title'];
 $chat_description = $comrow['description'];
@@ -99,15 +100,25 @@ $commentprint .= "<div class='chaty' >
 
 
 <span onclick='openChat($chat_rand)'>&#9776;</span>
-<div class='chatname'><h3>$chat_title</h3></div>
-<div class='chatback'style='background:url($chat_img);  background-size: cover;
+<div class='chatname'><h3>$chat_title</h3></div>";
+if($chat_img == "None"){
+        $commentprint .= "<div class='chatback'style='background:#663399;background-size: cover;
+
+          background-repeat: no-repeat;
+          background-position: 50% 50%;'></div>";
+}else{
+
+$commentprint .= "<div class='chatback'style='background:url($chat_img); background-size: cover;
+
   background-repeat: no-repeat;
-  background-position: 50% 50%;'></div>
-<div class='underlie'><p>Users: $num_users</p><p> Created: $chat_date</p></div>
+  background-position: 50% 50%;'></div>";
+  }
+
+
+$commentprint .= "<div class='underlie'><p>Users: $num_users</p><p> Created: $chat_date</p></div>
 
 </div>";
-
-
+*/
 
 //comsres #1
 
@@ -124,7 +135,7 @@ while($comrow = mysqli_fetch_array($compres)) {
   $erre = mysqli_query($conn,$err);
   $num_users = mysqli_num_rows($erre);
 
-  $commentprint  =  "<div class='chaty'>
+  $commentprint  .=  "<div class='chaty'>
   <form method='post' action='index.php' onclick='chat_generate($chat_index)' class='chat_loc'>
   <input id='disspell' type='text' name = 'chat_locy' value='$chat_index'/>
   </form>
@@ -143,13 +154,26 @@ while($comrow = mysqli_fetch_array($compres)) {
 
 
   <span onclick='openChat($chat_rand)'>&#9776;</span>
-  <div class='chatname'><h3>$chat_title</h3></div>
-  <div class='chatback' style='background:url($chat_img);  background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;'></div>
-  <div class='underlie'><p>Users: $num_users</p><p> Created: $chat_date</p></div>
+  <div class='chatname'><h3>$chat_title</h3></div>";
 
-  </div>".$commentprint;
+  if($chat_img == "None"){
+          $commentprint .= "<div class='chatback'style='background:#663399;background-size: cover;
+
+            background-repeat: no-repeat;
+            background-position: 50% 50%;'></div>";
+  }else{
+
+  $commentprint .= "<div class='chatback'style='background:url($chat_img); background-size: cover;
+
+    background-repeat: no-repeat;
+    background-position: 50% 50%;'></div>";
+    }
+
+
+ $commentprint .= "<div class='underlie'><p>Users: $num_users</p><p> Created: $chat_date</p></div>
+
+  </div>";
+
 }
 //end while
 
@@ -235,7 +259,7 @@ padding:32px;
 .iri:not(:nth-child(2)){width:25%;}
 .iri{width:25%;}
 .tcent{width:50%;}
-.tcent2{width:50%;}
+
 
 .crename:not(#jin){margin-left:60%;}
 .crename{width:40%;}
@@ -511,7 +535,6 @@ font-family: 'Josefin Slab',sans-serif;
 .opos{text-align:right;}
 .delc i:hover{color:#d7d7d7;cursor:pointer;}
 .tcent{text-align:center;margin-left:25%;display:inline-block;}
-.tcent2{text-align:center;margin-left:12.5%;display:inline-block;padding:25px;}
 .iri{text-align:right;display:inline-block;}
 
 #dacform label{display:block;padding:3%;}
@@ -669,7 +692,7 @@ display: inline-block;
 //width:50px;
 //height:50px;
 border:1px solid #d7d7d7;
-vertical-align: center;
+vertical-align: sub;
 margin-left:15px;
 
 }
@@ -679,8 +702,15 @@ padding:13px;
  }
  .chat_refresh i:hover{cursor:pointer;background:#d7d7d7;}
 
+/*  OPTIONA TAG */
 
-
+.post_comments{display: none;background: #fff;}
+.imperative_additions{
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+}
+/* OPTIOANL TAG END*/
 </style>
 </head>
 <body>
@@ -704,6 +734,9 @@ echo "<div class='notif'></div>";
     <form method="post" action="index.php" style="padding:16px 16px 8px 32px;border:1px solid #d7d7d7;">
   <input id="lg" name="logout" type= "submit" value="Log Out">
 </form>
+
+
+
 
 <div class="mychat_nav">
 <?php
@@ -848,10 +881,16 @@ echo $commentprint;
 </div>
 
 
+
+        <div id="post_res_tag"></div>
+
+
+<div class="post_search"><span>>></span><input type="text" autocorrect="off" autocomplete="off"></div>
+
+
 <div class="main_body">
 
-<?php echo $postprint; ?>
-
+<div class="loader"></div>
 <!--<div class="post_body" id="3" onclick="post_active(3)">
 
         <div class="post_back"></div>
@@ -877,44 +916,18 @@ echo $commentprint;
 
 
 
-<div class="post_body"><div class="post_back"></div></div>
-<div class="post_body"><div class="post_back"></div></div>
 
 
 
 </div>
+
 
 <div class="override_post">
-<div class="tcent2"><h2>Title</h2></div>
-
-<div class="post_close" onclick="post_close()"><i class="material-icons">close</i></div>
-
-<div class="post_content">
-
-<div class="paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet scelerisque justo, vel tempus nisl. Nulla porta mi sit amet euismod semper. In vitae nibh est. Nam ornare tellus sed neque condimentum, vel maximus leo cursus. Pellentesque tempus dapibus purus, quis facilisis nisi lobortis vel. Suspendisse purus sem, mollis eget ultricies sit amet, finibus non sem. Cras quis euismod dui. Proin laoreet ullamcorper nulla, vel feugiat lorem semper nec. Nunc ac congue erat. In in nunc non justo congue auctor. Cras euismod molestie felis id pretium. Cras eget massa in lorem sodales dapibus sed sed velit. Morbi eget lacus in leo pellentesque maximus eu at est. Ut sed dolor vitae dui aliquam maximus. Proin vel pellentesque metus. Etiam tristique sapien risus, sit amet hendrerit arcu venenatis rhoncus.
-</div>
-
-<img src="postimg/content/0Hitsujic8837b23ff8aaa8a2dde915473ce09911508151025.jpg">
-
-<div class="paragraph">
-Nulla justo leo, aliquet vel interdum eu, rhoncus et diam. Nullam molestie bibendum tristique. Nam aliquet magna est, sed vehicula purus maximus non. Maecenas fermentum gravida est, vitae cursus felis bibendum et. Vestibulum non vestibulum urna, non sodales lectus. Nam tincidunt augue risus, non imperdiet nunc rutrum commodo. Nam ut iaculis tellus. Pellentesque in urna tellus. Aliquam iaculis aliquam sapien ac bibendum.
-
-Sed auctor velit vitae luctus dictum. Nulla iaculis porttitor sapien, sit amet fringilla sem. Proin auctor nisi dui, ut lacinia quam bibendum in. Nulla commodo turpis nec auctor venenatis. Vestibulum at tristique neque, eu elementum nisi. Cras consectetur elit ut vulputate interdum. Nunc cursus fermentum augue, euismod pulvinar metus cursus ac. Aliquam sapien metus, accumsan ut nisi in, elementum congue lorem. Curabitur rhoncus facilisis sem ut maximus. Vivamus finibus ullamcorper arcu, id suscipit lorem interdum quis. Integer vehicula at erat sed laoreet. Donec id orci dictum, convallis tortor ut, semper elit.
-</div>
-
-<img src="postimg/content/1Hitsujic8837b23ff8aaa8a2dde915473ce09911508151025.jpg">
-
-<div class="paragraph">
-Sed volutpat lorem eget elementum bibendum. Vestibulum id dictum urna. Sed finibus rutrum ex, facilisis sagittis purus mattis eu. Aenean euismod, enim a porttitor iaculis, risus neque venenatis libero, vitae finibus felis tellus vel urna. Sed rhoncus tempus risus in elementum. Sed malesuada velit magna, id feugiat nunc fermentum quis. Suspendisse potenti. Vivamus eu luctus velit. Aenean nulla tellus, tempor ut pulvinar et, placerat id magna. Duis euismod urna ac fermentum feugiat. Sed malesuada nulla in finibus tempor. Ut varius ligula eu turpis faucibus laoreet. Pellentesque quis lectus dapibus arcu finibus posuere non vitae urna.
-
-Phasellus ut massa non mauris posuere sodales in sit amet nisi. Sed ut ante a dui lacinia rhoncus. Integer mollis, quam in vestibulum posuere, metus risus maximus mauris, ac ultrices velit diam quis urna. Proin dignissim tellus quis dui pretium hendrerit. Mauris viverra pellentesque eros. Vivamus ac leo sit amet nunc eleifend feugiat. Etiam id blandit mauris. Vestibulum convallis tempor luctus. Nullam tristique metus nisi, vel posuere neque condimentum quis.
-
-Nam eu nunc a lectus lobortis aliquam. Nullam eu ornare lorem. Nullam eu diam augue. Mauris lobortis facilisis elementum. Quisque vitae est at velit varius pretium ut id justo. Cras et ipsum vel leo sodales aliquam sit amet nec dolor. Sed felis sapien, molestie ac nisi eget, dapibus consectetur justo. Duis nisl nulla, porttitor.
-</div>
 
 
 
-</div>
+
+
 
 
 </div>
@@ -934,9 +947,9 @@ echo "<div class='chatbool'>";
 echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()' class='material-icons'>close</i></div>";
 echo "<p>Your chat has been created</p>";
 echo "<p>To visit click </p>";
-echo "  <form id='pstchcr' method='post'>
-    <button name='chat_loc' value='$chat_index'>here</button>
-    </form>";
+echo "
+      <div class='chat_locb' onclick='chat_generate($chat_index)'>here</div>
+  ";
 
 echo "</div>";
 
@@ -953,9 +966,17 @@ echo "</div>";
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="scripts/chat.js"></script>
 <script src="scripts/nav.js"></script>
+<script src="scripts/post.js"></script>
+<script src="scripts/general.js"></script>
 <script>
 
 
+
+$( document ).ready(function() {
+
+post_load();
+
+});
 
 
 
@@ -1067,89 +1088,6 @@ $(".chatbool").fadeOut(500);
 
 
 </script>
-<script>
-var modal = document.getElementById('crecre');
 
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-
-}
-
-function greener(){
-$("#two input[type=submit]").css("background","#399E5A");
-$("#two input[type=submit]").css("color","#fff");
-}
-
-
-function blacker(){
-$("#two input[type=submit]").css("background","#fff");
-$("#two input[type=submit]").css("color","black");
-}
-
-
-function inputchf(obj){
-  $(obj).css("margin-top","0");
-}
-function inputchb(obj){
-  $(obj).css("margin-top","3%");
-}
-
-function textfoc(obj){
-$(obj).css("padding-right","0");
-$(obj).css("padding-bottom","0");
-}
-
-function textblur(obj){
-$(obj).css("padding-right","2%");
-$(obj).css("padding-bottom","2%");
-}
-
-$(function() {
-    $(".crechatform").draggable();
-});
-
-
-
-    function chat_create(){
-    var x = document.forms["chatf"]["chat_title"].value;
-    if (x == "") {
-        $("#txtcht").append("<p id='errortxt'>*Must be filled in</p>");
-        return false;
-    }else{
-
-$('.crechatform #dacform').submit();
-
-}
-}
-
-
-
-function showHints() {
-var fufu = $("#three input[type=text]").val();
-showHint(fufu);
-
-}
-
-function showHint(str) {
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("chatcon").innerHTML = this.responseText;
-            }
-        }
-        xmlhttp.open("GET", "backend/chat_hint.php?q=" + str, true);
-        xmlhttp.send();
-
-}
-
-
-
-
-
-</script>
 </body>
 </html>

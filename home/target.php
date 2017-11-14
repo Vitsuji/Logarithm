@@ -3,6 +3,7 @@ session_start();
 include 'backend/dbconnect.php';
 include 'backend/chatscript.php';
 include 'backend/loadmychat.php';
+include 'backend/postcre.php';
 
 $target = $_SESSION['target'];
 $username = $_SESSION['username'];
@@ -279,7 +280,7 @@ while($collections = mysqli_fetch_array($sqllres)) {
 
     if($feel == "Following"){$following++;}
 
-    $efxfeel = $collections['user1rel'];
+    $exfeel = $collections['user1rel'];
 
     if($exfeel == "Following"){$followed++;}
 }
@@ -435,7 +436,7 @@ while($collection = mysqli_fetch_array($sqlllres)) {
 
     $user1 = $collection['user1'];
     $user2 = $collection['user2'];
-if($user1 != target){
+if($user1 != $target){
 $opfeel = $collection['user1rel'];
 $myfeel = $collection['user2rel'];
 
@@ -687,12 +688,11 @@ padding:32px;
   .chatback{width:100%;height:60%;background:#fff;}
   .chatcontainer{flex-direction:row;display:flex;flex-wrap:wrap;}
   .chatb{width:8%;margin-left:90%;padding:1%;}
-.com{padding:10px;}
-.wcom input[type=text]{width:50%;}
+.wcom input[type=text]:not(.comin_post){width:50%;}
 .picc{width:20%;padding:1%;}
 .comments{padding:1%;width:14%;}
 #snackbar{left:20%;padding: 16px;}
-.mainp input:not(.updesc):not(.comin):not(.comname):not(.first_msg){width:15%;padding:1%;}
+.mainp input:not(.updesc):not(.comin):not(.comname):not(.first_msg):not(.comin_post){width:15%;padding:1%;}
 #secin{margin-left:16px;}
 .dsxc{width:40%;}
 .mains img{height:170px;}
@@ -717,12 +717,12 @@ padding:32px;
 
   .crechatform{top:0;width:100%;height:100%;overflow-y:auto;}
 
-.wcom input[type=text]){width:70%;}
+.wcom input[type=text]):not(.comin_post){width:70%;}
 .comments:first-child{margin-top:20px;}
 .picc{padding:3%;margin-top:3%;}
 .comments{width:80%;}
 .mains img{width:55%;}
-.mainp input:not(.updesc):not(.comin):not(.comname):not(.private_chat input[type=text]){width:80%;padding:3%;}
+.mainp input:not(.updesc):not(.comin):not(.comname):not(.private_chat input[type=text]):not(.comin_post){width:80%;padding:3%;}
 .dsxc{width:80%;}
 #padxs{
 padding:6%;
@@ -914,7 +914,7 @@ margin:0;
 .mainp{
 text-align:center;
 }
-.mainp input:not(.updesc):not(.comin):not(.comname):not(.first_msg){
+.mainp input:not(.updesc):not(.comin):not(.comname):not(.first_msg):not(.comin_post){
 font-size:20px;
 font-family:'Raleway',sans-serif;
 background:#399E5A;
@@ -1142,7 +1142,7 @@ display: -webkit-flex;
   -webkit-flex-direction: row ;
 -webkit-justify-content: space-around;
 }
-.wcom input[type=text]{
+.wcom input[type=text]:not(.comin_post){
 height:50%;
 border-radius:15px;
 outline:none;
@@ -1195,7 +1195,6 @@ text-align:left;
 display:inline-block;
 height:40px;
 }
-.comcon{padding:2px;}
 .comname:hover, .com img:hover{
 cursor:pointer;
 }
@@ -1507,7 +1506,18 @@ margin-bottom: 5%;
 </div>
 </div>
 
-<div class="posts"><p class="post"><i>No posts yet</i></p></div>
+<div class="main_body">
+<div class="loader"></div>
+</div>
+<div class="override_post">
+
+
+
+
+
+
+
+</div>
 </div>
 </div>
 
@@ -1626,6 +1636,9 @@ echo "</div>";
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="scripts/chat.js"></script>
 <script src="scripts/nav.js"></script>
+<script src="scripts/post.js"></script>
+<script src="scripts/general.js"></script>
+
 <script>
 $
 function auto_grow(element) {
@@ -1689,6 +1702,8 @@ $(document).ready(function(){
 $("#ed").click(function(){
 $(".changed").fadeIn(1000);
 });
+
+post_load_target(2);
 });
 
 $("#cfile").click(function(){
@@ -1815,9 +1830,7 @@ $(obj).css("padding-right","2%");
 $(obj).css("padding-bottom","2%");
 }
 
-$(function() {
-    $(".crechatform").draggable();
-});
+
 
 
 

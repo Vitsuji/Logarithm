@@ -1,12 +1,15 @@
 <?php
 session_start();
 include 'backend/dbconnect.php';
+include 'backend/chatscript.php';
+include 'backend/loadmychat.php';
+include 'backend/postcre.php';
 
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 
 if($username == Null || $email == Null){
-header("location:");
+header("location:http://localhost/Logarithm/signin.php");
 }else{
 $notesql = "SELECT * FROM `notification` WHERE `user` = '$username' AND `msg` ='Follow' ";
 $notesres = mysqli_query($conn, $notesql);
@@ -387,19 +390,7 @@ $delnres = mysqli_query($conn, $delnotes);
 
 }
 
-function slugify($text)
-{
-$text = str_replace(' ', '_', $text);
-$text = trim($text, '_');
 
-
-
-  if (empty($text)) {
-    return 'n-a';
-  }
-
-  return $text;
-}
 
 if(isset($_POST['chat_title']) ? $_POST['chat_title'] : null){
 $username = $_SESSION['username'];
@@ -512,6 +503,9 @@ $chat_bool =  "Something went wrong ";
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/chat.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/nav.css">
+<link rel="stylesheet" type="text/css" href="/Logarithm/home/styles/post.css">
 <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:400,700|Raleway" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <title><?php echo $username; ?> Notifications - Logarithm</title>
@@ -1286,41 +1280,23 @@ echo "<div class='chatbool'>";
 echo "<div class='iris'><i id='close_chatn' class='material-icons'>close</i></div>";
 echo "<p>Your chat has been created</p>";
 echo "<p>To visit click </p>";
-echo "  <form id='pstchcr' method='post'>
-    <button name='chat_loc' value='$chat_index'>here</button>
-    </form>";
+echo "
+    <div class='chat_locb' onclick='chat_generate($chat_index)'>here</div>
+   ";
 
 echo "</div>";
 
 }
 ?>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="scripts/chat.js"></script>
+<script src="scripts/nav.js"></script>
+<script src="scripts/post.js"></script>
+<script src="scripts/general.js"></script>
 <script>
-$jjo = "zero";
-$jjj = "orez";
-function comment(){
-if($jjo == "abc"){
-$(".commentview").slideUp();
-$jjo =" ";
-}else{
-$(".commentview").slideDown();
-$jjo = "abc";
-}
-}
 
-function openNav() {
-    if($jjj == "acd"){
-document.getElementById("Sidenav").style.width= "0";
-$jjj = "orez";
-}else{
-    if ($(".nig").css("height") == "40px"){
-    document.getElementById("Sidenav").style.width= "250px";
-
-    }else{
-    document.getElementById("Sidenav").style.width = "100%";
-    }
-    $jjj = "acd";
-}
-}
 
 function closeNav() {
     document.getElementById("Sidenav").style.width = "0";
@@ -1431,10 +1407,6 @@ function openCre(){
 $(".create").fadeIn(400);
 }
 
-    $(".crechat2").on("click",function() {
-        $(".create").fadeOut();
-$(".crechatform").fadeIn(500);
-    });
 
    $(".delc i").on("click",function() {
 $(".crechatform").fadeOut();
@@ -1463,17 +1435,6 @@ $(function() {
 
 
 
-    $(".btn-style").on("click",function() {
-    var x = document.forms["chatf"]["chat_title"].value;
-    if (x == "") {
-        $("#txtcht").append("<p id='errortxt'>*Must be filled in</p>");
-        return false;
-    }else{
-
-$('#dacform').submit();
-
-}
-});
 </script>
 
 </body>

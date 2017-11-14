@@ -3,6 +3,7 @@ session_start();
 include 'backend/dbconnect.php';
 include 'backend/chatscript.php';
 include 'backend/loadmychat.php';
+include 'backend/postcre.php';
 
 $target = $_SESSION['target'];
 $requester = $_SESSION['username'];
@@ -591,9 +592,9 @@ echo "<div class='chatbool'>";
 echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()'  class='material-icons'>close</i></div>";
 echo "<p>Your chat has been created</p>";
 echo "<p>To visit click </p>";
-echo "  <form id='pstchcr' method='post'>
-    <button name='chat_loc' value='$chat_index'>here</button>
-    </form>";
+echo "
+      <div class='chat_locb' onlci='chat_generate($chat_index)'>here</div>
+   ";
 
 echo "</div>";
 
@@ -604,7 +605,7 @@ echo "</div>";
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="scripts/chat.js"></script>
 <script src="scripts/nav.js"></script>
-
+<script src="scripts/general.js"></script>
 <script>
 
 function auto_grow(element) {

@@ -3,6 +3,7 @@ session_start();
 include 'backend/dbconnect.php';
 include 'backend/chatscript.php';
 include 'backend/loadmychat.php';
+include 'backend/postcre.php';
 
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
@@ -529,12 +530,11 @@ padding:32px;
 .result{margin-left:2.5%;}
 .followersshow{position:fixed;}
 .followedshow{position:fixed;}
-.com{padding:10px;}
+
 }
 @media screen and (max-width: 680px){
     .chatback{width:100%;height:200px;}
   .crechatform{top:0;width:100%;height:100%;overflow-y:auto;}
-.com{padding:10px;padding-bottom:10%;}
 .wcom input[type=text]){width:70%;}
 .notif{display:none;}
 .comments:first-child{margin-top:20px;}
@@ -1227,7 +1227,7 @@ text-align:left;
 display:inline-block;
 height:40px;
 }
-.comcon{padding:2px;}
+
 .comname:hover, .com img:hover{
 cursor:pointer;
 }
@@ -1240,11 +1240,7 @@ cursor:pointer;
 #melcom{display:inline-block;margin:0;}
 #melcom input{display:none;}
 #getcom{display:inline-block;}
-#nocoml{
-font-weight:100;
-margin-top:10%;
-font-size:20px;
-}
+
 
 #lg{
 -webkit-appearance:none;
@@ -1522,7 +1518,19 @@ echo $mychat;
 </div>
 </form>
 
-<div class="posts"><p class="post"><i>No posts yet</i></p></div>
+<div class="main_body">
+<div class="loader"></div>
+</div>
+<div class="override_post">
+
+
+
+
+
+
+
+</div>
+
 </div>
 </div>
 
@@ -1629,9 +1637,9 @@ echo "<div class='chatbool'>";
 echo "<div class='iris'><i id='close_chatn' onclick='close_chatn()'  class='material-icons'>close</i></div>";
 echo "<p>Your chat has been created</p>";
 echo "<p>To visit click </p>";
-echo "  <form id='pstchcr' method='post'>
-    <button name='chat_loc' value='$chat_index'>here</button>
-    </form>";
+echo "
+    <button name='chat_loc' onclick='chat_generate($chat_index)'>here</button>
+   ";
 
 echo "</div>";
 
@@ -1642,6 +1650,8 @@ echo "</div>";
 <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="scripts/chat.js"></script>
 <script src="scripts/nav.js"></script>
+<script src="scripts/post.js"></script>
+<script src="scripts/general.js"></script>
 <script>
 
 
@@ -1730,9 +1740,9 @@ $(document).ready(function(){
 
 $("#ed").click(function(){
 $(".changed").fadeIn(1000);
+
 });
-
-
+post_load_target(1);
 
 
 });
@@ -1912,17 +1922,7 @@ $(function() {
 
 
 
-    $(".btn-style").on("click",function() {
-    var x = document.forms["chatf"]["chat_title"].value;
-    if (x == "") {
-        $("#txtcht").append("<p id='errortxt'>*Must be filled in</p>");
-        return false;
-    }else{
 
-$('#dacform').submit();
-
-}
-});
 
 $("#chat_loc").on("click",function() {
   $(this).submit();

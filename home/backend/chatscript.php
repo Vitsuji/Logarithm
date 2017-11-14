@@ -23,12 +23,24 @@ $chat_titleEnc = md5($chat_title);
 $chat_desc = $_POST['chat_desc'];
 $chat_date = date("Y/m/d h:i:sa");
 
-$chat_index = $username.$chat_date;
-$chat_index = md5($chat_index);
+//$chat_index = $username.$chat_date;
+//$chat_index = md5($chat_index);
+
+$index = trim("2".$chat_title.$chat_date.$username);
+$chat_index = base_convert($index, 26, 10);
+$chat_index = substr($chat_index, 0, 10);
 
 
-$errors= array();
+
+if ($_FILES['chat_back']['size'] == 0 && $_FILES['chat_back']['error'] > 0)
+{
+
+ $chat_img = "None";
+}else{
+
+ $errors= array();
       $file_name = $_FILES['chat_back']['name'];
+
       $file_size = $_FILES['chat_back']['size'];
       $file_tmp = $_FILES['chat_back']['tmp_name'];
       $file_type = $_FILES['chat_back']['type'];
@@ -65,8 +77,15 @@ $errors= array();
 
       if(empty($errors)==true) {
 
-    if(move_uploaded_file($file_tmp,"cimages/".$file_name)){
+    move_uploaded_file($file_tmp,"cimages/".$file_name);
+
+
+}
+
 $chat_img = "cimages/".$file_name;
+ }
+
+
 $sql_chat = "INSERT INTO  `chats` (
 `id` ,
 `title` ,
@@ -104,9 +123,9 @@ $_SESSION['chat_index'] = $chat_index;
 }
 
 
-}
 
-}//file upload yes
+
+
 
 }else{
 $chat_bool =  "Something went wrong ";

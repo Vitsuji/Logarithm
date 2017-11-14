@@ -23,6 +23,8 @@ $comrow = mysqli_fetch_array($compres);
 
 $chat_date = $comrow['date'];
 $sender = $comrow['sender'];
+$type = $comrow['type'];
+
 $coms = "SELECT * FROM `profiles` WHERE `name` = '$sender'";
 $comsres = mysqli_query($conn,$coms);
 if($comsres){
@@ -32,9 +34,22 @@ $profpic .= $prof['pimg'];
 }
 $msg = $comrow['msg'];
 
+        if($type == "info"){
+                if($msg == "join"){
+
+                $commentprint .="<div class='announcement_msgs'>$sender has joined the chat.</div>";
+        }else {
+
+                $commentprint .= "<div class='announcement_msgs'>$sender has left the chat.</div>";
+        }
+
+
+        }else{
 
 
 if($sender == $username){
+
+
   $commentprint .="<div class='chat_comstandin' id='comstandin_p'>
   <div class='com_p'>
   <img src='$profpic'/>
@@ -55,6 +70,7 @@ if($sender == $username){
 
 
 }else{
+
 $commentprint .= "<div class='chat_comstandin'>
 <div class='com'>
 <img src='$profpic'/>
@@ -72,9 +88,11 @@ $commentprint .= "<div class='chat_comstandin'>
 
 }//if sender is username
 //comsres #1
+}//not a info
 
 while($comrow = mysqli_fetch_array($compres)) {
 
+  $type = $comrow['type'];
   $chat_date = $comrow['date'];
   $sender = $comrow['sender'];
   $coms = "SELECT * FROM `profiles` WHERE `name` = '$sender'";
@@ -86,7 +104,20 @@ while($comrow = mysqli_fetch_array($compres)) {
   }
   $msg = $comrow['msg'];
 
+  if($type == "info"){
+          if($msg == "join"){
+
+          $commentprint .= "<div class='announcement_msgs'>$sender has joined the chat.</div>";
+  }else {
+
+          $commentprint .= "<div class='announcement_msgs'>$sender has left the chat.</div>";
+  }
+
+
+  }else{
+
   if($sender == $username){
+
     $commentprint .="<div class='chat_comstandin' id='comstandin_p'>
     <div class='com_p'>
     <img src='$profpic'/>
@@ -107,6 +138,7 @@ while($comrow = mysqli_fetch_array($compres)) {
 
 
   }else{
+
   $commentprint .= "<div class='chat_comstandin'>
   <div class='com'>
   <img src='$profpic'/>
@@ -127,7 +159,7 @@ while($comrow = mysqli_fetch_array($compres)) {
 }
 //end while
 
-
+}// if no info
 
 //Add to commetn print
 }else{
