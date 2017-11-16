@@ -151,8 +151,8 @@ color:#4078c0;
 
 <div class='end'>
 <p id='insend'>&copy; Logarithm,Inc.</p>
-<p id='insendpl'><a href='t&s.html'>Terms & Service </a></p>
-<p id='insendpl'><a href='pr&sec.html'>Privacy & Security</a></p>
+<p id='insendpl'><a href='ts.html'>Terms & Service </a></p>
+<p id='insendpl'><a href='prsec.html'>Privacy & Security</a></p>
 <p id='insendpl'><a href='faq.html'>FAQ</a></p>
 
 <p id='insendpr'><a href='signup.php'>Sign Up</a></p>
@@ -414,17 +414,18 @@ border-bottom:1px solid #d3d3d3;
 	font-family: Raleway;
 	font-size: 1em;
 	color: #676767;
+        border:1px solid #d7d7d7;
 	transition: border 0.5s;
 	-webkit-transition: border 0.5s;
 	-moz-transition: border 0.5s;
 	-o-transition: border 0.5s;
-        border:1px solid #d7d7d7;
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	box-sizing:border-box;
         display:block;
 
 }
+
 input{
      transition: border 0.5s;
 	margin-top:7px;
@@ -516,6 +517,10 @@ margin-bottom:1.5%;
 float:right;
 color:#4078c0;
 }
+
+.taken::-webkit-input-placeholder {
+    color: red;
+}
 </style>
 </head>
 <body>
@@ -583,8 +588,8 @@ color:#4078c0;
 
 <div class="end">
 <p id="insend">&copy; Logarithm,Inc.</p>
-<p id="insendpl"><a href="t&s.html">Terms & Service </a></p>
-<p id="insendpl"><a href="pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="ts.html">Terms & Service </a></p>
+<p id="insendpl"><a href="prsec.html">Privacy & Security</a></p>
 <p id="insendpl"><a href="faq.html">FAQ</a></p>
 
 <p id="insendpr"><a href="signup.php">Sign Up</a></p>
@@ -594,6 +599,9 @@ color:#4078c0;
 
 
 </div>
+
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="scripts/checker.js"></script>
 <script>
 
 function openNav() {
@@ -608,6 +616,7 @@ function openNav() {
 
 </script>
 <script>
+/*
 var x = document.getElementById("snackbar")
     x.className = "show";
     setTimeout(function(){
@@ -615,7 +624,7 @@ var x = document.getElementById("snackbar")
     x.style.visibility = "hidden";
     x.style.display = "none";
  }, 4500);
-
+*/
 </script>
 
 </body>

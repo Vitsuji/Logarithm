@@ -411,7 +411,7 @@ echo "<h1>$a</h1>";
 <div class="ex">
 <div id="ax">
 <p style="font-size:20px;">Not sure what Logarithm is used for?</p>
-<h3><a href="bout.html">About</a> & <a href="t&s.html">Terms & Service</a></h3>
+<h3><a href="bout.html">About</a> & <a href="ts.html">Terms & Service</a></h3>
 
 <h3></h3>
 </div>
@@ -419,14 +419,14 @@ echo "<h1>$a</h1>";
 <div class="ex">
 <div id="ax">
 <p style="font-size:20px;" >Worried about Security or Privacy? Check out</p>
-<h3><a href="pr&sec.html">Privacy and Security</a></h3>
+<h3><a href="prsec.html">Privacy and Security</a></h3>
 </div>
 </div>
 </div>
 <div class="end">
 <p id="insend">&copy; Logarithm,Inc.</p>
-<p id="insendpl"><a href="t&s.html">Terms & Service </a></p>
-<p id="insendpl"><a href="pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="ts.html">Terms & Service </a></p>
+<p id="insendpl"><a href="prsec.html">Privacy & Security</a></p>
 <p id="insendpl"><a href="faq.html">FAQ</a></p>
 
 <p id="insendpr"><a href="signup.php">Sign Up</a></p>

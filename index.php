@@ -1,11 +1,12 @@
 <?php
 include 'dbconnect.php';
 
-if(isset($_POST['btn']) ? $_POST['btn'] : null){
-echo $_POST['btn'];
+if(isset($_POST['username']) ? $_POST['username'] : null){
+
 $username = $_POST['username'];
 $email = $_POST['email'];
 $password = $_POST['password'];
+
 if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
     $ip = $_SERVER['HTTP_CLIENT_IP'];
 } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -45,158 +46,6 @@ $result = mysqli_query($conn,$sql);
       $_SESSION['username']= $username;
       $_SESSION['email']= $email;
       header("location:home/pcreate.php");
-
-  /* $to = $email;
-$subject = "Logarithm Email Varify";
-
-$message = "
-<html>
-<head>
-<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
-<link href='https://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet'>
-<meta name='viewport' content='width=device-width, initial-scale=1'/>
-<style>
-body{font-family:'Raleway',sans-serif;}
-.topn{
-margin:0;
-padding:0;
-width:100%;
-float:left;
-font-family:'Josefin Slab',sans-serif;
-border:1px solid #d7d7d7;
-color:#069E2D;
-margin-bottom:5%;
-background:#fff;
-}
-.topn h1{
-margin-left:5%;
-}
-.maine{
-padding-bottom:5%;
-width:100%;
-background:#663399;
-color:white;
-text-align:center;
-font-family:'Josefin Slab', sans-serif;
-}
-.main p{
-margin-left:15%;
-line-height:1.5;
-}
-.confirm{
-color:#fff;
-background:#069E2D;
-text-align:center;
-width:30%;
-margin:0 auto;
-}
-.confirm h3{
-padding:3%;
-margin-top:10%;
-margin-bottom:10%;
-color:#fff;
-}
-.confirm a{color:white;}
-a{text-decoration:none;color:#fff;}
-.main{width:100%;border:1px solid #d7d7d7;border-top:none;}
-
-.end{
-position:relative;
-padding-top:2%;
-line-height:1.5;
-font-size:12px;
-color:#767676;
-border-top:1px solid #d7d7d7;
-width:100%;
-height:50px;
-}
-#insend{
-float:left;
-margin-bottom:1.5%;
-margin-left:5%;
-}
-.end a{
-text-decoration:none;
-color:blue;
-}
-end a:hover{
-text-decoration:underline;
-}
-#insendpl{
-margin-left:20px;
-margin-bottom:1.5%;
-float:left;
-color:#4078c0;
-}
-#insendpr{
-margin-bottom:1.5%;
-float:right;
-color:#4078c0;
-}
-
-@media screen and (max-width:680px) {
-.confirm{width:80%;}
-.end p{display:none;}
-.end p:first-child{display:inline-block;}
-.end p:last-child{display:inline-block;}
-.maindiv{height:100%;}
-#insendpr{margin-right:6%;}
-}
-
-@media screen and (min-width:680px) {
-.endd{display:none;}
-#insendpr{margin:0;padding:1%;}
-
-}
-</style>
-</head>
-<body>
-<div class='topn'><h1>Logarithm</h1></div>
-<div class='maine'><h2>Email Validation</h2></div>
-
-<div class='main'>
-<p>Hi $username,</p>
-<p>Thanks for joining us</p>
-<p>Your key for confirming email is $cvar</p>
-<p>Please confirm your email to further use Logarithm</p>
-<div class='confirm'><h3><a href='confirmed.php'>Confirm Email</a></h3></div>
-
-
-
-<div class='end'>
-<p id='insend'>&copy; Logarithm,Inc.</p>
-<p id='insendpl'><a href='t&s.html'>Terms & Service </a></p>
-<p id='insendpl'><a href='pr&sec.html'>Privacy & Security</a></p>
-<p id='insendpl'><a href='faq.html'>FAQ</a></p>
-
-<p id='insendpr'><a href='signup.php'>Sign Up</a></p>
-<p id='insendpr'><a href='signin.php'>Sign In</a></p>
-<p id='insendpr'><a href='contact.html'>Contact</a></p>
-<p id='insendpr'><a href='bout.html'>About</a></p>
-<p id='insendpr'><a href=''>Home</a></p>
-
-</div>
-
-</div>
-</body>
-</html>
-
-
-";
-
-
-$headers = "MIME-Version: 1.0" . "\r\n";
-$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-
-// More headers
-$headers .= 'From: <logarithm@logarithm.com>' . "\r\n";
-
-if(mail($to,$subject,$message,$headers)){
-
-}else{
-$a .= "fail";
-
-}*/
 
 }
 
@@ -544,6 +393,7 @@ margin:6px 0;
         display:block;
 
 }
+
 input{
      transition: border 0.5s;
 	margin-top:7px;
@@ -572,6 +422,9 @@ input{
         transition: border 0.5s;
         outline:none;
         font-family:'Raleway', sans-serif;
+        margin: 0 auto;
+        padding-left: 0;
+        padding-right: 0;
 
 }
 .btn-style:hover{
@@ -698,6 +551,10 @@ margin-bottom:1.5%;
 float:right;
 color:#4078c0;
 }
+
+.taken::-webkit-input-placeholder {
+    color: red;
+}
 </style>
 </head>
 
@@ -751,7 +608,7 @@ color:#4078c0;
     <input placeholder="Email"type="email" class="maininput"  name="email" required/>
 <!--[if IE 8]><h3 style="color:white;text-align:center;">Password</h3><![endif]-->
 <input placeholder="Password"type="password" class="maininput" name="password" required>
-<input style="margin-top:7px;" type="submit" name="btn" class="btn-style" value="Sign Up and Start Developing" >
+<div style="margin-top:7px;" type="submit" name="btn" class="btn-style">Sign Up and Start Developing</div>
 </form>
 <p style="color:white;font-family:Arial;font-size:10px;padding-bottom:25px;"><i>By signing up you agree to our Terms of Services and Privacy Policy</i></p>
 </div>
@@ -817,8 +674,8 @@ color:#4078c0;
 
 <div class="end">
 <p id="insend">&copy; Logarithm,Inc.</p>
-<p id="insendpl"><a href="t&s.html">Terms & Services</a></p>
-<p id="insendpl"><a href="pr&sec.html">Privacy & Security</a></p>
+<p id="insendpl"><a href="ts.html">Terms & Services</a></p>
+<p id="insendpl"><a href="prsec.html">Privacy & Security</a></p>
 <p id="insendpl"><a href="faq.html">FAQ</a></p>
 
 <p id="insendpr"><a href="signup.php">Sign Up</a></p>
@@ -829,7 +686,8 @@ color:#4078c0;
 
 </div>
 
-
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="scripts/checker.js"></script>
 <script>
 /*function openNav() {
     document.getElementById("mySidenav").style.width = "100%";
@@ -851,6 +709,7 @@ function openNav() {
 
 </script>
 <script>
+/*
 var x = document.getElementById("snackbar")
     x.className = "show";
     setTimeout(function(){
@@ -858,6 +717,9 @@ var x = document.getElementById("snackbar")
     x.style.visibility = "hidden";
     x.style.display = "none";
  }, 6000);
+*/
+
+
 
 </script>
 </body>

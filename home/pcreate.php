@@ -13,7 +13,6 @@ $sss = "SELECT * FROM `userd` WHERE `username` = '$username' AND `email` = '$ema
 $res = mysqli_query($conn,$sss);
 if($res){
 $resu = mysqli_fetch_assoc($res);
-if($resu['name'] === Null){
 
 
    function slugify($text)
@@ -64,8 +63,10 @@ header("location:");
 die();
 }
 
-}else{header("location:http://localhost/Logarithm/signin.php");}
+
 
 
 }
+}else{
+        header("location: localhost/Logarithm/signin.php");
 }
